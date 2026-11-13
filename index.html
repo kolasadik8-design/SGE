@@ -4,12 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Active Care Pharmacy</title>
-  <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f766e">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Active Care">
-<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/883/883396.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
 :root{--bg:#f1f5f9;--card:#fff;--pri:#0f766e;--pri2:#14b8a6;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--red:#dc2626;--green:#16a34a;--orange:#ea580c;--blue:#2563eb}
@@ -21,15 +17,26 @@ input:focus{border-color:var(--pri)}
 .card{background:var(--card);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 /* LOGIN */
 #loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#0f766e,#14b8a6)}
-.login-box{background:#fff;width:100%;max-width:380px;border-radius:18px;padding:28px;text-align:center}
-.login-box h1{font-size:26px;color:var(--pri);margin-bottom:4px}
-.login-box p{color:var(--muted);font-size:13px;margin-bottom:18px}
+.login-box{background:#fff;width:100%;max-width:360px;border-radius:18px;padding:30px 26px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+.login-box h1{font-size:24px;color:var(--pri);margin-bottom:20px;font-weight:800;letter-spacing:.3px}
 .login-box input{margin-bottom:12px}
+.pass-wrap{position:relative;margin-bottom:12px}
+.pass-wrap input{margin:0;padding-right:42px}
+.eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;font-size:18px;padding:6px;color:#64748b}
+/* WELCOME */
+#welcomePage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0f172a,#0f766e);text-align:center;color:#fff}
+.welcome-box{animation:fadeUp .6s ease}
+.welcome-box h1{font-size:32px;margin-bottom:8px}
+.welcome-box h2{font-size:20px;font-weight:400;color:#a7f3d0;margin-bottom:6px}
+.welcome-box p{color:#cbd5e1;font-size:14px;margin-bottom:22px}
+.welcome-circle{width:90px;height:90px;border-radius:50%;background:#14b8a6;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;margin:0 auto 18px;box-shadow:0 0 0 8px rgba(20,184,166,.2)}
+.loader{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;margin:18px auto;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 /* LAYOUT */
 #app{display:flex;min-height:100vh}
 .sidebar{width:230px;background:#0f172a;color:#fff;padding:18px 14px;position:fixed;top:0;bottom:0;left:0;overflow-y:auto}
 .sidebar h2{font-size:20px;margin-bottom:2px}
-.sidebar small{color:#94a3b8}
 .nav{margin-top:20px;display:flex;flex-direction:column;gap:6px}
 .nav button{background:transparent;color:#cbd5e1;text-align:left;padding:11px 12px;font-size:14px}
 .nav button.active,.nav button:hover{background:#1e293b;color:#fff}
@@ -73,44 +80,68 @@ td{padding:10px;border-bottom:1px solid var(--line)}
 <!-- LOGIN -->
 <div id="loginPage">
   <div class="login-box">
-    <div style="font-size:48px">💊</div>
-    <h1>Active Care Pharmacy</h1>
-    <p>Pharmacy Management System - Juba, South Sudan</p>
-    <input id="loginUser" placeholder="Username" value="admin">
-    <input id="loginPass" type="password" placeholder="Password" value="ActiveCare">
+    <h1>Active Care</h1>
+    <input id="loginUser" placeholder="Username" autocomplete="username">
+    <div class="pass-wrap">
+      <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+      <button type="button" class="eye" id="eyeBtn" onclick="togglePass()">👁️</button>
+    </div>
     <button class="btn-pri" style="width:100%;padding:12px" onclick="doLogin()">Login</button>
-    <p style="margin-top:14px;color:#94a3b8;font-size:12px">Manager: admin / ActiveCare<br>Shifts: Morning 08:00-14:00 | Evening 14:00-21:00 | Night 21:00-10:00</p>
-    <p id="loginErr" style="color:var(--red);font-size:13px"></p>
+    <p id="loginErr" style="color:var(--red);font-size:13px;margin-top:10px;min-height:18px"></p>
+  </div>
+</div>
+
+<!-- WELCOME -->
+<div id="welcomePage" class="hidden">
+  <div class="welcome-box">
+    <div class="welcome-circle" id="welcomeInitial">A</div>
+    <h1 id="welcomeTitle">Welcome</h1>
+    <h2 id="welcomeName">Active Care</h2>
+    <p id="welcomeSub">Manager • Morning Shift</p>
+    <div class="loader"></div>
+    <p style="font-size:12px;opacity:.8">Loading your workspace...</p>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app" class="hidden">
   <div class="sidebar">
-    <h2>💊 Active Care</h2><small>Pharmacy - Juba</small>
+    <h2>Active Care</h2>
     <div style="margin-top:14px;background:#1e293b;padding:10px;border-radius:10px;font-size:13px">
       <b id="sideUser">Active Care</b><br><span id="sideRole" style="color:#94a3b8">Manager</span><br><span id="sideShift" style="color:#5eead4"></span>
     </div>
     <div class="nav">
-      <button data-page="dash" class="active" onclick="showPage('dash',this)">📊 Dashboard</button>
-      <button data-page="pos" onclick="showPage('pos',this)">🛒 Point of Sale</button>
-      <button data-page="inv" onclick="showPage('inv',this)">📦 Inventory</button>
-      <button data-page="purchase" onclick="showPage('purchase',this)">📥 Purchase</button>
-      <button data-page="returns" onclick="showPage('returns',this)">↩️ Returns</button>
-      <button data-page="expenses" onclick="showPage('expenses',this)">💸 Expenses</button>
-      <button data-page="debts" onclick="showPage('debts',this)">📒 Debts</button>
-      <button data-page="reports" onclick="showPage('reports',this)">📈 Reports</button>
-      <button data-page="users" id="usersNav" onclick="showPage('users',this)">👥 Users</button>
-      <button onclick="logout()" style="color:#fca5a5">🚪 Logout</button>
+      <button data-page="dash" class="active" onclick="showPage('dash',this)">Dashboard</button>
+      <button data-page="pos" onclick="showPage('pos',this)">Point of Sale</button>
+      <button data-page="inv" onclick="showPage('inv',this)">Inventory</button>
+      <button data-page="purchase" onclick="showPage('purchase',this)">Purchase</button>
+      <button data-page="returns" onclick="showPage('returns',this)">Returns</button>
+      <button data-page="expenses" onclick="showPage('expenses',this)">Expenses</button>
+      <button data-page="debts" onclick="showPage('debts',this)">Debts</button>
+      <button data-page="reports" onclick="showPage('reports',this)">Reports</button>
+      <button data-page="users" id="usersNav" onclick="showPage('users',this)">Users</button>
+      <button onclick="logout()" style="color:#fca5a5">Logout</button>
     </div>
     <div style="margin-top:16px;font-size:11px;color:#64748b">Sync: <span id="syncStatus">Local</span></div>
   </div>
 
   <div class="main">
-    <div class="topbar"><h2 id="pageTitle">Dashboard</h2><div class="flex"><span class="badge" id="todayBadge"></span><button class="btn-ghost btn-sm" onclick="exportBackup()">⬇ Backup</button></div></div>
+    <div class="topbar"><h2 id="pageTitle">Dashboard</h2><div class="flex"><span class="badge" id="todayBadge"></span><button class="btn-ghost btn-sm" onclick="exportBackup()">Backup</button></div></div>
 
     <!-- DASHBOARD -->
     <div id="page-dash">
+      <div class="card" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div>
+          <h3>USD Exchange Rate</h3>
+          <p style="font-size:13px;color:var(--muted)">1 USD = <b id="rateDisplay" style="color:var(--pri);font-size:18px">0 SSP</b> <span id="rateUpdated" style="font-size:11px"></span></p>
+          <p style="font-size:11px;color:var(--muted)">Only Manager can change this rate. All prices are entered in USD and auto-converted to SSP.</p>
+        </div>
+        <div class="flex" id="rateEditBox" style="display:none">
+          <input id="newRate" type="number" placeholder="New Rate e.g. 4500" style="width:180px">
+          <button class="btn-pri" onclick="updateRate()">Update Rate</button>
+        </div>
+        <span id="rateLockMsg" style="font-size:12px;color:#94a3b8">Manager Only</span>
+      </div>
       <div class="grid g4">
         <div class="card stat"><h3>Today Sales</h3><b id="stToday">0 SSP</b><span id="stTodayCount"></span></div>
         <div class="card stat"><h3>Total Stock Value</h3><b id="stStock">0 SSP</b><span id="stStockCount"></span></div>
@@ -128,7 +159,7 @@ td{padding:10px;border-bottom:1px solid var(--line)}
     <div id="page-pos" class="hidden">
       <div class="grid g2">
         <div class="card">
-          <input id="posSearch" placeholder="🔍 Search medicine by name..." oninput="renderPOS()">
+          <input id="posSearch" placeholder="Search medicine by name..." oninput="renderPOS()">
           <div id="posList" style="max-height:520px;overflow:auto;margin-top:12px"></div>
         </div>
         <div class="card">
@@ -139,7 +170,7 @@ td{padding:10px;border-bottom:1px solid var(--line)}
             <select id="payMethod"><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Debt</option></select>
             <input id="custName" placeholder="Customer Name (optional)">
           </div>
-          <div class="row" style="margin-top:10px"><button class="btn-green" style="flex:1" onclick="checkout()">✅ Complete Sale & Print</button><button class="btn-ghost" onclick="clearCart()">Clear</button></div>
+          <div class="row" style="margin-top:10px"><button class="btn-green" style="flex:1" onclick="checkout()">Complete Sale & Print</button><button class="btn-ghost" onclick="clearCart()">Clear</button></div>
           <div id="receipt" class="hidden" style="margin-top:14px;border:1px dashed #94a3b8;padding:14px"></div>
         </div>
       </div>
@@ -158,8 +189,8 @@ td{padding:10px;border-bottom:1px solid var(--line)}
       <div class="card">
         <h3>New Purchase - Add Stock</h3>
         <div class="grid g3" style="margin-top:12px">
-          <select id="purMed"></select><input id="purQty" type="number" placeholder="Qty" value="10"><input id="purCost" type="number" placeholder="Cost Price (SSP)">
-          <input id="purPrice" type="number" placeholder="Selling Price (SSP)"><input id="purExpiry" type="date"><input id="purSupplier" placeholder="Supplier Name">
+          <select id="purMed"></select><input id="purQty" type="number" placeholder="Qty" value="10"><input id="purCost" type="number" placeholder="Cost Price (USD)" step="0.01">
+          <input id="purPrice" type="number" placeholder="Selling Price (USD)" step="0.01"><input id="purExpiry" type="date"><input id="purSupplier" placeholder="Supplier Name">
         </div>
         <div class="row" style="margin-top:12px"><button class="btn-pri" onclick="doPurchase()">Add Stock</button><button class="btn-ghost" onclick="openMedModal()">+ New Medicine</button></div>
         <div id="purHistory"></div>
@@ -199,7 +230,7 @@ td{padding:10px;border-bottom:1px solid var(--line)}
     <!-- REPORTS -->
     <div id="page-reports" class="hidden">
       <div class="card">
-        <div class="row"><input id="repFrom" type="date"><input id="repTo" type="date"><button class="btn-pri" onclick="renderReports()">Filter</button><button class="btn-ghost" onclick="printReport()">🖨 Print Report</button></div>
+        <div class="row"><input id="repFrom" type="date"><input id="repTo" type="date"><button class="btn-pri" onclick="renderReports()">Filter</button><button class="btn-ghost" onclick="printReport()">Print Report</button></div>
         <div class="grid g4" style="margin-top:14px">
           <div class="card stat"><h3>Sales in Period</h3><b id="repSales">0</b></div>
           <div class="card stat"><h3>Expenses</h3><b id="repExp">0</b></div>
@@ -229,7 +260,8 @@ td{padding:10px;border-bottom:1px solid var(--line)}
   <h3 id="medModalTitle">Add Medicine</h3>
   <div class="flex-col" style="margin-top:12px">
     <input id="mName" placeholder="Medicine Name *"><input id="mCategory" placeholder="Category (e.g. Antibiotic)"><input id="mBarcode" placeholder="Barcode">
-    <div class="row"><input id="mPrice" type="number" placeholder="Selling Price SSP *"><input id="mCost" type="number" placeholder="Cost Price SSP"></div>
+    <div class="row"><input id="mPrice" type="number" placeholder="Selling Price (USD) *" step="0.01"><input id="mCost" type="number" placeholder="Cost Price (USD)" step="0.01"></div>
+    <p style="font-size:12px;color:var(--muted)">Auto SSP: <b id="mPriceSSP">-</b> | Cost SSP: <b id="mCostSSP">-</b> | Rate: <span id="mRateHint"></span></p>
     <div class="row"><input id="mQty" type="number" placeholder="Qty *" value="0"><input id="mMin" type="number" placeholder="Min Stock" value="5"></div>
     <input id="mExpiry" type="date"><input id="mSupplier" placeholder="Supplier">
     <div class="row"><button class="btn-pri" style="flex:1" onclick="saveMed()">Save</button><button class="btn-ghost" onclick="closeMedModal()">Cancel</button></div>
@@ -243,6 +275,8 @@ let expenses=JSON.parse(localStorage.getItem('ac_expenses')||'[]');
 let debts=JSON.parse(localStorage.getItem('ac_debts')||'[]');
 let users=JSON.parse(localStorage.getItem('ac_users')||'[]');
 let cart=[]; let currentUser=null; let editMedId=null;
+let exchangeRate = Number(localStorage.getItem('ac_rate') || 4500);
+let rateUpdatedAt = localStorage.getItem('ac_rate_date') || '';
 if(!users.length){
   users=[
     {id:1,fullName:'Active Care - Manager',username:'admin',password:'ActiveCare',role:'Manager',shift:'All',phone:''},
@@ -252,44 +286,79 @@ if(!users.length){
 }
 if(!meds.length){
   meds=[
-    {id:1,name:'Paracetamol 500mg',category:'Pain Relief',barcode:'123',price:500,cost:300,qty:120,min:10,expiry:'2027-06-01',supplier:'Juba Pharma'},
-    {id:2,name:'Amoxicillin 500mg',category:'Antibiotic',barcode:'124',price:1500,cost:900,qty:80,min:10,expiry:'2026-12-01',supplier:'Juba Pharma'},
-    {id:3,name:'Vitamin C 1000mg',category:'Vitamins',barcode:'125',price:2000,cost:1200,qty:50,min:5,expiry:'2027-01-15',supplier:'Med Supply'},
-    {id:4,name:'ORS',category:'Rehydration',barcode:'126',price:800,cost:400,qty:200,min:20,expiry:'2027-03-01',supplier:'Med Supply'}
+    {id:1,name:'Paracetamol 500mg',category:'Pain Relief',barcode:'123',priceUSD:0.50,costUSD:0.30,price:2250,cost:1350,qty:120,min:10,expiry:'2027-06-01',supplier:'Juba Pharma'},
+    {id:2,name:'Amoxicillin 500mg',category:'Antibiotic',barcode:'124',priceUSD:0.80,costUSD:0.50,price:3600,cost:2250,qty:80,min:10,expiry:'2026-12-01',supplier:'Juba Pharma'},
+    {id:3,name:'Vitamin C 1000mg',category:'Vitamins',barcode:'125',priceUSD:1.00,costUSD:0.60,price:4500,cost:2700,qty:50,min:5,expiry:'2027-01-15',supplier:'Med Supply'},
+    {id:4,name:'ORS',category:'Rehydration',barcode:'126',priceUSD:0.40,costUSD:0.20,price:1800,cost:900,qty:200,min:20,expiry:'2027-03-01',supplier:'Med Supply'}
   ]; saveAll();
 }
 function saveAll(){localStorage.setItem('ac_meds',JSON.stringify(meds));localStorage.setItem('ac_sales',JSON.stringify(sales));localStorage.setItem('ac_returns',JSON.stringify(returns));localStorage.setItem('ac_expenses',JSON.stringify(expenses));localStorage.setItem('ac_debts',JSON.stringify(debts));syncToCloud();}
 function saveUsers(){localStorage.setItem('ac_users',JSON.stringify(users));syncToCloud();}
 function fmt(n){return Number(n||0).toLocaleString()+' SSP'}
 function todayStr(){return new Date().toISOString().slice(0,10)}
-function getShift(){
-  let h=new Date().getHours();
-  if(h>=8&&h<14) return 'Morning';
-  if(h>=14&&h<21) return 'Evening';
-  return 'Night';
+function getShift(){let h=new Date().getHours(); if(h>=8&&h<14) return 'Morning'; if(h>=14&&h<21) return 'Evening'; return 'Night';}
+function shiftTime(s){if(s==='Morning') return '08:00 AM - 02:00 PM'; if(s==='Evening') return '02:00 PM - 09:00 PM'; if(s==='Night') return '09:00 PM - 10:00 AM'; return 'All Day';}
+// ===== USD RATE =====
+function usdToSsp(usd){ return Math.round(Number(usd||0) * exchangeRate); }
+function saveRate(){localStorage.setItem('ac_rate', String(exchangeRate));localStorage.setItem('ac_rate_date', rateUpdatedAt);syncToCloud();}
+function renderRate(){
+  let el=document.getElementById('rateDisplay'); if(el) el.innerText=Number(exchangeRate).toLocaleString()+' SSP';
+  let up=document.getElementById('rateUpdated'); if(up) up.innerText=rateUpdatedAt?'Updated: '+rateUpdatedAt:'';
+  let box=document.getElementById('rateEditBox'); let lock=document.getElementById('rateLockMsg');
+  if(currentUser && currentUser.role==='Manager'){ if(box) box.style.display='flex'; if(lock) lock.style.display='none'; }
+  else { if(box) box.style.display='none'; if(lock) lock.style.display='block'; }
 }
-function shiftTime(s){
-  if(s==='Morning') return '08:00 AM - 02:00 PM';
-  if(s==='Evening') return '02:00 PM - 09:00 PM';
-  if(s==='Night') return '09:00 PM - 10:00 AM';
-  return 'All Day';
+function updateRate(){
+  if(!currentUser || currentUser.role!=='Manager'){alert('Only Manager can change exchange rate');return;}
+  let v=Number(document.getElementById('newRate').value); if(!v||v<=0){alert('Enter valid rate');return;}
+  if(!confirm('Change rate from '+exchangeRate+' to '+v+' SSP? All USD prices will be recalculated.')) return;
+  exchangeRate=v; rateUpdatedAt=new Date().toLocaleString();
+  meds.forEach(m=>{ if(m.priceUSD) m.price=usdToSsp(m.priceUSD); if(m.costUSD) m.cost=usdToSsp(m.costUSD); });
+  saveRate(); saveAll(); renderRate(); renderPOS(); renderInv(); renderDash(); alert('Rate updated to '+v+' SSP');
 }
-// ===== AUTH =====
+// ===== PASSWORD SHOW / HIDE =====
+function togglePass(){
+  let inp=document.getElementById('loginPass');
+  let btn=document.getElementById('eyeBtn');
+  if(inp.type==='password'){ inp.type='text'; btn.innerText='🙈'; }
+  else { inp.type='password'; btn.innerText='👁️'; }
+}
+// ===== AUTH + WELCOME =====
 function doLogin(){
   let u=document.getElementById('loginUser').value.trim();
   let p=document.getElementById('loginPass').value;
   let found=users.find(x=>x.username===u&&x.password===p);
   if(!found){document.getElementById('loginErr').innerText='Invalid username or password';return;}
   currentUser=found;
+  document.getElementById('loginErr').innerText='';
+  // Hide login, show welcome
   document.getElementById('loginPage').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
-  document.getElementById('sideUser').innerText=found.fullName;
-  document.getElementById('sideRole').innerText=found.role;
+  let welcome=document.getElementById('welcomePage');
+  welcome.classList.remove('hidden');
   let sh=found.shift==='All'?getShift():found.shift;
+  let firstName=found.fullName.split(' ')[0];
+  let greeting='Welcome';
+  let h=new Date().getHours();
+  if(h>=5&&h<12) greeting='Good Morning';
+  else if(h>=12&&h<17) greeting='Good Afternoon';
+  else if(h>=17&&h<21) greeting='Good Evening';
+  else greeting='Good Night';
+  document.getElementById('welcomeTitle').innerText=greeting+',';
+  document.getElementById('welcomeName').innerText=found.fullName;
+  document.getElementById('welcomeSub').innerText=found.role+' • '+sh+' Shift • '+shiftTime(sh);
+  document.getElementById('welcomeInitial').innerText=firstName.charAt(0).toUpperCase();
+  // After 1.8s enter system
+  setTimeout(()=>{ enterSystem(sh); }, 1800);
+}
+function enterSystem(sh){
+  document.getElementById('welcomePage').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('sideUser').innerText=currentUser.fullName;
+  document.getElementById('sideRole').innerText=currentUser.role;
   document.getElementById('sideShift').innerText=sh+' - '+shiftTime(sh);
   document.getElementById('todayBadge').innerText=new Date().toDateString()+' | '+sh;
   document.getElementById('cartShift').innerText=sh+' - '+shiftTime(sh);
-  if(found.role!=='Manager') document.getElementById('usersNav').style.display='none';
+  if(currentUser.role!=='Manager') document.getElementById('usersNav').style.display='none';
   init();
 }
 function logout(){location.reload();}
@@ -302,7 +371,7 @@ function showPage(p,btn){
   document.getElementById('pageTitle').innerText=titles[p]||p;
   if(p==='dash') renderDash(); if(p==='pos') renderPOS(); if(p==='inv') renderInv(); if(p==='purchase') renderPurchase(); if(p==='returns') renderReturns(); if(p==='expenses') renderExpenses(); if(p==='debts') renderDebts(); if(p==='reports') renderReports(); if(p==='users') renderUsers();
 }
-function init(){renderDash();renderPOS();renderInv();renderPurchase();renderReturns();renderExpenses();renderDebts();renderReports();renderUsers();loadFromCloud();}
+function init(){renderRate();renderDash();renderPOS();renderInv();renderPurchase();renderReturns();renderExpenses();renderDebts();renderReports();renderUsers();loadFromCloud();}
 // ===== DASHBOARD =====
 function renderDash(){
   let today=todayStr();
@@ -325,7 +394,7 @@ function renderDash(){
 function renderPOS(){
   let q=(document.getElementById('posSearch').value||'').toLowerCase();
   let list=meds.filter(m=>m.name.toLowerCase().includes(q));
-  document.getElementById('posList').innerHTML=list.map(m=>`<div class="flex" style="justify-content:space-between;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px"><div><b>${m.name}</b><br><small style="color:var(--muted)">${m.category} | Stock: ${m.qty} | Exp: ${m.expiry}</small></div><div class="flex"><b>${fmt(m.price)}</b><button class="btn-pri btn-sm" onclick="addToCart(${m.id})" ${m.qty<=0?'disabled':''}>Add +</button></div></div>`).join('')||'<p>No medicine found</p>';
+  document.getElementById('posList').innerHTML=list.map(m=>`<div class="flex" style="justify-content:space-between;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px"><div><b>${m.name}</b><br><small style="color:var(--muted)">${m.category} | Stock: ${m.qty} | Exp: ${m.expiry}</small></div><div class="flex"><div style="text-align:right"><b>${fmt(m.price)}</b><br><small style="color:var(--muted)">$${(m.priceUSD||(m.price/exchangeRate).toFixed(2))} USD</small></div><button class="btn-pri btn-sm" onclick="addToCart(${m.id})" ${m.qty<=0?'disabled':''}>Add +</button></div></div>`).join('')||'<p>No medicine found</p>';
   renderCart();
 }
 function addToCart(id){
@@ -348,77 +417,53 @@ function checkout(){
   let total=cart.reduce((a,i)=>a+i.price*i.qty,0);
   let sh=currentUser.shift==='All'?getShift():currentUser.shift;
   let sale={id:Date.now(),date:todayStr(),time:new Date().toLocaleTimeString(),shift:sh,user:currentUser.fullName,customer:cust,pay:pay,items:[...cart],total:total};
-  // Deduct stock
   cart.forEach(ci=>{let m=meds.find(x=>x.id===ci.id); if(m) m.qty-=ci.qty;});
   sales.push(sale);
   if(pay==='Debt'){ debts.push({id:Date.now(),name:cust,amount:total,phone:'',date:todayStr(),status:'Unpaid'}); }
   saveAll();
   document.getElementById('receipt').classList.remove('hidden');
-  document.getElementById('receipt').innerHTML=`<div style="text-align:center"><h3>Active Care Pharmacy</h3><p style="font-size:12px">Juba, South Sudan | Receipt #${sale.id}</p><p style="font-size:12px">${sale.date} ${sale.time} | ${sh} - ${shiftTime(sh)}<br>Staff: ${sale.user} | Customer: ${cust} | Pay: ${pay}</p></div><hr>${sale.items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>${i.name} x ${i.qty}</span><b>${fmt(i.price*i.qty)}</b></div>`).join('')}<hr><div style="display:flex;justify-content:space-between"><b>Total</b><b>${fmt(total)}</b></div><p style="text-align:center;font-size:12px;margin-top:8px">Thank you for choosing Active Care 💊</p><button class="btn-pri" style="width:100%;margin-top:8px" onclick="window.print()">Print Receipt</button>`;
+  document.getElementById('receipt').innerHTML=`<div style="text-align:center"><h3>Active Care Pharmacy</h3><p style="font-size:12px">Juba, South Sudan | Receipt #${sale.id}</p><p style="font-size:12px">${sale.date} ${sale.time} | ${sh} - ${shiftTime(sh)}<br>Staff: ${sale.user} | Customer: ${cust} | Pay: ${pay}</p></div><hr>${sale.items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>${i.name} x ${i.qty}</span><b>${fmt(i.price*i.qty)}</b></div>`).join('')}<hr><div style="display:flex;justify-content:space-between"><b>Total</b><b>${fmt(total)}</b></div><p style="text-align:center;font-size:12px;margin-top:8px">Thank you</p><button class="btn-pri" style="width:100%;margin-top:8px" onclick="window.print()">Print Receipt</button>`;
   cart=[]; document.getElementById('custName').value=''; renderPOS(); renderDash();
 }// ===== INVENTORY =====
 function renderInv(){
   let q=(document.getElementById('invSearch').value||'').toLowerCase();
   let list=meds.filter(m=>m.name.toLowerCase().includes(q));
-  document.getElementById('invTable').innerHTML=`<table><tr><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Expiry</th><th>Status</th><th>Action</th></tr>${list.map(m=>{let st=m.qty<=0?'<span class="tag tag-red">Out</span>':m.qty<=m.min?'<span class="tag tag-orange">Low</span>':'<span class="tag tag-green">OK</span>';return `<tr><td><b>${m.name}</b><br><small>${m.barcode||''}</small></td><td>${m.category}</td><td>${fmt(m.price)}</td><td>${m.qty}</td><td>${m.expiry}</td><td>${st}</td><td><button class="btn-blue btn-sm" onclick="editMed(${m.id})">Edit</button> <button class="btn-red btn-sm" onclick="delMed(${m.id})">Delete</button></td></tr>`}).join('')}</table>`;
+  document.getElementById('invTable').innerHTML=`<table><tr><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Expiry</th><th>Status</th><th>Action</th></tr>${list.map(m=>{let st=m.qty<=0?'<span class="tag tag-red">Out</span>':m.qty<=m.min?'<span class="tag tag-orange">Low</span>':'<span class="tag tag-green">OK</span>';return `<tr><td><b>${m.name}</b><br><small>${m.barcode||''}</small></td><td>${m.category}</td><td>${fmt(m.price)}<br><small>$${(m.priceUSD||(m.price/exchangeRate).toFixed(2))}</small></td><td>${m.qty}</td><td>${m.expiry}</td><td>${st}</td><td><button class="btn-blue btn-sm" onclick="editMed(${m.id})">Edit</button> <button class="btn-red btn-sm" onclick="delMed(${m.id})">Delete</button></td></tr>`}).join('')}</table>`;
 }
-function openMedModal(){editMedId=null;document.getElementById('medModalTitle').innerText='Add Medicine';['mName','mCategory','mBarcode','mPrice','mCost','mQty','mMin','mExpiry','mSupplier'].forEach(id=>document.getElementById(id).value='');document.getElementById('mQty').value=0;document.getElementById('mMin').value=5;document.getElementById('medModal').classList.remove('hidden');}
+function openMedModal(){editMedId=null;document.getElementById('medModalTitle').innerText='Add Medicine';['mName','mCategory','mBarcode','mPrice','mCost','mQty','mMin','mExpiry','mSupplier'].forEach(id=>document.getElementById(id).value='');document.getElementById('mQty').value=0;document.getElementById('mMin').value=5;document.getElementById('mPriceSSP').innerText='-';document.getElementById('mCostSSP').innerText='-';document.getElementById('mRateHint').innerText='1 USD = '+exchangeRate+' SSP';document.getElementById('mPrice').oninput=()=>{document.getElementById('mPriceSSP').innerText=fmt(usdToSsp(document.getElementById('mPrice').value))+' ('+document.getElementById('mPrice').value+' USD)';};document.getElementById('mCost').oninput=()=>{document.getElementById('mCostSSP').innerText=fmt(usdToSsp(document.getElementById('mCost').value))+' ('+document.getElementById('mCost').value+' USD)';};document.getElementById('medModal').classList.remove('hidden');}
 function closeMedModal(){document.getElementById('medModal').classList.add('hidden');}
-function editMed(id){let m=meds.find(x=>x.id===id); if(!m) return; editMedId=id; document.getElementById('medModalTitle').innerText='Edit Medicine'; document.getElementById('mName').value=m.name; document.getElementById('mCategory').value=m.category; document.getElementById('mBarcode').value=m.barcode||''; document.getElementById('mPrice').value=m.price; document.getElementById('mCost').value=m.cost; document.getElementById('mQty').value=m.qty; document.getElementById('mMin').value=m.min; document.getElementById('mExpiry').value=m.expiry; document.getElementById('mSupplier').value=m.supplier||''; document.getElementById('medModal').classList.remove('hidden');}
+function editMed(id){let m=meds.find(x=>x.id===id); if(!m) return; editMedId=id; document.getElementById('medModalTitle').innerText='Edit Medicine'; document.getElementById('mName').value=m.name; document.getElementById('mCategory').value=m.category; document.getElementById('mBarcode').value=m.barcode||''; document.getElementById('mPrice').value=m.priceUSD||(m.price/exchangeRate).toFixed(2); document.getElementById('mCost').value=m.costUSD||(m.cost/exchangeRate).toFixed(2); document.getElementById('mQty').value=m.qty; document.getElementById('mMin').value=m.min; document.getElementById('mExpiry').value=m.expiry; document.getElementById('mSupplier').value=m.supplier||''; document.getElementById('mPriceSSP').innerText=fmt(m.price); document.getElementById('mCostSSP').innerText=fmt(m.cost); document.getElementById('mRateHint').innerText='1 USD = '+exchangeRate+' SSP'; document.getElementById('mPrice').oninput=()=>{document.getElementById('mPriceSSP').innerText=fmt(usdToSsp(document.getElementById('mPrice').value))}; document.getElementById('mCost').oninput=()=>{document.getElementById('mCostSSP').innerText=fmt(usdToSsp(document.getElementById('mCost').value))}; document.getElementById('medModal').classList.remove('hidden');}
 function saveMed(){
-  let name=document.getElementById('mName').value.trim(); let price=Number(document.getElementById('mPrice').value);
-  if(!name||!price){alert('Name and Price required');return;}
-  let data={name:name,category:document.getElementById('mCategory').value,barcode:document.getElementById('mBarcode').value,price:price,cost:Number(document.getElementById('mCost').value||0),qty:Number(document.getElementById('mQty').value||0),min:Number(document.getElementById('mMin').value||5),expiry:document.getElementById('mExpiry').value||'2027-01-01',supplier:document.getElementById('mSupplier').value};
+  let name=document.getElementById('mName').value.trim(); let priceUSD=Number(document.getElementById('mPrice').value);
+  if(!name||!priceUSD){alert('Name and Price (USD) required');return;}
+  let costUSD=Number(document.getElementById('mCost').value||0);
+  let data={name:name,category:document.getElementById('mCategory').value,barcode:document.getElementById('mBarcode').value,priceUSD:priceUSD,costUSD:costUSD,price:usdToSsp(priceUSD),cost:usdToSsp(costUSD),qty:Number(document.getElementById('mQty').value||0),min:Number(document.getElementById('mMin').value||5),expiry:document.getElementById('mExpiry').value||'2027-01-01',supplier:document.getElementById('mSupplier').value};
   if(editMedId){let m=meds.find(x=>x.id===editMedId); Object.assign(m,data);} else {data.id=Date.now(); meds.push(data);}
   saveAll(); closeMedModal(); renderInv(); renderPOS(); renderDash();
 }
 function delMed(id){if(confirm('Delete this medicine?')){meds=meds.filter(x=>x.id!==id);saveAll();renderInv();}}
-function exportInv(){let csv='Name,Category,Price,Qty,Expiry\n'+meds.map(m=>`${m.name},${m.category},${m.price},${m.qty},${m.expiry}`).join('\n'); let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='inventory.csv'; a.click();}
-function exportBackup(){let data={meds,sales,returns,expenses,debts,users}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'})); a.download='active-care-backup.json'; a.click();}
+function exportInv(){let csv='Name,Category,Price USD,Price SSP,Qty,Expiry\n'+meds.map(m=>`${m.name},${m.category},${m.priceUSD||''},${m.price},${m.qty},${m.expiry}`).join('\n'); let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='inventory.csv'; a.click();}
+function exportBackup(){let data={meds,sales,returns,expenses,debts,users,exchangeRate}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'})); a.download='active-care-backup.json'; a.click();}
 // ===== PURCHASE =====
-function renderPurchase(){
-  document.getElementById('purMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join('');
-  document.getElementById('purHistory').innerHTML=`<h3 style="margin-top:16px">Purchase History (from Sales Cost)</h3><p style="color:var(--muted);font-size:13px">Use Purchase to add stock. All purchases are saved in inventory.</p>`;
-}
+function renderPurchase(){document.getElementById('purMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join(''); document.getElementById('purHistory').innerHTML=`<h3 style="margin-top:16px">Purchase Info</h3><p style="color:var(--muted);font-size:13px">Use Purchase to add stock. Prices in USD, auto-converted to SSP.</p>`;}
 function doPurchase(){
   let id=Number(document.getElementById('purMed').value); let m=meds.find(x=>x.id===id); if(!m) return;
-  let qty=Number(document.getElementById('purQty').value||0); let cost=Number(document.getElementById('purCost').value||m.cost); let price=Number(document.getElementById('purPrice').value||m.price);
+  let qty=Number(document.getElementById('purQty').value||0);
+  let costUSD=Number(document.getElementById('purCost').value||m.costUSD||0);
+  let priceUSD=Number(document.getElementById('purPrice').value||m.priceUSD||0);
   if(qty<=0){alert('Enter qty');return;}
-  m.qty+=qty; if(cost) m.cost=cost; if(price) m.price=price; if(document.getElementById('purExpiry').value) m.expiry=document.getElementById('purExpiry').value; if(document.getElementById('purSupplier').value) m.supplier=document.getElementById('purSupplier').value;
+  m.qty+=qty; if(costUSD){m.costUSD=costUSD; m.cost=usdToSsp(costUSD);} if(priceUSD){m.priceUSD=priceUSD; m.price=usdToSsp(priceUSD);} if(document.getElementById('purExpiry').value) m.expiry=document.getElementById('purExpiry').value; if(document.getElementById('purSupplier').value) m.supplier=document.getElementById('purSupplier').value;
   saveAll(); alert('Stock added: '+m.name+' +'+qty); renderPurchase(); renderInv(); renderDash();
 }
 // ===== RETURNS =====
-function renderReturns(){
-  document.getElementById('retMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join('');
-  document.getElementById('retList').innerHTML=`<table><tr><th>Date</th><th>Medicine</th><th>Qty</th><th>Reason</th><th>Loss</th></tr>${returns.slice(-20).reverse().map(r=>`<tr><td>${r.date}</td><td>${r.name}</td><td>${r.qty}</td><td>${r.reason}</td><td>${fmt(r.loss)}</td></tr>`).join('')}</table>`;
-}
-function doReturn(){
-  let id=Number(document.getElementById('retMed').value); let m=meds.find(x=>x.id===id); if(!m) return;
-  let qty=Number(document.getElementById('retQty').value||1); let reason=document.getElementById('retReason').value;
-  if(qty>m.qty){alert('Qty more than stock');return;}
-  m.qty-=qty; returns.push({id:Date.now(),date:todayStr(),name:m.name,qty:qty,reason:reason,loss:qty*m.cost});
-  saveAll(); renderReturns(); renderInv(); renderDash();
-}
+function renderReturns(){document.getElementById('retMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join(''); document.getElementById('retList').innerHTML=`<table><tr><th>Date</th><th>Medicine</th><th>Qty</th><th>Reason</th><th>Loss</th></tr>${returns.slice(-20).reverse().map(r=>`<tr><td>${r.date}</td><td>${r.name}</td><td>${r.qty}</td><td>${r.reason}</td><td>${fmt(r.loss)}</td></tr>`).join('')}</table>`;}
+function doReturn(){let id=Number(document.getElementById('retMed').value); let m=meds.find(x=>x.id===id); if(!m) return; let qty=Number(document.getElementById('retQty').value||1); let reason=document.getElementById('retReason').value; if(qty>m.qty){alert('Qty more than stock');return;} m.qty-=qty; returns.push({id:Date.now(),date:todayStr(),name:m.name,qty:qty,reason:reason,loss:qty*m.cost}); saveAll(); renderReturns(); renderInv(); renderDash();}
 // ===== EXPENSES =====
-function renderExpenses(){
-  let total=expenses.reduce((a,e)=>a+e.amount,0);
-  document.getElementById('expList').innerHTML=`<p style="margin-top:12px"><b>Total Expenses: ${fmt(total)}</b></p><table><tr><th>Date</th><th>Type</th><th>Note</th><th>Amount</th></tr>${expenses.slice(-20).reverse().map(e=>`<tr><td>${e.date}</td><td>${e.type}</td><td>${e.note}</td><td>${fmt(e.amount)}</td></tr>`).join('')}</table>`;
-}
-function doExpense(){
-  let amt=Number(document.getElementById('expAmt').value||0); if(amt<=0){alert('Enter amount');return;}
-  expenses.push({id:Date.now(),date:todayStr(),type:document.getElementById('expType').value,amount:amt,note:document.getElementById('expNote').value});
-  document.getElementById('expAmt').value=''; document.getElementById('expNote').value=''; saveAll(); renderExpenses();
-}
+function renderExpenses(){let total=expenses.reduce((a,e)=>a+e.amount,0); document.getElementById('expList').innerHTML=`<p style="margin-top:12px"><b>Total Expenses: ${fmt(total)}</b></p><table><tr><th>Date</th><th>Type</th><th>Note</th><th>Amount</th></tr>${expenses.slice(-20).reverse().map(e=>`<tr><td>${e.date}</td><td>${e.type}</td><td>${e.note}</td><td>${fmt(e.amount)}</td></tr>`).join('')}</table>`;}
+function doExpense(){let amt=Number(document.getElementById('expAmt').value||0); if(amt<=0){alert('Enter amount');return;} expenses.push({id:Date.now(),date:todayStr(),type:document.getElementById('expType').value,amount:amt,note:document.getElementById('expNote').value}); document.getElementById('expAmt').value=''; document.getElementById('expNote').value=''; saveAll(); renderExpenses();}
 // ===== DEBTS =====
-function renderDebts(){
-  document.getElementById('debtList').innerHTML=`<table><tr><th>Customer</th><th>Amount</th><th>Phone</th><th>Date</th><th>Status</th><th>Action</th></tr>${debts.map((d,idx)=>`<tr><td>${d.name}</td><td>${fmt(d.amount)}</td><td>${d.phone}</td><td>${d.date}</td><td><span class="tag ${d.status==='Paid'?'tag-green':'tag-red'}">${d.status}</span></td><td>${d.status!=='Paid'?`<button class="btn-green btn-sm" onclick="payDebt(${idx})">Mark Paid</button>`:''} <button class="btn-red btn-sm" onclick="debts.splice(${idx},1);saveAll();renderDebts()">Delete</button></td></tr>`).join('')}</table>`;
-}
-function doDebt(){
-  let name=document.getElementById('debtName').value.trim(); let amt=Number(document.getElementById('debtAmt').value||0);
-  if(!name||amt<=0){alert('Enter name and amount');return;}
-  debts.push({id:Date.now(),name:name,amount:amt,phone:document.getElementById('debtPhone').value,date:todayStr(),status:'Unpaid'});
-  document.getElementById('debtName').value=''; document.getElementById('debtAmt').value=''; saveAll(); renderDebts();
-}
+function renderDebts(){document.getElementById('debtList').innerHTML=`<table><tr><th>Customer</th><th>Amount</th><th>Phone</th><th>Date</th><th>Status</th><th>Action</th></tr>${debts.map((d,idx)=>`<tr><td>${d.name}</td><td>${fmt(d.amount)}</td><td>${d.phone}</td><td>${d.date}</td><td><span class="tag ${d.status==='Paid'?'tag-green':'tag-red'}">${d.status}</span></td><td>${d.status!=='Paid'?`<button class="btn-green btn-sm" onclick="payDebt(${idx})">Mark Paid</button>`:''} <button class="btn-red btn-sm" onclick="debts.splice(${idx},1);saveAll();renderDebts()">Delete</button></td></tr>`).join('')}</table>`;}
+function doDebt(){let name=document.getElementById('debtName').value.trim(); let amt=Number(document.getElementById('debtAmt').value||0); if(!name||amt<=0){alert('Enter name and amount');return;} debts.push({id:Date.now(),name:name,amount:amt,phone:document.getElementById('debtPhone').value,date:todayStr(),status:'Unpaid'}); document.getElementById('debtName').value=''; document.getElementById('debtAmt').value=''; saveAll(); renderDebts();}
 function payDebt(idx){debts[idx].status='Paid'; saveAll(); renderDebts();}
 // ===== REPORTS =====
 function renderReports(){
@@ -439,9 +484,7 @@ function renderReports(){
 }
 function printReport(){window.print();}
 // ===== USERS =====
-function renderUsers(){
-  document.getElementById('userList').innerHTML=`<table><tr><th>Full Name</th><th>Username</th><th>Role</th><th>Shift</th><th>Phone</th><th>Action</th></tr>${users.map((u,idx)=>`<tr><td>${u.fullName}</td><td>${u.username}</td><td>${u.role}</td><td>${u.shift} - ${shiftTime(u.shift)}</td><td>${u.phone}</td><td><button class="btn-red btn-sm" onclick="users.splice(${idx},1);saveUsers();renderUsers()">Delete</button></td></tr>`).join('')}</table>`;
-}
+function renderUsers(){document.getElementById('userList').innerHTML=`<table><tr><th>Full Name</th><th>Username</th><th>Role</th><th>Shift</th><th>Phone</th><th>Action</th></tr>${users.map((u,idx)=>`<tr><td>${u.fullName}</td><td>${u.username}</td><td>${u.role}</td><td>${u.shift} - ${shiftTime(u.shift)}</td><td>${u.phone}</td><td><button class="btn-red btn-sm" onclick="users.splice(${idx},1);saveUsers();renderUsers()">Delete</button></td></tr>`).join('')}</table>`;}
 function addUser(){
   if(currentUser.role!=='Manager'){alert('Only Manager can add users');return;}
   let name=document.getElementById('uName').value.trim(); let un=document.getElementById('uUser').value.trim(); let pw=document.getElementById('uPass').value;
@@ -456,7 +499,6 @@ function addUser(){
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-// ===== PASTE YOUR FIREBASE CONFIG HERE =====
 const firebaseConfig = {
   apiKey: "PASTE_YOUR_API_KEY",
   authDomain: "PASTE_YOUR_AUTH_DOMAIN",
@@ -469,16 +511,16 @@ try{
   const app = initializeApp(firebaseConfig);
   window._db = getFirestore(app);
   window._fs = { collection, setDoc, doc, getDoc };
-  document.getElementById('syncStatus').innerText='Firebase Connected';
-}catch(e){ console.log('Offline Mode - Firebase not configured', e); }
+  let el=document.getElementById('syncStatus'); if(el) el.innerText='Firebase Connected';
+}catch(e){ console.log('Offline Mode', e); }
 </script>
 <script>
 async function syncToCloud(){
   if(!window._db) return;
   try{
     const {collection,setDoc,doc} = window._fs;
-    await setDoc(doc(collection(window._db,'activecare'),'data'),{meds,sales,returns,expenses,debts,users,updatedAt:new Date().toISOString()});
-    let el=document.getElementById('syncStatus'); if(el) el.innerText='Synced ☁️';
+    await setDoc(doc(collection(window._db,'activecare'),'data'),{meds,sales,returns,expenses,debts,users,exchangeRate,rateUpdatedAt,updatedAt:new Date().toISOString()});
+    let el=document.getElementById('syncStatus'); if(el) el.innerText='Synced';
   }catch(e){ console.log('Sync failed',e); }
 }
 async function loadFromCloud(){
@@ -489,19 +531,16 @@ async function loadFromCloud(){
     if(snap.exists()){
       let d=snap.data();
       if(d.meds) meds=d.meds; if(d.sales) sales=d.sales; if(d.returns) returns=d.returns; if(d.expenses) expenses=d.expenses; if(d.debts) debts=d.debts; if(d.users) users=d.users;
-      saveAll(); saveUsers(); renderDash(); renderPOS(); renderInv();
+      if(d.exchangeRate){ exchangeRate=d.exchangeRate; rateUpdatedAt=d.rateUpdatedAt||''; localStorage.setItem('ac_rate', String(exchangeRate)); }
+      saveAll(); saveUsers(); renderRate(); renderDash(); renderPOS(); renderInv();
     }
   }catch(e){ console.log('Load cloud failed',e); }
 }
-</script>
-  <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('SW Registered - Active Care'))
-      .catch((e) => console.log('SW Failed', e));
+    navigator.serviceWorker.register('./sw.js').catch(e=>console.log('SW Failed',e));
   });
 }
-  </script>
+</script>
 </body>
 </html>
