@@ -1,16 +1,24 @@
 {
   "name": "Active Care Pharmacy",
   "short_name": "Active Care",
-  "description": "Active Care Pharmacy - Offline POS System - Juba",
+  "description": "Active Care Pharmacy Management System - Juba, South Sudan",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#5658B5",
-  "theme_color": "#5658B5",
+  "background_color": "#0f766e",
+  "theme_color": "#0f766e",
   "orientation": "portrait",
-  "lang": "en",
   "icons": [
-    { "src": "logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/883/883396.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/883/883396.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }
