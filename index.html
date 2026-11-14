@@ -106,10 +106,23 @@ th{text-align:left;padding:11px;background:#f8fafc;border-bottom:1px solid var(-
 <!-- DASHBOARD -->
 <div id="page-dash">
 <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none"><div><h3 style="color:#ccfbf1">USD Exchange Rate • Manager Only</h3><p style="font-size:14px;margin:6px 0">1 USD = <b id="rateDisplay" style="font-size:22px">0 SSP</b> <span id="rateUpdated" style="font-size:11px;opacity:.9"></span></p><p style="font-size:12px;opacity:.85">Prices in USD • Sales in SSP • Auto-converted</p></div><div class="flex" id="rateEditBox" style="display:none"><input id="newRate" type="number" placeholder="New Rate e.g. 4500" style="width:170px"><button class="btn-dark" onclick="updateRate()">Update Rate</button></div><span id="rateLockMsg" style="font-size:12px">🔒 Manager Only</span></div>
-<div class="grid g4" style="margin-top:14px"><div class="card stat"><span class="icon">💰</span><h3>Today Sales</h3><b id="stToday">0 SSP</b><span id="stTodayCount"></span></div><div class="card stat"><span class="icon">📦</span><h3>Stock Value</h3><b id="stStock">0 SSP</b><span id="stStockCount"></span></div><div class="card stat"><span class="icon">⚠️</span><h3>Low Stock</h3><b id="stLow" style="color:var(--red)">0</b><span>Below minimum</span></div><div class="card stat"><span class="icon">⏰</span><h3>Expiring 90d</h3><b id="stExp" style="color:var(--orange)">0</b><span>Check expiry</span></div></div>
-<div class="grid g4" style="margin-top:14px"><div class="card stat"><h3>Cash Sales Today</h3><b id="stCash">0 SSP</b></div><div class="card stat"><h3>Bank / Mobile</h3><b id="stBank">0 SSP</b></div><div class="card stat"><h3>Debts Today</h3><b id="stDebt">0 SSP</b></div><div class="card stat"><h3>Net Profit (Month)</h3><b id="stProfit">0 SSP</b></div></div>
-<div class="grid g2" style="margin-top:14px"><div class="card"><h3>⚠️ Low Stock Alert</h3><div id="lowList"></div></div><div class="card"><h3>⏰ Expiring Soon</h3><div id="expList"></div></div></div>
-<div class="card" style="margin-top:14px"><h3>🧾 Recent Sales</h3><div id="recentSales"></div></div>
+<div class="grid g4" style="margin-top:14px">
+  <div class="card stat" onclick="goToTab('sales')" style="cursor:pointer"><span class="icon">💰</span><h3>Today Sales</h3><b id="stToday">0 SSP</b><span id="stTodayCount"></span></div>
+  <div class="card stat" onclick="goToTab('inv')" style="cursor:pointer"><span class="icon">📦</span><h3>Stock Value</h3><b id="stStock">0 SSP</b><span id="stStockCount"></span></div>
+  <div class="card stat" onclick="goToTab('inv','low')" style="cursor:pointer"><span class="icon">⚠️</span><h3>Low Stock</h3><b id="stLow" style="color:var(--red)">0</b><span>Below minimum</span></div>
+  <div class="card stat" onclick="goToTab('inv','expiring')" style="cursor:pointer"><span class="icon">⏰</span><h3>Expiring 90d</h3><b id="stExp" style="color:var(--orange)">0</b><span>Check expiry</span></div>
+</div>
+<div class="grid g4" style="margin-top:14px">
+  <div class="card stat" onclick="goToTab('reports')" style="cursor:pointer"><h3>Cash Sales Today</h3><b id="stCash">0 SSP</b></div>
+  <div class="card stat" onclick="goToTab('reports')" style="cursor:pointer"><h3>Bank / Mobile</h3><b id="stBank">0 SSP</b></div>
+  <div class="card stat" onclick="goToTab('debts')" style="cursor:pointer"><h3>Debts Today</h3><b id="stDebt">0 SSP</b></div>
+  <div class="card stat" onclick="goToTab('reports')" style="cursor:pointer"><h3>Net Profit (Month)</h3><b id="stProfit">0 SSP</b></div>
+</div>
+<div class="grid g2" style="margin-top:14px">
+  <div class="card" onclick="goToTab('inv','low')" style="cursor:pointer"><h3>⚠️ Low Stock Alert</h3><div id="lowList"></div></div>
+  <div class="card" onclick="goToTab('inv','expiring')" style="cursor:pointer"><h3>⏰ Expiring Soon</h3><div id="expList"></div></div>
+</div>
+  <div class="card" style="margin-top:14px"><h3>🧾 Recent Sales</h3><div id="recentSales"></div></div>
 </div>
 <!-- POS -->
 <div id="page-pos" class="hidden"><div class="grid g2"><div class="card"><div class="row"><input id="posSearch" placeholder="🔍 Search by name or scan barcode..." oninput="renderPOS()" style="flex:1"><input id="posBarcode" placeholder="Barcode" onkeydown="if(event.key==='Enter') scanBarcode()" style="width:130px"></div><div id="posList" style="max-height:560px;overflow:auto;margin-top:12px"></div></div><div class="card"><h3>Cart - <span id="cartShift"></span></h3><div id="cartList" style="margin:12px 0"></div><div class="flex" style="justify-content:space-between"><b>Total</b><b id="cartTotal">0 SSP</b></div><div class="flex" style="justify-content:space-between;font-size:13px;color:var(--muted)"><span>Loyalty Points Earned</span><b id="loyaltyEarned" style="color:var(--purple)">0 pts</b></div><div class="row" style="margin-top:12px"><select id="payMethod"><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Debt</option></select><input id="custName" placeholder="Customer Name (optional)" list="custList"><datalist id="custList"></datalist></div><div class="row" style="margin-top:10px"><button class="btn-green" style="flex:1" onclick="checkout()">✅ Complete Sale & Print</button><button class="btn-ghost" onclick="clearCart()">Clear</button></div><div id="receipt" class="hidden" style="margin-top:14px;border:1px dashed #94a3b8;padding:14px"></div></div></div></div>
