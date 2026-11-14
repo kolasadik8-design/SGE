@@ -8,548 +8,238 @@
 <link rel="icon" href="logo.png">
 <meta name="theme-color" content="#0f766e">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
-:root{--bg:#f1f5f9;--card:#fff;--pri:#0f766e;--pri2:#14b8a6;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--red:#dc2626;--green:#16a34a;--orange:#ea580c;--blue:#2563eb}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Inter,Arial,sans-serif}
+:root{--bg:#f1f5f9;--card:#fff;--pri:#0f766e;--pri2:#14b8a6;--dark:#0f172a;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--red:#dc2626;--green:#16a34a;--orange:#ea580c;--blue:#2563eb;--purple:#7c3aed}
 body{background:var(--bg);color:var(--text)}
 .hidden{display:none!important}
-button{cursor:pointer;border:none;border-radius:8px;padding:10px 14px;font-weight:600}
-input,select{padding:10px;border:1px solid var(--line);border-radius:8px;width:100%;outline:none;font-size:14px}
-input:focus{border-color:var(--pri)}
-.card{background:var(--card);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+button{cursor:pointer;border:none;border-radius:10px;padding:10px 14px;font-weight:600;transition:.2s}
+button:hover{opacity:.9}
+input,select,textarea{padding:11px;border:1px solid var(--line);border-radius:10px;width:100%;outline:none;font-size:14px;background:#fff}
+input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(20,184,166,.15)}
+.card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid #f1f5f9}
 /* LOGIN */
-#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#0f766e,#14b8a6)}
-.login-box{background:#fff;width:100%;max-width:360px;border-radius:18px;padding:30px 26px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.15)}
-.logo-wrap{margin-bottom:20px}
-.login-logo{width:110px;height:110px;object-fit:contain;margin:0 auto 10px;display:block}
-.logo-wrap h1{font-size:24px;color:var(--pri);margin:0;font-weight:800;letter-spacing:.3px}
-.logo-wrap p{font-size:12px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:2px}
+#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#0f172a,#0f766e,#14b8a6)}
+.login-box{background:#fff;width:100%;max-width:380px;border-radius:20px;padding:32px 28px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.2)}
+.login-logo{width:110px;height:110px;object-fit:contain;margin:0 auto 8px;display:block}
+.logo-wrap h1{font-size:26px;color:var(--pri);font-weight:800}
+.logo-wrap p{font-size:12px;color:var(--muted);letter-spacing:4px;text-transform:uppercase}
 .login-box input{margin-bottom:12px}
-.pass-wrap{position:relative;margin-bottom:12px}
-.pass-wrap input{margin:0;padding-right:42px}
-.eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;font-size:18px;padding:6px;color:#64748b}
+.pass-wrap{position:relative;margin-bottom:12px}.pass-wrap input{margin:0;padding-right:44px}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:transparent;font-size:18px;padding:6px}
+.login-hint{font-size:11px;color:#94a3b8;margin-top:12px}
 /* WELCOME */
 #welcomePage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0f172a,#0f766e);text-align:center;color:#fff}
-.welcome-box{animation:fadeUp .6s ease}
-.welcome-box h1{font-size:32px;margin-bottom:8px}
-.welcome-box h2{font-size:20px;font-weight:400;color:#a7f3d0;margin-bottom:6px}
-.welcome-box p{color:#cbd5e1;font-size:14px;margin-bottom:22px}
-.welcome-circle{width:90px;height:90px;border-radius:50%;background:#14b8a6;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;margin:0 auto 18px;box-shadow:0 0 0 8px rgba(20,184,166,.2)}
-.loader{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;margin:18px auto;animation:spin 1s linear infinite}
+.welcome-logo{width:110px;height:110px;object-fit:contain;background:#fff;border-radius:50%;padding:12px;margin:0 auto 16px;display:block}
+.welcome-box h1{font-size:34px}.welcome-box h2{font-size:21px;color:#a7f3d0;font-weight:400;margin:6px 0}.welcome-box p{color:#cbd5e1;font-size:14px}
+.loader{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;margin:20px auto;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 /* LAYOUT */
 #app{display:flex;min-height:100vh}
-.sidebar{width:230px;background:#0f172a;color:#fff;padding:18px 14px;position:fixed;top:0;bottom:0;left:0;overflow-y:auto}
-.sidebar h2{font-size:20px}
-.nav{margin-top:20px;display:flex;flex-direction:column;gap:6px}
-.nav button{background:transparent;color:#cbd5e1;text-align:left;padding:11px 12px;font-size:14px}
-.nav button.active,.nav button:hover{background:#1e293b;color:#fff}
-.main{margin-left:230px;flex:1;padding:20px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-.topbar h2{font-size:22px}
-.badge{background:#fef3c7;color:#92400e;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700}
-.grid{display:grid;gap:14px}
-.g4{grid-template-columns:repeat(4,1fr)}
-.g2{grid-template-columns:1fr 1fr}
-.g3{grid-template-columns:1fr 1fr 1fr}
-.stat h3{font-size:13px;color:var(--muted);font-weight:600}
-.stat b{font-size:24px;display:block;margin:6px 0}
-.stat span{font-size:12px;color:var(--green)}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
-th{text-align:left;padding:10px;background:#f8fafc;border-bottom:1px solid var(--line)}
-td{padding:10px;border-bottom:1px solid var(--line)}
-.flex{display:flex;gap:10px;align-items:center}
-.flex-col{display:flex;flex-direction:column;gap:10px}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-.btn-pri{background:var(--pri);color:#fff}
-.btn-green{background:var(--green);color:#fff}
-.btn-red{background:var(--red);color:#fff}
-.btn-blue{background:var(--blue);color:#fff}
-.btn-orange{background:var(--orange);color:#fff}
-.btn-ghost{background:#e2e8f0;color:#0f172a}
-.btn-sm{padding:6px 10px;font-size:12px}
-.tag{padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700}
-.tag-green{background:#dcfce7;color:#166534}
-.tag-red{background:#fee2e2;color:#991b1b}
-.tag-orange{background:#ffedd5;color:#9a3412}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}
-.modal-box{background:#fff;width:100%;max-width:520px;border-radius:14px;padding:20px;max-height:90vh;overflow:auto}
-@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.g4,.g3,.g2{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.g4,.g3,.g2{grid-template-columns:1fr}}
+.sidebar{width:260px;background:var(--dark);color:#fff;padding:18px 14px;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;z-index:50;transition:.3s}
+.sidebar.open{left:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid #1e293b}
+.sidebar-logo img{width:46px;height:46px;object-fit:contain;background:#fff;border-radius:10px;padding:4px}
+.sidebar-logo h2{font-size:19px;line-height:1.1}.sidebar-logo small{font-size:11px;color:#94a3b8;letter-spacing:2px}
+.user-card{margin-top:14px;background:#1e293b;padding:12px;border-radius:12px;font-size:13px;line-height:1.5}
+.nav{margin-top:16px;display:flex;flex-direction:column;gap:4px}
+.nav button{background:transparent;color:#cbd5e1;text-align:left;padding:11px 12px;font-size:14px;display:flex;gap:10px;align-items:center}
+.nav button.active,.nav button:hover{background:var(--pri);color:#fff}
+.nav small{font-size:11px;color:#64748b;padding:10px 12px 4px;letter-spacing:1px}
+.main{margin-left:260px;flex:1;padding:0;min-width:0}
+.topbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.menu-btn{display:none;background:var(--dark);color:#fff;padding:9px 12px;font-size:18px}
+.topbar-logo{display:flex;align-items:center;gap:10px}.topbar-logo img{width:38px;height:38px;object-fit:contain}
+.content{padding:20px}
+.badge{background:#fef3c7;color:#92400e;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
+.grid{display:grid;gap:14px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
+.stat{position:relative;overflow:hidden}.stat h3{font-size:13px;color:var(--muted)}.stat b{font-size:26px;display:block;margin:8px 0 4px}.stat span{font-size:12px;color:var(--green)}.stat .icon{position:absolute;right:14px;top:14px;font-size:28px;opacity:.15}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}.wrap{overflow-x:auto}
+th{text-align:left;padding:11px;background:#f8fafc;border-bottom:1px solid var(--line);white-space:nowrap}td{padding:11px;border-bottom:1px solid var(--line)}
+.flex{display:flex;gap:10px;align-items:center}.flex-col{display:flex;flex-direction:column;gap:10px}.row{display:flex;gap:10px;flex-wrap:wrap}
+.btn-pri{background:var(--pri);color:#fff}.btn-green{background:var(--green);color:#fff}.btn-red{background:var(--red);color:#fff}.btn-blue{background:var(--blue);color:#fff}.btn-orange{background:var(--orange);color:#fff}.btn-ghost{background:#e2e8f0;color:#0f172a}.btn-dark{background:var(--dark);color:#fff}.btn-sm{padding:7px 10px;font-size:12px}
+.tag{padding:4px 9px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap}.tag-green{background:#dcfce7;color:#166534}.tag-red{background:#fee2e2;color:#991b1b}.tag-orange{background:#ffedd5;color:#9a3412}.tag-blue{background:#dbeafe;color:#1e40af}.tag-purple{background:#ede9fe;color:#5b21b6}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}.modal-box{background:#fff;width:100%;max-width:560px;border-radius:16px;padding:20px;max-height:92vh;overflow:auto}
+.kpi-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.kpi-bar .card{flex:1;min-width:140px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:45;display:none}.overlay.show{display:block}
+@media(max-width:900px){.sidebar{left:-280px}.sidebar.open{left:0}.main{margin-left:0}.menu-btn{display:block}.g4{grid-template-columns:1fr 1fr}.g3,.g2{grid-template-columns:1fr}.content{padding:14px}.topbar{padding:10px 12px}}
+@media(max-width:520px){.g4{grid-template-columns:1fr 1fr}.stat b{font-size:20px}}
 @media print{body *{visibility:hidden}#receipt,#receipt *{visibility:visible}#receipt{position:fixed;inset:0;background:#fff;padding:20px}}
 </style>
 </head>
 <body>
-
 <!-- LOGIN -->
-<div id="loginPage">
-  <div class="login-box">
-    <div class="logo-wrap">
-      <img src="logo.png" alt="Active Care" class="login-logo">
-      <h1>Active Care</h1>
-      <p>Pharmacy</p>
-    </div>
-    <input id="loginUser" placeholder="Username" autocomplete="username">
-    <div class="pass-wrap">
-      <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
-      <button type="button" class="eye" id="eyeBtn" onclick="togglePass()">👁️</button>
-    </div>
-    <button class="btn-pri" style="width:100%;padding:12px" onclick="doLogin()">Login</button>
-    <p id="loginErr" style="color:var(--red);font-size:13px;margin-top:10px;min-height:18px"></p>
-  </div>
-</div>
-
+<div id="loginPage"><div class="login-box"><div class="logo-wrap"><img src="logo.png" class="login-logo" alt="Active Care"><h1>Active Care</h1><p>Pharmacy • Juba</p></div><input id="loginUser" placeholder="Username" autocomplete="username"><div class="pass-wrap"><input id="loginPass" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()"><button type="button" class="eye" id="eyeBtn" onclick="togglePass()">👁️</button></div><button class="btn-pri" style="width:100%;padding:13px;font-size:15px" onclick="doLogin()">Login</button><p id="loginErr" style="color:var(--red);font-size:13px;margin-top:10px;min-height:18px"></p><p class="login-hint">Secure Login • Encrypted Session • Audit Logged</p></div></div>
 <!-- WELCOME -->
-<div id="welcomePage" class="hidden">
-  <div class="welcome-box">
-    <div class="welcome-circle" id="welcomeInitial">A</div>
-    <h1 id="welcomeTitle">Welcome</h1>
-    <h2 id="welcomeName">Active Care</h2>
-    <p id="welcomeSub">Manager • Morning Shift</p>
-    <div class="loader"></div>
-    <p style="font-size:12px;opacity:.8">Loading your workspace...</p>
-  </div>
-</div>
-
+<div id="welcomePage" class="hidden"><div class="welcome-box"><img src="logo.png" class="welcome-logo"><h1 id="welcomeTitle">Welcome</h1><h2 id="welcomeName">Active Care</h2><p id="welcomeSub">Manager • Morning Shift</p><div class="loader"></div><p style="font-size:12px">Loading your workspace...</p></div></div>
 <!-- APP -->
 <div id="app" class="hidden">
-  <div class="sidebar">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-      <img src="logo.png" alt="Active Care" style="width:42px;height:42px;object-fit:contain;border-radius:8px;background:#fff;padding:3px">
-      <h2 style="margin:0">Active Care</h2>
-    </div>
-    <div style="margin-top:14px;background:#1e293b;padding:10px;border-radius:10px;font-size:13px">
-      <b id="sideUser">Active Care</b><br><span id="sideRole" style="color:#94a3b8">Manager</span><br><span id="sideShift" style="color:#5eead4"></span>
-    </div>
-    <div class="nav">
-      <button data-page="dash" class="active" onclick="showPage('dash',this)">Dashboard</button>
-      <button data-page="pos" onclick="showPage('pos',this)">Point of Sale</button>
-      <button data-page="inv" onclick="showPage('inv',this)">Inventory</button>
-      <button data-page="purchase" onclick="showPage('purchase',this)">Purchase</button>
-      <button data-page="returns" onclick="showPage('returns',this)">Returns</button>
-      <button data-page="expenses" onclick="showPage('expenses',this)">Expenses</button>
-      <button data-page="debts" onclick="showPage('debts',this)">Debts</button>
-      <button data-page="reports" onclick="showPage('reports',this)">Reports</button>
-      <button data-page="users" id="usersNav" onclick="showPage('users',this)">Users</button>
-      <button onclick="logout()" style="color:#fca5a5">Logout</button>
-    </div>
-    <div style="margin-top:16px;font-size:11px;color:#64748b">Sync: <span id="syncStatus">Local</span></div>
-  </div>
-
-  <div class="main">
-    <div class="topbar"><h2 id="pageTitle">Dashboard</h2><div class="flex"><span class="badge" id="todayBadge"></span><button class="btn-ghost btn-sm" onclick="exportBackup()">Backup</button></div></div>
-
-    <!-- DASHBOARD -->
-    <div id="page-dash">
-      <div class="card" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-        <div>
-          <h3>USD Exchange Rate</h3>
-          <p style="font-size:13px;color:var(--muted)">1 USD = <b id="rateDisplay" style="color:var(--pri);font-size:18px">0 SSP</b> <span id="rateUpdated" style="font-size:11px"></span></p>
-          <p style="font-size:11px;color:var(--muted)">Only Manager can change this rate. All prices are entered in USD and auto-converted to SSP.</p>
-        </div>
-        <div class="flex" id="rateEditBox" style="display:none">
-          <input id="newRate" type="number" placeholder="New Rate e.g. 4500" style="width:180px">
-          <button class="btn-pri" onclick="updateRate()">Update Rate</button>
-        </div>
-        <span id="rateLockMsg" style="font-size:12px;color:#94a3b8">Manager Only</span>
-      </div>
-      <div class="grid g4">
-        <div class="card stat"><h3>Today Sales</h3><b id="stToday">0 SSP</b><span id="stTodayCount"></span></div>
-        <div class="card stat"><h3>Total Stock Value</h3><b id="stStock">0 SSP</b><span id="stStockCount"></span></div>
-        <div class="card stat"><h3>Low Stock</h3><b id="stLow" style="color:var(--red)">0</b><span>Items below min</span></div>
-        <div class="card stat"><h3>Expiring Soon (90d)</h3><b id="stExp" style="color:var(--orange)">0</b><span>Check expiry</span></div>
-      </div>
-      <div class="grid g2" style="margin-top:14px">
-        <div class="card"><h3>Low Stock Alert</h3><div id="lowList"></div></div>
-        <div class="card"><h3>Expiring Soon</h3><div id="expList"></div></div>
-      </div>
-      <div class="card" style="margin-top:14px"><h3>Recent Sales</h3><div id="recentSales"></div></div>
-    </div>
-
-    <!-- POS -->
-    <div id="page-pos" class="hidden">
-      <div class="grid g2">
-        <div class="card">
-          <input id="posSearch" placeholder="Search medicine by name..." oninput="renderPOS()">
-          <div id="posList" style="max-height:520px;overflow:auto;margin-top:12px"></div>
-        </div>
-        <div class="card">
-          <h3>Cart - <span id="cartShift"></span></h3>
-          <div id="cartList" style="margin:12px 0"></div>
-          <div class="flex" style="justify-content:space-between"><b>Total</b><b id="cartTotal">0 SSP</b></div>
-          <div class="row" style="margin-top:12px">
-            <select id="payMethod"><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Debt</option></select>
-            <input id="custName" placeholder="Customer Name (optional)">
-          </div>
-          <div class="row" style="margin-top:10px"><button class="btn-green" style="flex:1" onclick="checkout()">Complete Sale & Print</button><button class="btn-ghost" onclick="clearCart()">Clear</button></div>
-          <div id="receipt" class="hidden" style="margin-top:14px;border:1px dashed #94a3b8;padding:14px"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- INVENTORY -->
-    <div id="page-inv" class="hidden">
-      <div class="card">
-        <div class="row"><input id="invSearch" placeholder="Search inventory..." oninput="renderInv()" style="flex:1"><button class="btn-pri" onclick="openMedModal()">+ Add Medicine</button><button class="btn-ghost" onclick="exportInv()">Export CSV</button></div>
-        <div id="invTable"></div>
-      </div>
-    </div>
-
-    <!-- PURCHASE -->
-    <div id="page-purchase" class="hidden">
-      <div class="card">
-        <h3>New Purchase - Add Stock</h3>
-        <div class="grid g3" style="margin-top:12px">
-          <select id="purMed"></select><input id="purQty" type="number" placeholder="Qty" value="10"><input id="purCost" type="number" placeholder="Cost Price (USD)" step="0.01">
-          <input id="purPrice" type="number" placeholder="Selling Price (USD)" step="0.01"><input id="purExpiry" type="date"><input id="purSupplier" placeholder="Supplier Name">
-        </div>
-        <div class="row" style="margin-top:12px"><button class="btn-pri" onclick="doPurchase()">Add Stock</button><button class="btn-ghost" onclick="openMedModal()">+ New Medicine</button></div>
-        <div id="purHistory"></div>
-      </div>
-    </div>
-
-    <!-- RETURNS -->
-    <div id="page-returns" class="hidden">
-      <div class="card">
-        <h3>Returns / Expired</h3>
-        <div class="grid g3" style="margin-top:12px"><select id="retMed"></select><input id="retQty" type="number" placeholder="Qty" value="1"><select id="retReason"><option>Expired</option><option>Damaged</option><option>Customer Return</option><option>Wrong Item</option></select></div>
-        <button class="btn-orange" style="margin-top:12px" onclick="doReturn()">Record Return</button>
-        <div id="retList"></div>
-      </div>
-    </div>
-
-    <!-- EXPENSES -->
-    <div id="page-expenses" class="hidden">
-      <div class="card">
-        <h3>Add Expense</h3>
-        <div class="grid g3" style="margin-top:12px"><select id="expType"><option>Rent</option><option>Salaries</option><option>Electricity</option><option>Water</option><option>Transport</option><option>Marketing</option><option>Other</option></select><input id="expAmt" type="number" placeholder="Amount SSP"><input id="expNote" placeholder="Note"></div>
-        <button class="btn-red" style="margin-top:12px" onclick="doExpense()">Add Expense</button>
-        <div id="expList"></div>
-      </div>
-    </div>
-
-    <!-- DEBTS -->
-    <div id="page-debts" class="hidden">
-      <div class="card">
-        <h3>Add Debt (Customer Owes)</h3>
-        <div class="grid g3" style="margin-top:12px"><input id="debtName" placeholder="Customer Name"><input id="debtAmt" type="number" placeholder="Amount SSP"><input id="debtPhone" placeholder="Phone"></div>
-        <button class="btn-blue" style="margin-top:12px" onclick="doDebt()">Add Debt</button>
-        <div id="debtList"></div>
-      </div>
-    </div>
-
-    <!-- REPORTS -->
-    <div id="page-reports" class="hidden">
-      <div class="card">
-        <div class="row"><input id="repFrom" type="date"><input id="repTo" type="date"><button class="btn-pri" onclick="renderReports()">Filter</button><button class="btn-ghost" onclick="printReport()">Print Report</button></div>
-        <div class="grid g4" style="margin-top:14px">
-          <div class="card stat"><h3>Sales in Period</h3><b id="repSales">0</b></div>
-          <div class="card stat"><h3>Expenses</h3><b id="repExp">0</b></div>
-          <div class="card stat"><h3>Returns Loss</h3><b id="repRet">0</b></div>
-          <div class="card stat"><h3>Net Profit</h3><b id="repProfit">0</b></div>
-        </div>
-        <div id="repTable"></div>
-        <div id="shiftReport" style="margin-top:14px"></div>
-      </div>
-    </div>
-
-    <!-- USERS -->
-    <div id="page-users" class="hidden">
-      <div class="card">
-        <h3>Add User (Manager Only)</h3>
-        <div class="grid g3" style="margin-top:12px"><input id="uName" placeholder="Full Name"><input id="uUser" placeholder="Username"><input id="uPass" placeholder="Password"><select id="uRole"><option>Cashier</option><option>Manager</option></select><select id="uShift"><option>Morning</option><option>Evening</option><option>Night</option><option>All</option></select><input id="uPhone" placeholder="Phone"></div>
-        <button class="btn-pri" style="margin-top:12px" onclick="addUser()">Add User</button>
-        <div id="userList"></div>
-      </div>
-    </div>
-
-  </div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+<div class="sidebar-logo"><img src="logo.png"><div><h2>Active Care</h2><small>PHARMACY</small></div></div>
+<div class="user-card"><b id="sideUser">Active Care</b><br><span id="sideRole" style="color:#94a3b8">Manager</span><br><span id="sideShift" style="color:#5eead4"></span><br><span id="sideRate" style="color:#fbbf24;font-size:12px"></span></div>
+<div class="nav">
+<small>MAIN</small>
+<button data-page="dash" class="active" onclick="showPage('dash',this)">📊 Dashboard</button>
+<button data-page="pos" onclick="showPage('pos',this)">🛒 Point of Sale</button>
+<button data-page="sales" onclick="showPage('sales',this)">🧾 Sales History</button>
+<small>STOCK</small>
+<button data-page="inv" onclick="showPage('inv',this)">💊 Inventory</button>
+<button data-page="purchase" onclick="showPage('purchase',this)">📦 Purchase</button>
+<button data-page="suppliers" onclick="showPage('suppliers',this)">🚚 Suppliers</button>
+<button data-page="returns" onclick="showPage('returns',this)">↩️ Returns / Expired</button>
+<small>FINANCE</small>
+<button data-page="expenses" onclick="showPage('expenses',this)">💸 Expenses</button>
+<button data-page="debts" onclick="showPage('debts',this)">👥 Debts / Customers</button>
+<button data-page="customers" onclick="showPage('customers',this)">⭐ Customers & Loyalty</button>
+<button data-page="shifts" onclick="showPage('shifts',this)">🕐 Shifts & Close Shift</button>
+<small>ADMIN</small>
+<button data-page="reports" onclick="showPage('reports',this)">📈 Reports</button>
+<button data-page="users" id="usersNav" onclick="showPage('users',this)">👤 Users & Roles</button>
+<button data-page="settings" onclick="showPage('settings',this)">⚙️ Settings & Audit</button>
+<button onclick="logout()" style="color:#fca5a5">🚪 Logout</button>
+</div><div style="margin-top:14px;font-size:11px;color:#64748b">Sync: <span id="syncStatus">Local • Secure</span></div>
 </div>
-
+<div class="main">
+<div class="topbar"><div class="topbar-left"><button class="menu-btn" onclick="toggleSidebar()">☰</button><div class="topbar-logo"><img src="logo.png"><div><b id="pageTitle">Dashboard</b><div style="font-size:11px;color:var(--muted)" id="topSubtitle">Active Care Pharmacy - Juba, South Sudan</div></div></div></div><div class="flex"><span class="badge" id="todayBadge"></span><button class="btn-ghost btn-sm" onclick="exportBackup()">⬇ Backup</button></div></div>
+<div class="content">
+<!-- DASHBOARD -->
+<div id="page-dash">
+<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none"><div><h3 style="color:#ccfbf1">USD Exchange Rate • Manager Only</h3><p style="font-size:14px;margin:6px 0">1 USD = <b id="rateDisplay" style="font-size:22px">0 SSP</b> <span id="rateUpdated" style="font-size:11px;opacity:.9"></span></p><p style="font-size:12px;opacity:.85">Prices in USD • Sales in SSP • Auto-converted</p></div><div class="flex" id="rateEditBox" style="display:none"><input id="newRate" type="number" placeholder="New Rate e.g. 4500" style="width:170px"><button class="btn-dark" onclick="updateRate()">Update Rate</button></div><span id="rateLockMsg" style="font-size:12px">🔒 Manager Only</span></div>
+<div class="grid g4" style="margin-top:14px"><div class="card stat"><span class="icon">💰</span><h3>Today Sales</h3><b id="stToday">0 SSP</b><span id="stTodayCount"></span></div><div class="card stat"><span class="icon">📦</span><h3>Stock Value</h3><b id="stStock">0 SSP</b><span id="stStockCount"></span></div><div class="card stat"><span class="icon">⚠️</span><h3>Low Stock</h3><b id="stLow" style="color:var(--red)">0</b><span>Below minimum</span></div><div class="card stat"><span class="icon">⏰</span><h3>Expiring 90d</h3><b id="stExp" style="color:var(--orange)">0</b><span>Check expiry</span></div></div>
+<div class="grid g4" style="margin-top:14px"><div class="card stat"><h3>Cash Sales Today</h3><b id="stCash">0 SSP</b></div><div class="card stat"><h3>Bank / Mobile</h3><b id="stBank">0 SSP</b></div><div class="card stat"><h3>Debts Today</h3><b id="stDebt">0 SSP</b></div><div class="card stat"><h3>Net Profit (Month)</h3><b id="stProfit">0 SSP</b></div></div>
+<div class="grid g2" style="margin-top:14px"><div class="card"><h3>⚠️ Low Stock Alert</h3><div id="lowList"></div></div><div class="card"><h3>⏰ Expiring Soon</h3><div id="expList"></div></div></div>
+<div class="card" style="margin-top:14px"><h3>🧾 Recent Sales</h3><div id="recentSales"></div></div>
+</div>
+<!-- POS -->
+<div id="page-pos" class="hidden"><div class="grid g2"><div class="card"><div class="row"><input id="posSearch" placeholder="🔍 Search by name or scan barcode..." oninput="renderPOS()" style="flex:1"><input id="posBarcode" placeholder="Barcode" onkeydown="if(event.key==='Enter') scanBarcode()" style="width:130px"></div><div id="posList" style="max-height:560px;overflow:auto;margin-top:12px"></div></div><div class="card"><h3>Cart - <span id="cartShift"></span></h3><div id="cartList" style="margin:12px 0"></div><div class="flex" style="justify-content:space-between"><b>Total</b><b id="cartTotal">0 SSP</b></div><div class="flex" style="justify-content:space-between;font-size:13px;color:var(--muted)"><span>Loyalty Points Earned</span><b id="loyaltyEarned" style="color:var(--purple)">0 pts</b></div><div class="row" style="margin-top:12px"><select id="payMethod"><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Debt</option></select><input id="custName" placeholder="Customer Name (optional)" list="custList"><datalist id="custList"></datalist></div><div class="row" style="margin-top:10px"><button class="btn-green" style="flex:1" onclick="checkout()">✅ Complete Sale & Print</button><button class="btn-ghost" onclick="clearCart()">Clear</button></div><div id="receipt" class="hidden" style="margin-top:14px;border:1px dashed #94a3b8;padding:14px"></div></div></div></div>
+<!-- SALES -->
+<div id="page-sales" class="hidden"><div class="card"><h3>Sales History</h3><div class="row" style="margin-top:10px"><input id="salesSearch" placeholder="Search by customer / receipt..." oninput="renderSales()"><select id="salesFilter" onchange="renderSales()"><option value="">All Payments</option><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Debt</option></select></div><div id="salesTable"></div></div></div>
+<!-- INVENTORY -->
+<div id="page-inv" class="hidden"><div class="card"><div class="row"><input id="invSearch" placeholder="Search inventory..." oninput="renderInv()" style="flex:1"><button class="btn-pri" onclick="openMedModal()">+ Add Medicine</button><button class="btn-ghost" onclick="exportInv()">Export CSV</button></div><div class="wrap" id="invTable"></div></div></div>
+<!-- PURCHASE -->
+<div id="page-purchase" class="hidden"><div class="card"><h3>New Purchase - Add Stock</h3><div class="grid g3" style="margin-top:12px"><select id="purMed"></select><input id="purQty" type="number" placeholder="Qty" value="10"><input id="purCost" type="number" placeholder="Cost Price (USD)" step="0.01"><input id="purPrice" type="number" placeholder="Selling Price (USD)" step="0.01"><input id="purExpiry" type="date"><input id="purSupplier" placeholder="Supplier Name"></div><div class="row" style="margin-top:12px"><button class="btn-pri" onclick="doPurchase()">Add Stock</button><button class="btn-ghost" onclick="openMedModal()">+ New Medicine</button></div><div id="purHistory"></div></div></div>
+<!-- SUPPLIERS -->
+<div id="page-suppliers" class="hidden"><div class="card"><h3>Suppliers</h3><div class="grid g3" style="margin-top:12px"><input id="supName" placeholder="Supplier Name *"><input id="supPhone" placeholder="Phone"><input id="supAddr" placeholder="Address / Location"></div><button class="btn-pri" style="margin-top:12px" onclick="addSupplier()">Add Supplier</button><div id="supList"></div></div></div>
+<!-- RETURNS -->
+<div id="page-returns" class="hidden"><div class="card"><h3>Returns / Expired / Damaged</h3><div class="grid g3" style="margin-top:12px"><select id="retMed"></select><input id="retQty" type="number" placeholder="Qty" value="1"><select id="retReason"><option>Expired</option><option>Damaged</option><option>Customer Return</option><option>Wrong Item</option></select></div><button class="btn-orange" style="margin-top:12px" onclick="doReturn()">Record Return</button><div id="retList"></div></div></div>
+<!-- EXPENSES -->
+<div id="page-expenses" class="hidden"><div class="card"><h3>Add Expense</h3><div class="grid g3" style="margin-top:12px"><select id="expType"><option>Rent</option><option>Salaries</option><option>Electricity</option><option>Water</option><option>Transport</option><option>Marketing</option><option>Other</option></select><input id="expAmt" type="number" placeholder="Amount SSP"><input id="expNote" placeholder="Note"></div><button class="btn-red" style="margin-top:12px" onclick="doExpense()">Add Expense</button><div id="expList"></div></div></div>
+<!-- DEBTS -->
+<div id="page-debts" class="hidden"><div class="card"><h3>Debts - Customers Who Owe</h3><div class="grid g3" style="margin-top:12px"><input id="debtName" placeholder="Customer Name"><input id="debtAmt" type="number" placeholder="Amount SSP"><input id="debtPhone" placeholder="Phone"></div><button class="btn-blue" style="margin-top:12px" onclick="doDebt()">Add Debt</button><div id="debtList"></div></div></div>
+<!-- CUSTOMERS -->
+<div id="page-customers" class="hidden"><div class="card"><h3>Customers & Loyalty</h3><p style="font-size:13px;color:var(--muted)">Every 10,000 SSP = 10 Points. 100 Points = 5,000 SSP Discount (Manager approval).</p><div class="grid g3" style="margin-top:12px"><input id="cName" placeholder="Customer Name *"><input id="cPhone" placeholder="Phone"><input id="cNote" placeholder="Note"></div><button class="btn-pri" style="margin-top:12px" onclick="addCustomer()">Add Customer</button><div id="custTable"></div></div></div>
+<!-- SHIFTS -->
+<div id="page-shifts" class="hidden"><div class="card"><h3>Shift Management - Z-Report</h3><p style="font-size:13px;color:var(--muted)" id="shiftInfo"></p><div class="grid g3" style="margin-top:12px"><input id="shiftCash" type="number" placeholder="Cash Counted in Drawer (SSP)"><input id="shiftNote" placeholder="Handover Note"><select id="nextShiftUser"><option value="">Hand Over To (Next Shift)</option></select></div><div class="row" style="margin-top:12px"><button class="btn-dark" onclick="closeShift()">🔒 Close Shift & Print Z-Report</button><button class="btn-ghost" onclick="renderShifts()">Refresh</button></div><div id="zReport"></div><div id="shiftHistory"></div></div></div>
+<!-- REPORTS -->
+<div id="page-reports" class="hidden"><div class="card"><div class="row"><input id="repFrom" type="date"><input id="repTo" type="date"><button class="btn-pri" onclick="renderReports()">Filter</button><button class="btn-ghost" onclick="printReport()">Print Report</button></div><div class="grid g4" style="margin-top:14px"><div class="card stat"><h3>Sales</h3><b id="repSales">0</b></div><div class="card stat"><h3>Expenses</h3><b id="repExp">0</b></div><div class="card stat"><h3>Returns Loss</h3><b id="repRet">0</b></div><div class="card stat"><h3>Net Profit</h3><b id="repProfit">0</b></div></div><div id="repTable"></div><div id="shiftReport" style="margin-top:14px"></div></div></div>
+<!-- USERS -->
+<div id="page-users" class="hidden"><div class="card"><h3>Add User (Manager Only)</h3><div class="grid g3" style="margin-top:12px"><input id="uName" placeholder="Full Name"><input id="uUser" placeholder="Username"><input id="uPass" placeholder="Password"><select id="uRole"><option>Cashier</option><option>Manager</option></select><select id="uShift"><option>Morning</option><option>Evening</option><option>Night</option><option>All</option></select><input id="uPhone" placeholder="Phone"></div><button class="btn-pri" style="margin-top:12px" onclick="addUser()">Add User</button><div id="userList"></div></div></div>
+<!-- SETTINGS -->
+<div id="page-settings" class="hidden"><div class="card"><h3>Settings & Audit Log (Cybersecurity)</h3><div class="grid g3" style="margin-top:12px"><input id="setPharma" placeholder="Pharmacy Name" value="Active Care Pharmacy"><input id="setPhone" placeholder="Pharmacy Phone"><input id="setAddr" placeholder="Address - Juba"></div><p style="font-size:12px;color:var(--muted);margin-top:10px">Audit Log: Every login, sale, rate change, user creation is logged with user + time + shift.</p><div class="row" style="margin-top:10px"><button class="btn-pri" onclick="saveSettings()">Save Settings</button><button class="btn-red" onclick="clearAudit()">Clear Audit Log</button></div><div id="auditList"></div></div></div>
+</div>
+</div>
+</div>
 <!-- MED MODAL -->
-<div id="medModal" class="modal hidden"><div class="modal-box">
-  <h3 id="medModalTitle">Add Medicine</h3>
-  <div class="flex-col" style="margin-top:12px">
-    <input id="mName" placeholder="Medicine Name *"><input id="mCategory" placeholder="Category (e.g. Antibiotic)"><input id="mBarcode" placeholder="Barcode">
-    <div class="row"><input id="mPrice" type="number" placeholder="Selling Price (USD) *" step="0.01"><input id="mCost" type="number" placeholder="Cost Price (USD)" step="0.01"></div>
-    <p style="font-size:12px;color:var(--muted)">Auto SSP: <b id="mPriceSSP">-</b> | Cost SSP: <b id="mCostSSP">-</b> | Rate: <span id="mRateHint"></span></p>
-    <div class="row"><input id="mQty" type="number" placeholder="Qty *" value="0"><input id="mMin" type="number" placeholder="Min Stock" value="5"></div>
-    <input id="mExpiry" type="date"><input id="mSupplier" placeholder="Supplier">
-    <div class="row"><button class="btn-pri" style="flex:1" onclick="saveMed()">Save</button><button class="btn-ghost" onclick="closeMedModal()">Cancel</button></div>
-  </div>
-</div></div><script>
-// ===== STATE =====
+<div id="medModal" class="modal hidden"><div class="modal-box"><h3 id="medModalTitle">Add Medicine</h3><div class="flex-col" style="margin-top:12px"><input id="mName" placeholder="Medicine Name *"><input id="mCategory" placeholder="Category"><input id="mBarcode" placeholder="Barcode"><div class="row"><input id="mPrice" type="number" placeholder="Selling Price (USD) *" step="0.01"><input id="mCost" type="number" placeholder="Cost Price (USD)" step="0.01"></div><p style="font-size:12px;color:var(--muted)">Auto SSP: <b id="mPriceSSP">-</b> | Cost SSP: <b id="mCostSSP">-</b> | Rate: <span id="mRateHint"></span></p><div class="row"><input id="mQty" type="number" placeholder="Qty *" value="0"><input id="mMin" type="number" placeholder="Min Stock" value="5"></div><input id="mExpiry" type="date"><input id="mSupplier" placeholder="Supplier"><div class="row"><button class="btn-pri" style="flex:1" onclick="saveMed()">Save</button><button class="btn-ghost" onclick="closeMedModal()">Cancel</button></div></div></div></div><script>
 let meds=JSON.parse(localStorage.getItem('ac_meds')||'[]');
 let sales=JSON.parse(localStorage.getItem('ac_sales')||'[]');
 let returns=JSON.parse(localStorage.getItem('ac_returns')||'[]');
 let expenses=JSON.parse(localStorage.getItem('ac_expenses')||'[]');
 let debts=JSON.parse(localStorage.getItem('ac_debts')||'[]');
 let users=JSON.parse(localStorage.getItem('ac_users')||'[]');
-let cart=[]; let currentUser=null; let editMedId=null;
-let exchangeRate = Number(localStorage.getItem('ac_rate') || 4500);
-let rateUpdatedAt = localStorage.getItem('ac_rate_date') || '';
-if(!users.length){
-  users=[
-    {id:1,fullName:'Active Care - Manager',username:'admin',password:'ActiveCare',role:'Manager',shift:'All',phone:''},
-    {id:2,fullName:'Morning Cashier',username:'cashier',password:'Cashier123',role:'Cashier',shift:'Morning',phone:''}
-  ];
-  localStorage.setItem('ac_users',JSON.stringify(users));
-}
-if(!meds.length){
-  meds=[
-    {id:1,name:'Paracetamol 500mg',category:'Pain Relief',barcode:'123',priceUSD:0.50,costUSD:0.30,price:2250,cost:1350,qty:120,min:10,expiry:'2027-06-01',supplier:'Juba Pharma'},
-    {id:2,name:'Amoxicillin 500mg',category:'Antibiotic',barcode:'124',priceUSD:0.80,costUSD:0.50,price:3600,cost:2250,qty:80,min:10,expiry:'2026-12-01',supplier:'Juba Pharma'},
-    {id:3,name:'Vitamin C 1000mg',category:'Vitamins',barcode:'125',priceUSD:1.00,costUSD:0.60,price:4500,cost:2700,qty:50,min:5,expiry:'2027-01-15',supplier:'Med Supply'},
-    {id:4,name:'ORS',category:'Rehydration',barcode:'126',priceUSD:0.40,costUSD:0.20,price:1800,cost:900,qty:200,min:20,expiry:'2027-03-01',supplier:'Med Supply'}
-  ]; saveAll();
-}
-function saveAll(){localStorage.setItem('ac_meds',JSON.stringify(meds));localStorage.setItem('ac_sales',JSON.stringify(sales));localStorage.setItem('ac_returns',JSON.stringify(returns));localStorage.setItem('ac_expenses',JSON.stringify(expenses));localStorage.setItem('ac_debts',JSON.stringify(debts));syncToCloud();}
+let customers=JSON.parse(localStorage.getItem('ac_customers')||'[]');
+let suppliers=JSON.parse(localStorage.getItem('ac_suppliers')||'[]');
+let shiftsLog=JSON.parse(localStorage.getItem('ac_shifts')||'[]');
+let audit=JSON.parse(localStorage.getItem('ac_audit')||'[]');
+let cart=[]; let currentUser=null; let editMedId=null; let currentShift='Morning';
+let exchangeRate=Number(localStorage.getItem('ac_rate')||4500);
+let rateUpdatedAt=localStorage.getItem('ac_rate_date')||'';
+if(!users.length){users=[{id:1,fullName:'Active Care - Manager',username:'admin',password:'ActiveCare',role:'Manager',shift:'All',phone:''},{id:2,fullName:'Morning Cashier',username:'cashier',password:'Cashier123',role:'Cashier',shift:'Morning',phone:''}];localStorage.setItem('ac_users',JSON.stringify(users));}
+if(!meds.length){meds=[{id:1,name:'Paracetamol 500mg',category:'Pain Relief',barcode:'123',priceUSD:0.5,costUSD:0.3,price:2250,cost:1350,qty:120,min:10,expiry:'2027-06-01',supplier:'Juba Pharma'},{id:2,name:'Amoxicillin 500mg',category:'Antibiotic',barcode:'124',priceUSD:0.8,costUSD:0.5,price:3600,cost:2250,qty:80,min:10,expiry:'2026-12-01',supplier:'Juba Pharma'},{id:3,name:'Vitamin C 1000mg',category:'Vitamins',barcode:'125',priceUSD:1,costUSD:0.6,price:4500,cost:2700,qty:50,min:5,expiry:'2027-01-15',supplier:'Med Supply'},{id:4,name:'ORS',category:'Rehydration',barcode:'126',priceUSD:0.4,costUSD:0.2,price:1800,cost:900,qty:200,min:20,expiry:'2027-03-01',supplier:'Med Supply'}];saveAll();}
+if(!customers.length){customers=[{id:1,name:'Walk-in',phone:'',points:0,totalSpent:0,note:''}];}
+function saveAll(){localStorage.setItem('ac_meds',JSON.stringify(meds));localStorage.setItem('ac_sales',JSON.stringify(sales));localStorage.setItem('ac_returns',JSON.stringify(returns));localStorage.setItem('ac_expenses',JSON.stringify(expenses));localStorage.setItem('ac_debts',JSON.stringify(debts));localStorage.setItem('ac_customers',JSON.stringify(customers));localStorage.setItem('ac_suppliers',JSON.stringify(suppliers));localStorage.setItem('ac_shifts',JSON.stringify(shiftsLog));localStorage.setItem('ac_audit',JSON.stringify(audit));syncToCloud();}
 function saveUsers(){localStorage.setItem('ac_users',JSON.stringify(users));syncToCloud();}
 function fmt(n){return Number(n||0).toLocaleString()+' SSP'}
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function getShift(){let h=new Date().getHours(); if(h>=8&&h<14) return 'Morning'; if(h>=14&&h<21) return 'Evening'; return 'Night';}
 function shiftTime(s){if(s==='Morning') return '08:00 AM - 02:00 PM'; if(s==='Evening') return '02:00 PM - 09:00 PM'; if(s==='Night') return '09:00 PM - 10:00 AM'; return 'All Day';}
-// ===== USD RATE - MANAGER ONLY =====
-function usdToSsp(usd){ return Math.round(Number(usd||0) * exchangeRate); }
-function saveRate(){localStorage.setItem('ac_rate', String(exchangeRate));localStorage.setItem('ac_rate_date', rateUpdatedAt);syncToCloud();}
-function renderRate(){
-  let el=document.getElementById('rateDisplay'); if(el) el.innerText=Number(exchangeRate).toLocaleString()+' SSP';
-  let up=document.getElementById('rateUpdated'); if(up) up.innerText=rateUpdatedAt?'Updated: '+rateUpdatedAt:'';
-  let box=document.getElementById('rateEditBox'); let lock=document.getElementById('rateLockMsg');
-  if(currentUser && currentUser.role==='Manager'){ if(box) box.style.display='flex'; if(lock) lock.style.display='none'; }
-  else { if(box) box.style.display='none'; if(lock) lock.style.display='block'; }
-}
-function updateRate(){
-  if(!currentUser || currentUser.role!=='Manager'){alert('Only Manager can change exchange rate');return;}
-  let v=Number(document.getElementById('newRate').value); if(!v||v<=0){alert('Enter valid rate');return;}
-  if(!confirm('Change rate from '+exchangeRate+' to '+v+' SSP? All USD prices will be recalculated.')) return;
-  exchangeRate=v; rateUpdatedAt=new Date().toLocaleString();
-  meds.forEach(m=>{ if(m.priceUSD) m.price=usdToSsp(m.priceUSD); if(m.costUSD) m.cost=usdToSsp(m.costUSD); });
-  saveRate(); saveAll(); renderRate(); renderPOS(); renderInv(); renderDash(); alert('Rate updated to '+v+' SSP');
-}
-// ===== PASSWORD SHOW / HIDE =====
-function togglePass(){
-  let inp=document.getElementById('loginPass');
-  let btn=document.getElementById('eyeBtn');
-  if(inp.type==='password'){ inp.type='text'; btn.innerText='🙈'; }
-  else { inp.type='password'; btn.innerText='👁️'; }
-}
-// ===== AUTH + WELCOME =====
-function doLogin(){
-  let u=document.getElementById('loginUser').value.trim();
-  let p=document.getElementById('loginPass').value;
-  let found=users.find(x=>x.username===u&&x.password===p);
-  if(!found){document.getElementById('loginErr').innerText='Invalid username or password';return;}
-  currentUser=found;
-  document.getElementById('loginErr').innerText='';
-  document.getElementById('loginPage').classList.add('hidden');
-  let welcome=document.getElementById('welcomePage');
-  welcome.classList.remove('hidden');
-  let sh=found.shift==='All'?getShift():found.shift;
-  let firstName=found.fullName.split(' ')[0];
-  let greeting='Welcome';
-  let h=new Date().getHours();
-  if(h>=5&&h<12) greeting='Good Morning';
-  else if(h>=12&&h<17) greeting='Good Afternoon';
-  else if(h>=17&&h<21) greeting='Good Evening';
-  else greeting='Good Night';
-  document.getElementById('welcomeTitle').innerText=greeting+',';
-  document.getElementById('welcomeName').innerText=found.fullName;
-  document.getElementById('welcomeSub').innerText=found.role+' • '+sh+' Shift • '+shiftTime(sh);
-  document.getElementById('welcomeInitial').innerText=firstName.charAt(0).toUpperCase();
-  setTimeout(()=>{ enterSystem(sh); }, 1800);
-}
-function enterSystem(sh){
-  document.getElementById('welcomePage').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
-  document.getElementById('sideUser').innerText=currentUser.fullName;
-  document.getElementById('sideRole').innerText=currentUser.role;
-  document.getElementById('sideShift').innerText=sh+' - '+shiftTime(sh);
-  document.getElementById('todayBadge').innerText=new Date().toDateString()+' | '+sh;
-  document.getElementById('cartShift').innerText=sh+' - '+shiftTime(sh);
-  if(currentUser.role!=='Manager') document.getElementById('usersNav').style.display='none';
-  init();
-}
-function logout(){location.reload();}
-function showPage(p,btn){
-  document.querySelectorAll('[id^="page-"]').forEach(e=>e.classList.add('hidden'));
-  document.getElementById('page-'+p).classList.remove('hidden');
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  let titles={dash:'Dashboard',pos:'Point of Sale',inv:'Inventory',purchase:'Purchase',returns:'Returns',expenses:'Expenses',debts:'Debts',reports:'Reports',users:'Users'};
-  document.getElementById('pageTitle').innerText=titles[p]||p;
-  if(p==='dash') renderDash(); if(p==='pos') renderPOS(); if(p==='inv') renderInv(); if(p==='purchase') renderPurchase(); if(p==='returns') renderReturns(); if(p==='expenses') renderExpenses(); if(p==='debts') renderDebts(); if(p==='reports') renderReports(); if(p==='users') renderUsers();
-}
-function init(){renderRate();renderDash();renderPOS();renderInv();renderPurchase();renderReturns();renderExpenses();renderDebts();renderReports();renderUsers();loadFromCloud();}
-// ===== DASHBOARD =====
-function renderDash(){
-  let today=todayStr();
-  let tSales=sales.filter(s=>s.date===today);
-  let tTotal=tSales.reduce((a,s)=>a+s.total,0);
-  document.getElementById('stToday').innerText=fmt(tTotal);
-  document.getElementById('stTodayCount').innerText=tSales.length+' sales today';
-  let stockVal=meds.reduce((a,m)=>a+m.qty*m.cost,0);
-  document.getElementById('stStock').innerText=fmt(stockVal);
-  document.getElementById('stStockCount').innerText=meds.length+' items';
-  let low=meds.filter(m=>m.qty<=m.min);
-  document.getElementById('stLow').innerText=low.length;
-  let exp=meds.filter(m=>{let d=(new Date(m.expiry)-new Date())/86400000;return d<=90&&d>=0});
-  document.getElementById('stExp').innerText=exp.length;
-  document.getElementById('lowList').innerHTML=low.length?low.map(m=>`<div class="flex" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${m.name}</span><span class="tag tag-red">Qty ${m.qty} / Min ${m.min}</span></div>`).join(''):'<p style="color:var(--muted)">All stock OK</p>';
-  document.getElementById('expList').innerHTML=exp.length?exp.map(m=>`<div class="flex" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${m.name}</span><span class="tag tag-orange">${m.expiry}</span></div>`).join(''):'<p style="color:var(--muted)">No expiry soon</p>';
-  document.getElementById('recentSales').innerHTML=sales.slice(-8).reverse().map(s=>`<div class="flex" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>#${s.id} - ${s.items.map(i=>i.name+' x'+i.qty).join(', ')}<br><small style="color:var(--muted)">${s.date} | ${s.shift} | ${s.user} | ${s.pay}</small></span><b>${fmt(s.total)}</b></div>`).join('')||'<p>No sales yet</p>';
-}
-// ===== POS =====
-function renderPOS(){
-  let q=(document.getElementById('posSearch').value||'').toLowerCase();
-  let list=meds.filter(m=>m.name.toLowerCase().includes(q));
-  document.getElementById('posList').innerHTML=list.map(m=>`<div class="flex" style="justify-content:space-between;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px"><div><b>${m.name}</b><br><small style="color:var(--muted)">${m.category} | Stock: ${m.qty} | Exp: ${m.expiry}</small></div><div class="flex"><div style="text-align:right"><b>${fmt(m.price)}</b><br><small style="color:var(--muted)">$${(m.priceUSD||(m.price/exchangeRate).toFixed(2))} USD</small></div><button class="btn-pri btn-sm" onclick="addToCart(${m.id})" ${m.qty<=0?'disabled':''}>Add +</button></div></div>`).join('')||'<p>No medicine found</p>';
-  renderCart();
-}
-function addToCart(id){
-  let m=meds.find(x=>x.id===id); if(!m||m.qty<=0) return;
-  let c=cart.find(x=>x.id===id);
-  if(c){ if(c.qty<m.qty) c.qty++; } else cart.push({id:m.id,name:m.name,price:m.price,qty:1});
-  renderCart();
-}
-function renderCart(){
-  let total=cart.reduce((a,i)=>a+i.price*i.qty,0);
-  document.getElementById('cartList').innerHTML=cart.length?cart.map((i,idx)=>`<div class="flex" style="justify-content:space-between;padding:8px;border-bottom:1px solid var(--line)"><span>${i.name}<br><small>${fmt(i.price)} x ${i.qty}</small></span><span class="flex"><button class="btn-ghost btn-sm" onclick="chgQty(${idx},-1)">-</button><b>${i.qty}</b><button class="btn-ghost btn-sm" onclick="chgQty(${idx},1)">+</button><button class="btn-red btn-sm" onclick="cart.splice(${idx},1);renderCart()">X</button></span></div>`).join(''):'<p style="color:var(--muted)">Cart is empty</p>';
-  document.getElementById('cartTotal').innerText=fmt(total);
-}
+function logAudit(action,detail){audit.unshift({date:todayStr(),time:new Date().toLocaleTimeString(),user:currentUser?currentUser.fullName:'System',shift:currentShift,action,detail}); if(audit.length>200) audit=audit.slice(0,200); localStorage.setItem('ac_audit',JSON.stringify(audit));}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function usdToSsp(usd){return Math.round(Number(usd||0)*exchangeRate);}
+function saveRate(){localStorage.setItem('ac_rate',String(exchangeRate));localStorage.setItem('ac_rate_date',rateUpdatedAt);syncToCloud();}
+function renderRate(){let el=document.getElementById('rateDisplay'); if(el) el.innerText=Number(exchangeRate).toLocaleString()+' SSP'; let up=document.getElementById('rateUpdated'); if(up) up.innerText=rateUpdatedAt?'Updated: '+rateUpdatedAt:''; let box=document.getElementById('rateEditBox'); let lock=document.getElementById('rateLockMsg'); if(currentUser&&currentUser.role==='Manager'){if(box) box.style.display='flex'; if(lock) lock.style.display='none';}else{if(box) box.style.display='none'; if(lock) lock.style.display='block';} let sr=document.getElementById('sideRate'); if(sr) sr.innerText='Rate: 1 USD = '+Number(exchangeRate).toLocaleString()+' SSP';}
+function updateRate(){if(!currentUser||currentUser.role!=='Manager'){alert('Only Manager can change exchange rate');return;} let v=Number(document.getElementById('newRate').value); if(!v||v<=0){alert('Enter valid rate');return;} if(!confirm('Change rate from '+exchangeRate+' to '+v+' SSP? All USD prices will be recalculated.')) return; let old=exchangeRate; exchangeRate=v; rateUpdatedAt=new Date().toLocaleString(); meds.forEach(m=>{if(m.priceUSD) m.price=usdToSsp(m.priceUSD); if(m.costUSD) m.cost=usdToSsp(m.costUSD);}); saveRate(); saveAll(); logAudit('RATE CHANGE','From '+old+' to '+v); renderRate(); renderPOS(); renderInv(); renderDash(); alert('Rate updated to '+v+' SSP');}
+function togglePass(){let inp=document.getElementById('loginPass'); let btn=document.getElementById('eyeBtn'); if(inp.type==='password'){inp.type='text'; btn.innerText='🙈';}else{inp.type='password'; btn.innerText='👁️';}}
+function doLogin(){let u=document.getElementById('loginUser').value.trim(); let p=document.getElementById('loginPass').value; let found=users.find(x=>x.username===u&&x.password===p); if(!found){document.getElementById('loginErr').innerText='Invalid username or password';return;} currentUser=found; currentShift=found.shift==='All'?getShift():found.shift; document.getElementById('loginErr').innerText=''; document.getElementById('loginPage').classList.add('hidden'); document.getElementById('welcomePage').classList.remove('hidden'); let h=new Date().getHours(); let greeting=h>=5&&h<12?'Good Morning':h<17?'Good Afternoon':h<21?'Good Evening':'Good Night'; document.getElementById('welcomeTitle').innerText=greeting+','; document.getElementById('welcomeName').innerText=found.fullName; document.getElementById('welcomeSub').innerText=found.role+' • '+currentShift+' Shift • '+shiftTime(currentShift); logAudit('LOGIN','User logged in - '+currentShift); setTimeout(()=>enterSystem(),1800);}
+function enterSystem(){document.getElementById('welcomePage').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); document.getElementById('sideUser').innerText=currentUser.fullName; document.getElementById('sideRole').innerText=currentUser.role; document.getElementById('sideShift').innerText=currentShift+' - '+shiftTime(currentShift); document.getElementById('todayBadge').innerText=new Date().toDateString()+' | '+currentShift; document.getElementById('cartShift').innerText=currentShift+' - '+shiftTime(currentShift); if(currentUser.role!=='Manager') document.getElementById('usersNav').style.display='none'; init();}
+function logout(){logAudit('LOGOUT','User logged out'); location.reload();}
+function showPage(p,btn){document.querySelectorAll('[id^="page-"]').forEach(e=>e.classList.add('hidden')); document.getElementById('page-'+p).classList.remove('hidden'); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); let titles={dash:'Dashboard',pos:'Point of Sale',sales:'Sales History',inv:'Inventory',purchase:'Purchase',suppliers:'Suppliers',returns:'Returns',expenses:'Expenses',debts:'Debts',customers:'Customers & Loyalty',shifts:'Shifts & Close Shift',reports:'Reports',users:'Users & Roles',settings:'Settings & Audit'}; document.getElementById('pageTitle').innerText=titles[p]||p; document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); if(p==='dash') renderDash(); if(p==='pos') renderPOS(); if(p==='sales') renderSales(); if(p==='inv') renderInv(); if(p==='purchase') renderPurchase(); if(p==='suppliers') renderSuppliers(); if(p==='returns') renderReturns(); if(p==='expenses') renderExpenses(); if(p==='debts') renderDebts(); if(p==='customers') renderCustomers(); if(p==='shifts') renderShifts(); if(p==='reports') renderReports(); if(p==='users') renderUsers(); if(p==='settings') renderSettings();}
+function init(){renderRate();renderDash();renderPOS();renderSales();renderInv();renderPurchase();renderSuppliers();renderReturns();renderExpenses();renderDebts();renderCustomers();renderShifts();renderReports();renderUsers();renderSettings();loadFromCloud();}
+// DASHBOARD
+function renderDash(){let today=todayStr(); let tSales=sales.filter(s=>s.date===today); let tTotal=tSales.reduce((a,s)=>a+s.total,0); document.getElementById('stToday').innerText=fmt(tTotal); document.getElementById('stTodayCount').innerText=tSales.length+' sales today'; let stockVal=meds.reduce((a,m)=>a+m.qty*m.cost,0); document.getElementById('stStock').innerText=fmt(stockVal); document.getElementById('stStockCount').innerText=meds.length+' items'; let low=meds.filter(m=>m.qty<=m.min); document.getElementById('stLow').innerText=low.length; let exp=meds.filter(m=>{let d=(new Date(m.expiry)-new Date())/86400000;return d<=90&&d>=0}); document.getElementById('stExp').innerText=exp.length; let cash=tSales.filter(s=>s.pay==='Cash').reduce((a,s)=>a+s.total,0); let bank=tSales.filter(s=>s.pay!=='Cash'&&s.pay!=='Debt').reduce((a,s)=>a+s.total,0); let debt=tSales.filter(s=>s.pay==='Debt').reduce((a,s)=>a+s.total,0); document.getElementById('stCash').innerText=fmt(cash); document.getElementById('stBank').innerText=fmt(bank); document.getElementById('stDebt').innerText=fmt(debt); let month=today.slice(0,7); let mSales=sales.filter(s=>s.date.startsWith(month)); let mTotal=mSales.reduce((a,s)=>a+s.total,0); let mCost=mSales.reduce((a,s)=>a+s.items.reduce((b,i)=>{let mm=meds.find(x=>x.id===i.id); return b+(mm?mm.cost*i.qty:0)},0),0); let mExp=expenses.filter(e=>e.date.startsWith(month)).reduce((a,e)=>a+e.amount,0); document.getElementById('stProfit').innerText=fmt(mTotal-mCost-mExp); document.getElementById('lowList').innerHTML=low.length?low.map(m=>`<div class="flex" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${m.name}</span><span class="tag tag-red">Qty ${m.qty} / Min ${m.min}</span></div>`).join(''):'<p style="color:var(--muted)">All stock OK</p>'; document.getElementById('expList').innerHTML=exp.length?exp.map(m=>`<div class="flex" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${m.name}</span><span class="tag tag-orange">${m.expiry}</span></div>`).join(''):'<p style="color:var(--muted)">No expiry soon</p>'; document.getElementById('recentSales').innerHTML=sales.slice(-8).reverse().map(s=>`<div class="flex" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>#${s.id} - ${s.items.map(i=>i.name+' x'+i.qty).join(', ')}<br><small style="color:var(--muted)">${s.date} | ${s.shift} | ${s.user} | ${s.pay}</small></span><b>${fmt(s.total)}</b></div>`).join('')||'<p>No sales yet</p>';}
+// POS
+function renderPOS(){let q=(document.getElementById('posSearch').value||'').toLowerCase(); let list=meds.filter(m=>m.name.toLowerCase().includes(q)||(m.barcode||'').includes(q)); document.getElementById('posList').innerHTML=list.map(m=>`<div class="flex" style="justify-content:space-between;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px"><div><b>${m.name}</b><br><small style="color:var(--muted)">${m.category} | Stock: ${m.qty} | Exp: ${m.expiry} | Barcode: ${m.barcode||'-'}</small></div><div class="flex"><div style="text-align:right"><b>${fmt(m.price)}</b><br><small style="color:var(--muted)">$${(m.priceUSD||(m.price/exchangeRate).toFixed(2))} USD</small></div><button class="btn-pri btn-sm" onclick="addToCart(${m.id})" ${m.qty<=0?'disabled':''}>Add +</button></div></div>`).join('')||'<p>No medicine found</p>'; let dl=document.getElementById('custList'); if(dl) dl.innerHTML=customers.map(c=>`<option value="${c.name}">`).join(''); renderCart();}
+function scanBarcode(){let code=document.getElementById('posBarcode').value.trim(); if(!code) return; let m=meds.find(x=>String(x.barcode)===code); if(m){addToCart(m.id); document.getElementById('posBarcode').value='';}else alert('Barcode not found');}
+function addToCart(id){let m=meds.find(x=>x.id===id); if(!m||m.qty<=0) return; let c=cart.find(x=>x.id===id); if(c){if(c.qty<m.qty) c.qty++;}else cart.push({id:m.id,name:m.name,price:m.price,qty:1}); renderCart();}
+function renderCart(){let total=cart.reduce((a,i)=>a+i.price*i.qty,0); document.getElementById('cartList').innerHTML=cart.length?cart.map((i,idx)=>`<div class="flex" style="justify-content:space-between;padding:8px;border-bottom:1px solid var(--line)"><span>${i.name}<br><small>${fmt(i.price)} x ${i.qty}</small></span><span class="flex"><button class="btn-ghost btn-sm" onclick="chgQty(${idx},-1)">-</button><b>${i.qty}</b><button class="btn-ghost btn-sm" onclick="chgQty(${idx},1)">+</button><button class="btn-red btn-sm" onclick="cart.splice(${idx},1);renderCart()">X</button></span></div>`).join(''):'<p style="color:var(--muted)">Cart is empty</p>'; document.getElementById('cartTotal').innerText=fmt(total); document.getElementById('loyaltyEarned').innerText=Math.floor(total/1000)+' pts';}
 function chgQty(idx,d){cart[idx].qty+=d; if(cart[idx].qty<=0) cart.splice(idx,1); renderCart();}
 function clearCart(){cart=[];renderCart();}
-function checkout(){
-  if(!cart.length){alert('Cart is empty');return;}
-  let pay=document.getElementById('payMethod').value;
-  let cust=document.getElementById('custName').value||'Walk-in';
-  let total=cart.reduce((a,i)=>a+i.price*i.qty,0);
-  let sh=currentUser.shift==='All'?getShift():currentUser.shift;
-  let sale={id:Date.now(),date:todayStr(),time:new Date().toLocaleTimeString(),shift:sh,user:currentUser.fullName,customer:cust,pay:pay,items:[...cart],total:total};
-  cart.forEach(ci=>{let m=meds.find(x=>x.id===ci.id); if(m) m.qty-=ci.qty;});
-  sales.push(sale);
-  if(pay==='Debt'){ debts.push({id:Date.now(),name:cust,amount:total,phone:'',date:todayStr(),status:'Unpaid'}); }
-  saveAll();
-  document.getElementById('receipt').classList.remove('hidden');
-  document.getElementById('receipt').innerHTML=`<div style="text-align:center"><img src="logo.png" style="width:60px;height:60px;object-fit:contain"><h3>Active Care Pharmacy</h3><p style="font-size:12px">Juba, South Sudan | Receipt #${sale.id}</p><p style="font-size:12px">${sale.date} ${sale.time} | ${sh} - ${shiftTime(sh)}<br>Staff: ${sale.user} | Customer: ${cust} | Pay: ${pay}</p></div><hr>${sale.items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>${i.name} x ${i.qty}</span><b>${fmt(i.price*i.qty)}</b></div>`).join('')}<hr><div style="display:flex;justify-content:space-between"><b>Total</b><b>${fmt(total)}</b></div><p style="text-align:center;font-size:12px;margin-top:8px">Thank you</p><button class="btn-pri" style="width:100%;margin-top:8px" onclick="window.print()">Print Receipt</button>`;
-  cart=[]; document.getElementById('custName').value=''; renderPOS(); renderDash();
-}// ===== INVENTORY =====
-function renderInv(){
-  let q=(document.getElementById('invSearch').value||'').toLowerCase();
-  let list=meds.filter(m=>m.name.toLowerCase().includes(q));
-  document.getElementById('invTable').innerHTML=`<table><tr><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Expiry</th><th>Status</th><th>Action</th></tr>${list.map(m=>{let st=m.qty<=0?'<span class="tag tag-red">Out</span>':m.qty<=m.min?'<span class="tag tag-orange">Low</span>':'<span class="tag tag-green">OK</span>';return `<tr><td><b>${m.name}</b><br><small>${m.barcode||''}</small></td><td>${m.category}</td><td>${fmt(m.price)}<br><small>$${(m.priceUSD||(m.price/exchangeRate).toFixed(2))}</small></td><td>${m.qty}</td><td>${m.expiry}</td><td>${st}</td><td><button class="btn-blue btn-sm" onclick="editMed(${m.id})">Edit</button> <button class="btn-red btn-sm" onclick="delMed(${m.id})">Delete</button></td></tr>`}).join('')}</table>`;
-}
-function openMedModal(){editMedId=null;document.getElementById('medModalTitle').innerText='Add Medicine';['mName','mCategory','mBarcode','mPrice','mCost','mQty','mMin','mExpiry','mSupplier'].forEach(id=>document.getElementById(id).value='');document.getElementById('mQty').value=0;document.getElementById('mMin').value=5;document.getElementById('mPriceSSP').innerText='-';document.getElementById('mCostSSP').innerText='-';document.getElementById('mRateHint').innerText='1 USD = '+exchangeRate+' SSP';document.getElementById('mPrice').oninput=()=>{document.getElementById('mPriceSSP').innerText=fmt(usdToSsp(document.getElementById('mPrice').value))+' ('+document.getElementById('mPrice').value+' USD)';};document.getElementById('mCost').oninput=()=>{document.getElementById('mCostSSP').innerText=fmt(usdToSsp(document.getElementById('mCost').value))+' ('+document.getElementById('mCost').value+' USD)';};document.getElementById('medModal').classList.remove('hidden');}
+function checkout(){if(!cart.length){alert('Cart is empty');return;} let pay=document.getElementById('payMethod').value; let cust=document.getElementById('custName').value||'Walk-in'; let total=cart.reduce((a,i)=>a+i.price*i.qty,0); let sale={id:Date.now(),date:todayStr(),time:new Date().toLocaleTimeString(),shift:currentShift,user:currentUser.fullName,customer:cust,pay:pay,items:[...cart],total:total}; cart.forEach(ci=>{let m=meds.find(x=>x.id===ci.id); if(m) m.qty-=ci.qty;}); sales.push(sale); if(pay==='Debt'){debts.push({id:Date.now(),name:cust,amount:total,phone:'',date:todayStr(),status:'Unpaid'});} let cu=customers.find(c=>c.name.toLowerCase()===cust.toLowerCase()); if(!cu&&cust!=='Walk-in'){cu={id:Date.now(),name:cust,phone:'',points:0,totalSpent:0,note:''}; customers.push(cu);} if(cu){cu.points+=Math.floor(total/1000); cu.totalSpent+=total;} saveAll(); logAudit('SALE','Receipt #'+sale.id+' - '+fmt(total)+' - '+pay); document.getElementById('receipt').classList.remove('hidden'); document.getElementById('receipt').innerHTML=`<div style="text-align:center"><img src="logo.png" style="width:64px;height:64px;object-fit:contain"><h3>Active Care Pharmacy</h3><p style="font-size:12px">Juba, South Sudan | Receipt #${sale.id}</p><p style="font-size:12px">${sale.date} ${sale.time} | ${currentShift} - ${shiftTime(currentShift)}<br>Staff: ${sale.user} | Customer: ${cust} | Pay: ${pay}</p></div><hr>${sale.items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>${i.name} x ${i.qty}</span><b>${fmt(i.price*i.qty)}</b></div>`).join('')}<hr><div style="display:flex;justify-content:space-between"><b>Total</b><b>${fmt(total)}</b></div><p style="text-align:center;font-size:12px;margin-top:8px">Loyalty Points: ${Math.floor(total/1000)} pts • Thank you</p><button class="btn-pri" style="width:100%;margin-top:8px" onclick="window.print()">Print Receipt</button>`; cart=[]; document.getElementById('custName').value=''; renderPOS(); renderDash(); renderSales(); renderCustomers();}
+// SALES HISTORY
+function renderSales(){let q=(document.getElementById('salesSearch')?.value||'').toLowerCase(); let f=document.getElementById('salesFilter')?.value||''; let list=sales.filter(s=>(s.customer.toLowerCase().includes(q)||String(s.id).includes(q))&&(!f||s.pay===f)); document.getElementById('salesTable').innerHTML=`<div class="wrap"><table><tr><th>Receipt</th><th>Date</th><th>Customer</th><th>Items</th><th>Shift</th><th>Staff</th><th>Pay</th><th>Total</th></tr>${list.slice(-50).reverse().map(s=>`<tr><td>#${s.id}</td><td>${s.date} ${s.time||''}</td><td>${s.customer}</td><td>${s.items.map(i=>i.name+' x'+i.qty).join(', ')}</td><td>${s.shift}</td><td>${s.user}</td><td><span class="tag tag-blue">${s.pay}</span></td><td><b>${fmt(s.total)}</b></td></tr>`).join('')}</table></div>`;}// INVENTORY
+function renderInv(){let q=(document.getElementById('invSearch').value||'').toLowerCase(); let list=meds.filter(m=>m.name.toLowerCase().includes(q)); document.getElementById('invTable').innerHTML=`<table><tr><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Expiry</th><th>Supplier</th><th>Status</th><th>Action</th></tr>${list.map(m=>{let st=m.qty<=0?'<span class="tag tag-red">Out</span>':m.qty<=m.min?'<span class="tag tag-orange">Low</span>':'<span class="tag tag-green">OK</span>';return `<tr><td><b>${m.name}</b><br><small>Barcode: ${m.barcode||'-'}</small></td><td>${m.category}</td><td>${fmt(m.price)}<br><small>$${(m.priceUSD||(m.price/exchangeRate).toFixed(2))}</small></td><td>${m.qty}</td><td>${m.expiry}</td><td>${m.supplier||''}</td><td>${st}</td><td><button class="btn-blue btn-sm" onclick="editMed(${m.id})">Edit</button> <button class="btn-red btn-sm" onclick="delMed(${m.id})">Delete</button></td></tr>`}).join('')}</table>`;}
+function openMedModal(){editMedId=null;document.getElementById('medModalTitle').innerText='Add Medicine';['mName','mCategory','mBarcode','mPrice','mCost','mQty','mMin','mExpiry','mSupplier'].forEach(id=>document.getElementById(id).value='');document.getElementById('mQty').value=0;document.getElementById('mMin').value=5;document.getElementById('mPriceSSP').innerText='-';document.getElementById('mCostSSP').innerText='-';document.getElementById('mRateHint').innerText='1 USD = '+exchangeRate+' SSP';document.getElementById('mPrice').oninput=()=>{document.getElementById('mPriceSSP').innerText=fmt(usdToSsp(document.getElementById('mPrice').value))};document.getElementById('mCost').oninput=()=>{document.getElementById('mCostSSP').innerText=fmt(usdToSsp(document.getElementById('mCost').value))};document.getElementById('medModal').classList.remove('hidden');}
 function closeMedModal(){document.getElementById('medModal').classList.add('hidden');}
 function editMed(id){let m=meds.find(x=>x.id===id); if(!m) return; editMedId=id; document.getElementById('medModalTitle').innerText='Edit Medicine'; document.getElementById('mName').value=m.name; document.getElementById('mCategory').value=m.category; document.getElementById('mBarcode').value=m.barcode||''; document.getElementById('mPrice').value=m.priceUSD||(m.price/exchangeRate).toFixed(2); document.getElementById('mCost').value=m.costUSD||(m.cost/exchangeRate).toFixed(2); document.getElementById('mQty').value=m.qty; document.getElementById('mMin').value=m.min; document.getElementById('mExpiry').value=m.expiry; document.getElementById('mSupplier').value=m.supplier||''; document.getElementById('mPriceSSP').innerText=fmt(m.price); document.getElementById('mCostSSP').innerText=fmt(m.cost); document.getElementById('mRateHint').innerText='1 USD = '+exchangeRate+' SSP'; document.getElementById('mPrice').oninput=()=>{document.getElementById('mPriceSSP').innerText=fmt(usdToSsp(document.getElementById('mPrice').value))}; document.getElementById('mCost').oninput=()=>{document.getElementById('mCostSSP').innerText=fmt(usdToSsp(document.getElementById('mCost').value))}; document.getElementById('medModal').classList.remove('hidden');}
-function saveMed(){
-  let name=document.getElementById('mName').value.trim(); let priceUSD=Number(document.getElementById('mPrice').value);
-  if(!name||!priceUSD){alert('Name and Price (USD) required');return;}
-  let costUSD=Number(document.getElementById('mCost').value||0);
-  let data={name:name,category:document.getElementById('mCategory').value,barcode:document.getElementById('mBarcode').value,priceUSD:priceUSD,costUSD:costUSD,price:usdToSsp(priceUSD),cost:usdToSsp(costUSD),qty:Number(document.getElementById('mQty').value||0),min:Number(document.getElementById('mMin').value||5),expiry:document.getElementById('mExpiry').value||'2027-01-01',supplier:document.getElementById('mSupplier').value};
-  if(editMedId){let m=meds.find(x=>x.id===editMedId); Object.assign(m,data);} else {data.id=Date.now(); meds.push(data);}
-  saveAll(); closeMedModal(); renderInv(); renderPOS(); renderDash();
-}
-function delMed(id){if(confirm('Delete this medicine?')){meds=meds.filter(x=>x.id!==id);saveAll();renderInv();}}
-function exportInv(){let csv='Name,Category,Price USD,Price SSP,Qty,Expiry\n'+meds.map(m=>`${m.name},${m.category},${m.priceUSD||''},${m.price},${m.qty},${m.expiry}`).join('\n'); let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='inventory.csv'; a.click();}
-function exportBackup(){let data={meds,sales,returns,expenses,debts,users,exchangeRate}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'})); a.download='active-care-backup.json'; a.click();}
-// ===== PURCHASE =====
-function renderPurchase(){document.getElementById('purMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join(''); document.getElementById('purHistory').innerHTML=`<h3 style="margin-top:16px">Purchase Info</h3><p style="color:var(--muted);font-size:13px">Use Purchase to add stock. Prices in USD, auto-converted to SSP.</p>`;}
-function doPurchase(){
-  let id=Number(document.getElementById('purMed').value); let m=meds.find(x=>x.id===id); if(!m) return;
-  let qty=Number(document.getElementById('purQty').value||0);
-  let costUSD=Number(document.getElementById('purCost').value||m.costUSD||0);
-  let priceUSD=Number(document.getElementById('purPrice').value||m.priceUSD||0);
-  if(qty<=0){alert('Enter qty');return;}
-  m.qty+=qty; if(costUSD){m.costUSD=costUSD; m.cost=usdToSsp(costUSD);} if(priceUSD){m.priceUSD=priceUSD; m.price=usdToSsp(priceUSD);} if(document.getElementById('purExpiry').value) m.expiry=document.getElementById('purExpiry').value; if(document.getElementById('purSupplier').value) m.supplier=document.getElementById('purSupplier').value;
-  saveAll(); alert('Stock added: '+m.name+' +'+qty); renderPurchase(); renderInv(); renderDash();
-}
-// ===== RETURNS =====
+function saveMed(){let name=document.getElementById('mName').value.trim(); let priceUSD=Number(document.getElementById('mPrice').value); if(!name||!priceUSD){alert('Name and Price (USD) required');return;} let costUSD=Number(document.getElementById('mCost').value||0); let data={name:name,category:document.getElementById('mCategory').value,barcode:document.getElementById('mBarcode').value,priceUSD:priceUSD,costUSD:costUSD,price:usdToSsp(priceUSD),cost:usdToSsp(costUSD),qty:Number(document.getElementById('mQty').value||0),min:Number(document.getElementById('mMin').value||5),expiry:document.getElementById('mExpiry').value||'2027-01-01',supplier:document.getElementById('mSupplier').value}; if(editMedId){let m=meds.find(x=>x.id===editMedId); Object.assign(m,data); logAudit('EDIT MEDICINE',name);}else{data.id=Date.now(); meds.push(data); logAudit('ADD MEDICINE',name);} saveAll(); closeMedModal(); renderInv(); renderPOS(); renderDash();}
+function delMed(id){if(confirm('Delete this medicine?')){let m=meds.find(x=>x.id===id); meds=meds.filter(x=>x.id!==id); logAudit('DELETE MEDICINE',m?m.name:''); saveAll(); renderInv();}}
+function exportInv(){let csv='Name,Category,Price USD,Price SSP,Qty,Expiry,Supplier\n'+meds.map(m=>`${m.name},${m.category},${m.priceUSD||''},${m.price},${m.qty},${m.expiry},${m.supplier||''}`).join('\n'); let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='inventory.csv'; a.click();}
+function exportBackup(){let data={meds,sales,returns,expenses,debts,users,customers,suppliers,shiftsLog,audit,exchangeRate}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'})); a.download='active-care-backup.json'; a.click();}
+// PURCHASE
+function renderPurchase(){document.getElementById('purMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join(''); document.getElementById('purHistory').innerHTML=`<h3 style="margin-top:16px">Purchase Info</h3><p style="color:var(--muted);font-size:13px">Prices in USD, auto-converted to SSP at current rate.</p>`;}
+function doPurchase(){let id=Number(document.getElementById('purMed').value); let m=meds.find(x=>x.id===id); if(!m) return; let qty=Number(document.getElementById('purQty').value||0); let costUSD=Number(document.getElementById('purCost').value||m.costUSD||0); let priceUSD=Number(document.getElementById('purPrice').value||m.priceUSD||0); if(qty<=0){alert('Enter qty');return;} m.qty+=qty; if(costUSD){m.costUSD=costUSD; m.cost=usdToSsp(costUSD);} if(priceUSD){m.priceUSD=priceUSD; m.price=usdToSsp(priceUSD);} if(document.getElementById('purExpiry').value) m.expiry=document.getElementById('purExpiry').value; if(document.getElementById('purSupplier').value) m.supplier=document.getElementById('purSupplier').value; logAudit('PURCHASE',m.name+' +'+qty); saveAll(); alert('Stock added: '+m.name+' +'+qty); renderPurchase(); renderInv(); renderDash();}
+// SUPPLIERS
+function renderSuppliers(){document.getElementById('supList').innerHTML=`<div class="wrap"><table><tr><th>Name</th><th>Phone</th><th>Address</th><th>Action</th></tr>${suppliers.map((s,idx)=>`<tr><td><b>${s.name}</b></td><td>${s.phone}</td><td>${s.address}</td><td><button class="btn-red btn-sm" onclick="suppliers.splice(${idx},1);saveAll();renderSuppliers()">Delete</button></td></tr>`).join('')}</table></div>`;}
+function addSupplier(){let n=document.getElementById('supName').value.trim(); if(!n){alert('Enter supplier name');return;} suppliers.push({id:Date.now(),name:n,phone:document.getElementById('supPhone').value,address:document.getElementById('supAddr').value}); document.getElementById('supName').value=''; document.getElementById('supPhone').value=''; document.getElementById('supAddr').value=''; saveAll(); renderSuppliers();}
+// RETURNS
 function renderReturns(){document.getElementById('retMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name} - Stock ${m.qty}</option>`).join(''); document.getElementById('retList').innerHTML=`<table><tr><th>Date</th><th>Medicine</th><th>Qty</th><th>Reason</th><th>Loss</th></tr>${returns.slice(-20).reverse().map(r=>`<tr><td>${r.date}</td><td>${r.name}</td><td>${r.qty}</td><td>${r.reason}</td><td>${fmt(r.loss)}</td></tr>`).join('')}</table>`;}
-function doReturn(){let id=Number(document.getElementById('retMed').value); let m=meds.find(x=>x.id===id); if(!m) return; let qty=Number(document.getElementById('retQty').value||1); let reason=document.getElementById('retReason').value; if(qty>m.qty){alert('Qty more than stock');return;} m.qty-=qty; returns.push({id:Date.now(),date:todayStr(),name:m.name,qty:qty,reason:reason,loss:qty*m.cost}); saveAll(); renderReturns(); renderInv(); renderDash();}
-// ===== EXPENSES =====
+function doReturn(){let id=Number(document.getElementById('retMed').value); let m=meds.find(x=>x.id===id); if(!m) return; let qty=Number(document.getElementById('retQty').value||1); let reason=document.getElementById('retReason').value; if(qty>m.qty){alert('Qty more than stock');return;} m.qty-=qty; returns.push({id:Date.now(),date:todayStr(),name:m.name,qty:qty,reason:reason,loss:qty*m.cost}); logAudit('RETURN',m.name+' x'+qty+' - '+reason); saveAll(); renderReturns(); renderInv(); renderDash();}
+// EXPENSES
 function renderExpenses(){let total=expenses.reduce((a,e)=>a+e.amount,0); document.getElementById('expList').innerHTML=`<p style="margin-top:12px"><b>Total Expenses: ${fmt(total)}</b></p><table><tr><th>Date</th><th>Type</th><th>Note</th><th>Amount</th></tr>${expenses.slice(-20).reverse().map(e=>`<tr><td>${e.date}</td><td>${e.type}</td><td>${e.note}</td><td>${fmt(e.amount)}</td></tr>`).join('')}</table>`;}
-function doExpense(){let amt=Number(document.getElementById('expAmt').value||0); if(amt<=0){alert('Enter amount');return;} expenses.push({id:Date.now(),date:todayStr(),type:document.getElementById('expType').value,amount:amt,note:document.getElementById('expNote').value}); document.getElementById('expAmt').value=''; document.getElementById('expNote').value=''; saveAll(); renderExpenses();}
-// ===== DEBTS =====
+function doExpense(){let amt=Number(document.getElementById('expAmt').value||0); if(amt<=0){alert('Enter amount');return;} expenses.push({id:Date.now(),date:todayStr(),type:document.getElementById('expType').value,amount:amt,note:document.getElementById('expNote').value}); logAudit('EXPENSE',document.getElementById('expType').value+' - '+fmt(amt)); document.getElementById('expAmt').value=''; document.getElementById('expNote').value=''; saveAll(); renderExpenses();}
+// DEBTS
 function renderDebts(){document.getElementById('debtList').innerHTML=`<table><tr><th>Customer</th><th>Amount</th><th>Phone</th><th>Date</th><th>Status</th><th>Action</th></tr>${debts.map((d,idx)=>`<tr><td>${d.name}</td><td>${fmt(d.amount)}</td><td>${d.phone}</td><td>${d.date}</td><td><span class="tag ${d.status==='Paid'?'tag-green':'tag-red'}">${d.status}</span></td><td>${d.status!=='Paid'?`<button class="btn-green btn-sm" onclick="payDebt(${idx})">Mark Paid</button>`:''} <button class="btn-red btn-sm" onclick="debts.splice(${idx},1);saveAll();renderDebts()">Delete</button></td></tr>`).join('')}</table>`;}
-function doDebt(){let name=document.getElementById('debtName').value.trim(); let amt=Number(document.getElementById('debtAmt').value||0); if(!name||amt<=0){alert('Enter name and amount');return;} debts.push({id:Date.now(),name:name,amount:amt,phone:document.getElementById('debtPhone').value,date:todayStr(),status:'Unpaid'}); document.getElementById('debtName').value=''; document.getElementById('debtAmt').value=''; saveAll(); renderDebts();}
-function payDebt(idx){debts[idx].status='Paid'; saveAll(); renderDebts();}
-// ===== REPORTS =====
-function renderReports(){
-  let from=document.getElementById('repFrom').value||'2000-01-01'; let to=document.getElementById('repTo').value||'2099-01-01';
-  let fSales=sales.filter(s=>s.date>=from&&s.date<=to);
-  let sTotal=fSales.reduce((a,s)=>a+s.total,0);
-  let eTotal=expenses.filter(e=>e.date>=from&&e.date<=to).reduce((a,e)=>a+e.amount,0);
-  let rTotal=returns.filter(r=>r.date>=from&&r.date<=to).reduce((a,r)=>a+r.loss,0);
-  let cost=fSales.reduce((a,s)=>a+s.items.reduce((b,i)=>{let m=meds.find(x=>x.id===i.id); return b+(m?m.cost*i.qty:0)},0),0);
-  let profit=sTotal-cost-eTotal-rTotal;
-  document.getElementById('repSales').innerText=fmt(sTotal);
-  document.getElementById('repExp').innerText=fmt(eTotal);
-  document.getElementById('repRet').innerText=fmt(rTotal);
-  document.getElementById('repProfit').innerText=fmt(profit);
-  document.getElementById('repTable').innerHTML=`<table><tr><th>Date</th><th>Receipt</th><th>Items</th><th>Shift</th><th>Staff</th><th>Total</th></tr>${fSales.slice(-30).reverse().map(s=>`<tr><td>${s.date}</td><td>#${s.id}</td><td>${s.items.map(i=>i.name+' x'+i.qty).join(', ')}</td><td>${s.shift}</td><td>${s.user}</td><td>${fmt(s.total)}</td></tr>`).join('')}</table>`;
-  let shifts=['Morning','Evening','Night'].map(sh=>{let ss=fSales.filter(s=>s.shift===sh); return `<div class="card" style="margin-top:10px"><b>${sh} - ${shiftTime(sh)}</b> : ${fmt(ss.reduce((a,s)=>a+s.total,0))} | ${ss.length} sales</div>`}).join('');
-  document.getElementById('shiftReport').innerHTML=`<h3>Shift Report</h3>${shifts}`;
-}
+function doDebt(){let name=document.getElementById('debtName').value.trim(); let amt=Number(document.getElementById('debtAmt').value||0); if(!name||amt<=0){alert('Enter name and amount');return;} debts.push({id:Date.now(),name:name,amount:amt,phone:document.getElementById('debtPhone').value,date:todayStr(),status:'Unpaid'}); logAudit('DEBT ADDED',name+' - '+fmt(amt)); document.getElementById('debtName').value=''; document.getElementById('debtAmt').value=''; saveAll(); renderDebts();}
+function payDebt(idx){debts[idx].status='Paid'; logAudit('DEBT PAID',debts[idx].name); saveAll(); renderDebts();}
+// CUSTOMERS
+function renderCustomers(){document.getElementById('custTable').innerHTML=`<table><tr><th>Customer</th><th>Phone</th><th>Points</th><th>Total Spent</th><th>Note</th><th>Action</th></tr>${customers.map((c,idx)=>`<tr><td><b>${c.name}</b></td><td>${c.phone}</td><td><span class="tag tag-purple">${c.points} pts</span></td><td>${fmt(c.totalSpent)}</td><td>${c.note||''}</td><td><button class="btn-red btn-sm" onclick="customers.splice(${idx},1);saveAll();renderCustomers()">Delete</button></td></tr>`).join('')}</table>`;}
+function addCustomer(){let n=document.getElementById('cName').value.trim(); if(!n){alert('Enter name');return;} customers.push({id:Date.now(),name:n,phone:document.getElementById('cPhone').value,points:0,totalSpent:0,note:document.getElementById('cNote').value}); document.getElementById('cName').value=''; document.getElementById('cPhone').value=''; document.getElementById('cNote').value=''; saveAll(); renderCustomers();}
+// SHIFTS
+function renderShifts(){let tSales=sales.filter(s=>s.date===todayStr()&&s.shift===currentShift); let total=tSales.reduce((a,s)=>a+s.total,0); let cash=tSales.filter(s=>s.pay==='Cash').reduce((a,s)=>a+s.total,0); let bank=tSales.filter(s=>s.pay!=='Cash'&&s.pay!=='Debt').reduce((a,s)=>a+s.total,0); let debt=tSales.filter(s=>s.pay==='Debt').reduce((a,s)=>a+s.total,0); document.getElementById('shiftInfo').innerText=`Current Shift: ${currentShift} - ${shiftTime(currentShift)} | Staff: ${currentUser?currentUser.fullName:''} | Sales: ${tSales.length} | Total: ${fmt(total)} | Cash: ${fmt(cash)} | Bank/Mobile: ${fmt(bank)} | Debt: ${fmt(debt)}`; document.getElementById('nextShiftUser').innerHTML='<option value="">Hand Over To (Next Shift)</option>'+users.map(u=>`<option value="${u.fullName}">${u.fullName} - ${u.shift}</option>`).join(''); document.getElementById('shiftHistory').innerHTML=`<h3 style="margin-top:16px">Closed Shifts History</h3><table><tr><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Expected Cash</th><th>Counted</th><th>Difference</th><th>Handed To</th></tr>${shiftsLog.slice(-20).reverse().map(s=>`<tr><td>${s.date}</td><td>${s.shift}</td><td>${s.user}</td><td>${fmt(s.total)}</td><td>${fmt(s.cashExpected)}</td><td>${fmt(s.cashCounted)}</td><td><span class="tag ${s.diff===0?'tag-green':'tag-red'}">${fmt(s.diff)}</span></td><td>${s.handedTo||'-'}</td></tr>`).join('')}</table>`;}
+function closeShift(){let tSales=sales.filter(s=>s.date===todayStr()&&s.shift===currentShift); let total=tSales.reduce((a,s)=>a+s.total,0); let cash=tSales.filter(s=>s.pay==='Cash').reduce((a,s)=>a+s.total,0); let counted=Number(document.getElementById('shiftCash').value||0); if(!counted&&cash>0&&!confirm('Cash counted is 0, continue?')) return; let handed=document.getElementById('nextShiftUser').value; let note=document.getElementById('shiftNote').value; let diff=counted-cash; let rec={id:Date.now(),date:todayStr(),time:new Date().toLocaleTimeString(),shift:currentShift,user:currentUser.fullName,total:total,cashExpected:cash,cashCounted:counted,diff:diff,handedTo:handed,note:note}; shiftsLog.push(rec); logAudit('CLOSE SHIFT',currentShift+' - Total '+fmt(total)+' Diff '+fmt(diff)); saveAll(); document.getElementById('zReport').innerHTML=`<div id="receipt" style="margin-top:14px;border:1px dashed #94a3b8;padding:14px"><div style="text-align:center"><img src="logo.png" style="width:60px;height:60px;object-fit:contain"><h3>Active Care Pharmacy - Z-REPORT</h3><p style="font-size:12px">${rec.date} ${rec.time} | ${rec.shift} - ${shiftTime(rec.shift)}<br>Staff: ${rec.user} | Handed To: ${handed||'-'} | Note: ${note||'-'}</p></div><hr><div style="font-size:13px;line-height:2"><div style="display:flex;justify-content:space-between"><span>Total Sales</span><b>${fmt(total)}</b></div><div style="display:flex;justify-content:space-between"><span>Cash Expected</span><b>${fmt(cash)}</b></div><div style="display:flex;justify-content:space-between"><span>Cash Counted</span><b>${fmt(counted)}</b></div><div style="display:flex;justify-content:space-between"><span>Difference</span><b style="color:${diff===0?'green':'red'}">${fmt(diff)}</b></div><div style="display:flex;justify-content:space-between"><span>Transactions</span><b>${tSales.length}</b></div></div><hr><p style="text-align:center;font-size:12px">Signature: _____________</p><button class="btn-pri" style="width:100%;margin-top:8px" onclick="window.print()">Print Z-Report</button></div>`; renderShifts(); alert('Shift closed. Difference: '+fmt(diff));}
+// REPORTS
+function renderReports(){let from=document.getElementById('repFrom').value||'2000-01-01'; let to=document.getElementById('repTo').value||'2099-01-01'; let fSales=sales.filter(s=>s.date>=from&&s.date<=to); let sTotal=fSales.reduce((a,s)=>a+s.total,0); let eTotal=expenses.filter(e=>e.date>=from&&e.date<=to).reduce((a,e)=>a+e.amount,0); let rTotal=returns.filter(r=>r.date>=from&&r.date<=to).reduce((a,r)=>a+r.loss,0); let cost=fSales.reduce((a,s)=>a+s.items.reduce((b,i)=>{let m=meds.find(x=>x.id===i.id); return b+(m?m.cost*i.qty:0)},0),0); let profit=sTotal-cost-eTotal-rTotal; document.getElementById('repSales').innerText=fmt(sTotal); document.getElementById('repExp').innerText=fmt(eTotal); document.getElementById('repRet').innerText=fmt(rTotal); document.getElementById('repProfit').innerText=fmt(profit); document.getElementById('repTable').innerHTML=`<div class="wrap"><table><tr><th>Date</th><th>Receipt</th><th>Items</th><th>Shift</th><th>Staff</th><th>Total</th></tr>${fSales.slice(-30).reverse().map(s=>`<tr><td>${s.date}</td><td>#${s.id}</td><td>${s.items.map(i=>i.name+' x'+i.qty).join(', ')}</td><td>${s.shift}</td><td>${s.user}</td><td>${fmt(s.total)}</td></tr>`).join('')}</table></div>`; let shifts=['Morning','Evening','Night'].map(sh=>{let ss=fSales.filter(s=>s.shift===sh); return `<div class="card" style="margin-top:10px"><b>${sh} - ${shiftTime(sh)}</b> : ${fmt(ss.reduce((a,s)=>a+s.total,0))} | ${ss.length} sales</div>`}).join(''); document.getElementById('shiftReport').innerHTML=`<h3>Shift Report</h3>${shifts}`;}
 function printReport(){window.print();}
-// ===== USERS =====
-function renderUsers(){document.getElementById('userList').innerHTML=`<table><tr><th>Full Name</th><th>Username</th><th>Role</th><th>Shift</th><th>Phone</th><th>Action</th></tr>${users.map((u,idx)=>`<tr><td>${u.fullName}</td><td>${u.username}</td><td>${u.role}</td><td>${u.shift} - ${shiftTime(u.shift)}</td><td>${u.phone}</td><td><button class="btn-red btn-sm" onclick="users.splice(${idx},1);saveUsers();renderUsers()">Delete</button></td></tr>`).join('')}</table>`;}
-function addUser(){
-  if(currentUser.role!=='Manager'){alert('Only Manager can add users');return;}
-  let name=document.getElementById('uName').value.trim(); let un=document.getElementById('uUser').value.trim(); let pw=document.getElementById('uPass').value;
-  if(!name||!un||!pw){alert('Fill all fields');return;}
-  if(users.find(x=>x.username===un)){alert('Username exists');return;}
-  users.push({id:Date.now(),fullName:name,username:un,password:pw,role:document.getElementById('uRole').value,shift:document.getElementById('uShift').value,phone:document.getElementById('uPhone').value});
-  saveUsers(); renderUsers(); alert('User added');
-}
+// USERS
+function renderUsers(){document.getElementById('userList').innerHTML=`<table><tr><th>Full Name</th><th>Username</th><th>Role</th><th>Shift</th><th>Phone</th><th>Action</th></tr>${users.map((u,idx)=>`<tr><td>${u.fullName}</td><td>${u.username}</td><td><span class="tag ${u.role==='Manager'?'tag-purple':'tag-blue'}">${u.role}</span></td><td>${u.shift} - ${shiftTime(u.shift)}</td><td>${u.phone}</td><td><button class="btn-red btn-sm" onclick="users.splice(${idx},1);saveUsers();renderUsers()">Delete</button></td></tr>`).join('')}</table>`;}
+function addUser(){if(currentUser.role!=='Manager'){alert('Only Manager can add users');return;} let name=document.getElementById('uName').value.trim(); let un=document.getElementById('uUser').value.trim(); let pw=document.getElementById('uPass').value; if(!name||!un||!pw){alert('Fill all fields');return;} if(users.find(x=>x.username===un)){alert('Username exists');return;} users.push({id:Date.now(),fullName:name,username:un,password:pw,role:document.getElementById('uRole').value,shift:document.getElementById('uShift').value,phone:document.getElementById('uPhone').value}); logAudit('ADD USER',name+' - '+document.getElementById('uRole').value); saveUsers(); renderUsers(); alert('User added');}
+// SETTINGS + AUDIT
+function renderSettings(){document.getElementById('auditList').innerHTML=`<table><tr><th>Date</th><th>Time</th><th>User</th><th>Shift</th><th>Action</th><th>Detail</th></tr>${audit.slice(-50).map(a=>`<tr><td>${a.date}</td><td>${a.time}</td><td>${a.user}</td><td>${a.shift}</td><td><b>${a.action}</b></td><td>${a.detail}</td></tr>`).join('')}</table>`;}
+function saveSettings(){alert('Settings saved'); logAudit('SETTINGS','Settings updated');}
+function clearAudit(){if(confirm('Clear audit log?')){audit=[]; saveAll(); renderSettings();}}
 </script>
-
 <!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_BUCKET",
-  messagingSenderId: "PASTE_YOUR_SENDER",
-  appId: "PASTE_YOUR_APP_ID"
-};
-try{
-  const app = initializeApp(firebaseConfig);
-  window._db = getFirestore(app);
-  window._fs = { collection, setDoc, doc, getDoc };
-  let el=document.getElementById('syncStatus'); if(el) el.innerText='Firebase Connected';
-}catch(e){ console.log('Offline Mode', e); }
+const firebaseConfig = { apiKey: "PASTE_YOUR_API_KEY", authDomain: "PASTE_YOUR_AUTH_DOMAIN", projectId: "PASTE_YOUR_PROJECT_ID", storageBucket: "PASTE_YOUR_BUCKET", messagingSenderId: "PASTE_YOUR_SENDER", appId: "PASTE_YOUR_APP_ID" };
+try{ const app = initializeApp(firebaseConfig); window._db = getFirestore(app); window._fs = { collection, setDoc, doc, getDoc }; let el=document.getElementById('syncStatus'); if(el) el.innerText='Firebase Connected'; }catch(e){ console.log('Offline Mode', e); }
 </script>
 <script>
-async function syncToCloud(){
-  if(!window._db) return;
-  try{
-    const {collection,setDoc,doc} = window._fs;
-    await setDoc(doc(collection(window._db,'activecare'),'data'),{meds,sales,returns,expenses,debts,users,exchangeRate,rateUpdatedAt,updatedAt:new Date().toISOString()});
-    let el=document.getElementById('syncStatus'); if(el) el.innerText='Synced';
-  }catch(e){ console.log('Sync failed',e); }
-}
-async function loadFromCloud(){
-  if(!window._db) return;
-  try{
-    const {collection,getDoc,doc} = window._fs;
-    const snap = await getDoc(doc(collection(window._db,'activecare'),'data'));
-    if(snap.exists()){
-      let d=snap.data();
-      if(d.meds) meds=d.meds; if(d.sales) sales=d.sales; if(d.returns) returns=d.returns; if(d.expenses) expenses=d.expenses; if(d.debts) debts=d.debts; if(d.users) users=d.users;
-      if(d.exchangeRate){ exchangeRate=d.exchangeRate; rateUpdatedAt=d.rateUpdatedAt||''; localStorage.setItem('ac_rate', String(exchangeRate)); }
-      saveAll(); saveUsers(); renderRate(); renderDash(); renderPOS(); renderInv();
-    }
-  }catch(e){ console.log('Load cloud failed',e); }
-}
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(e=>console.log('SW Failed',e));
-  });
-}
+async function syncToCloud(){ if(!window._db) return; try{ const {collection,setDoc,doc} = window._fs; await setDoc(doc(collection(window._db,'activecare'),'data'),{meds,sales,returns,expenses,debts,users,customers,suppliers,shiftsLog,audit,exchangeRate,rateUpdatedAt,updatedAt:new Date().toISOString()}); let el=document.getElementById('syncStatus'); if(el) el.innerText='Synced'; }catch(e){ console.log('Sync failed',e); } }
+async function loadFromCloud(){ if(!window._db) return; try{ const {collection,getDoc,doc} = window._fs; const snap = await getDoc(doc(collection(window._db,'activecare'),'data')); if(snap.exists()){ let d=snap.data(); if(d.meds) meds=d.meds; if(d.sales) sales=d.sales; if(d.returns) returns=d.returns; if(d.expenses) expenses=d.expenses; if(d.debts) debts=d.debts; if(d.users) users=d.users; if(d.customers) customers=d.customers; if(d.suppliers) suppliers=d.suppliers; if(d.shiftsLog) shiftsLog=d.shiftsLog; if(d.audit) audit=d.audit; if(d.exchangeRate){ exchangeRate=d.exchangeRate; rateUpdatedAt=d.rateUpdatedAt||''; localStorage.setItem('ac_rate', String(exchangeRate)); } saveAll(); saveUsers(); renderRate(); renderDash(); renderPOS(); renderInv(); } }catch(e){ console.log('Load cloud failed',e); } }
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(e=>console.log('SW Failed',e)); }); }
 </script>
 </body>
 </html>
