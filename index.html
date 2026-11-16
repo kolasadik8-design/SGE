@@ -308,7 +308,14 @@ setInterval(()=>{if(!currentUser) return; let idle=Math.floor((Date.now()-lastAc
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const firebaseConfig = { apiKey: "PASTE_YOUR_API_KEY", authDomain: "PASTE_YOUR_AUTH_DOMAIN", projectId: "PASTE_YOUR_PROJECT_ID", storageBucket: "PASTE_YOUR_BUCKET", messagingSenderId: "PASTE_YOUR_SENDER", appId: "PASTE_YOUR_APP_ID" };
+const firebaseConfig = {
+  apiKey: "AIzaSyAF6tqp2q2YSzyE_YZFBi4h_nt0zzYVCsI",
+  authDomain: "tajdera-596d1.firebaseapp.com",
+  projectId: "tajdera-596d1",
+  storageBucket: "tajdera-596d1.firebasestorage.app",
+  messagingSenderId: "947869925949",
+  appId: "1:947869925949:web:0f210e6050211d78ed2054"
+};
 try{ const app = initializeApp(firebaseConfig); window._db = getFirestore(app); window._fs = { collection, setDoc, doc, getDoc }; let el=document.getElementById('syncStatus'); if(el) el.innerText='Firebase Connected - One DB for All Branches'; }catch(e){ console.log('Offline Mode', e); }
 </script>
 <script>
