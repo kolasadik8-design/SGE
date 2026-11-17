@@ -67,22 +67,14 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-// Background Sync - placeholder for future Firebase sync
-self.addEventListener('sync', (e) => {
-  if (e.tag === 'activecare-sync') {
-    console.log('Active Care - Background sync');
-  }
-});
-
-// Push - ready for future notifications (expiry / low stock)
+// Push - Ready for future notifications (expiry / low stock)
 self.addEventListener('push', (e) => {
   const data = e.data ? e.data.text() : 'Active Care Pharmacy';
   e.waitUntil(
     self.registration.showNotification('Active Care Pharmacy', {
       body: data,
       icon: './logo.png',
-      badge: './logo.png',
-      theme_color: '#0B6B5A'
+      badge: './logo.png'
     })
   );
 });
