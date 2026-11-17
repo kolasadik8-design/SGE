@@ -1,7 +1,5 @@
-/* Active Care Pharmacy - Single Branch - Service Worker v7 - Offline First */
 const CACHE_NAME = 'activecare-single-v7';
 const CORE_FILES = ['./', './index.html', './manifest.json', './logo.png'];
-
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_FILES)).then(() => self.skipWaiting()).catch((err) => console.log('Active Care - Cache failed', err)));
 });
@@ -32,5 +30,4 @@ self.addEventListener('fetch', (e) => {
 });
 self.addEventListener('push', (e) => {
   const data = e.data ? e.data.text() : 'Active Care Pharmacy';
-  e.waitUntil(self.registration.showNotification('Active Care Pharmacy', { body: data, icon: './logo.png', badge: './logo.png' }));
-});
+ 
