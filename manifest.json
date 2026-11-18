@@ -1,25 +1,14 @@
 {
   "name": "Active Care Pharmacy",
   "short_name": "Active Care",
-  "description": "Active Care Pharmacy - Single Branch Management System - POS, Inventory, Accounting, Reports",
-  "id": "/",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#0F2A2E",
   "theme_color": "#0B6B5A",
   "lang": "en",
-  "dir": "ltr",
-  "categories": ["business", "medical", "finance", "productivity"],
   "icons": [
     { "src": "logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "logo.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ],
-  "shortcuts": [
-    { "name": "Point of Sale", "short_name": "POS", "url": "./index.html", "description": "Open Point of Sale" },
-    { "name": "Dashboard", "short_name": "Dashboard", "url": "./index.html", "description": "Open Dashboard" }
+    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
