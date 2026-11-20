@@ -1,9 +1,7 @@
-const CACHE_NAME = 'activecare-single-v8';
-const CORE_FILES = ['./', './index.html', './manifest.json', './logo.png'];
-self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_FILES)).then(() => self.skipWaiting())); });
+const CACHE_NAME = 'activecare-v9';
+self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(['./', './index.html', './manifest.json', './logo.png'])).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
-  const url = e.request.url;
-  if (url.includes('firestore.googleapis.com') || url.includes('firebase') || url.includes('gstatic.com') || url.includes('googleapis.com')) { e.respondWith(fetch(e.request).catch(() => caches.match('./index.html'))); return; }
+  if (e.request.url.includes('firestore') || e.request.url.includes('gstatic') || e.request.url.includes('googleapis')) { e.respondWith(fetch(e.request).catch(() => caches.match('./index.html'))); return; }
   e.respondWith(caches.match(e.request).then((cached) => cached || fetch(e.request).catch(() => caches.match('./index.html'))));
 });
