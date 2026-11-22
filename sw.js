@@ -1,5 +1,5 @@
 /* Active Care Pharmacy - Single Branch - Service Worker v8 - Offline First */
-const CACHE_NAME = 'activecare-single-v8';
+const CACHE_NAME = 'activecare-single-v9';
 const CORE_FILES = ['./', './index.html', './manifest.json', './logo.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_FILES)).then(() => self.skipWaiting()).catch((err) => console.log('Active Care - Cache failed', err)));
