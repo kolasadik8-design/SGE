@@ -1,236 +1,49 @@
-/* Active Care Pharmacy - Professional Print Settings v1 */
-/* Receipt = 80mm Thermal | Reports = A4 */
-
+/* FIX V2 - Receipt fills full 80mm roll */
 @media print {
+  @page {
+    size: 80mm auto;
+    margin: 0 !important;
+  }
 
-  /* Hide everything except print area */
+  body { margin: 0 !important; padding: 0 !important; background: #fff; }
   body * { visibility: hidden; }
   #printArea, #printArea * { visibility: visible; }
 
   #printArea {
     display: block !important;
-    position: fixed;
-    inset: 0;
-    background: #fff;
-    padding: 0;
-    overflow: visible;
+    position: absolute !important;
+    left: 0 !important; top: 0 !important;
+    width: 80mm !important;
+    margin: 0 !important; padding: 0 !important;
   }
 
-  /* ===== 1. RECEIPT - 80mm Thermal Printer ===== */
   .print-doc.receipt {
-    width: 80mm;
-    margin: 0 auto;
-    padding: 3mm 2mm;
-    font-family: Arial, sans-serif;
-    color: #000;
-    font-size: 11px;
-    line-height: 1.4;
-  }
-
-  .print-doc.receipt .print-header {
-    display: block;
-    text-align: center;
-    border-bottom: 2px dashed #000;
-    padding-bottom: 6px;
-    margin-bottom: 8px;
-  }
-
-  .print-doc.receipt .print-header img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    margin: 0 auto;
-  }
-
-  .print-doc.receipt .print-header h1 {
-    font-size: 16px;
-    color: #000;
-    margin: 4px 0 2px;
-  }
-
-  .print-doc.receipt .print-header p {
-    font-size: 10px;
-    color: #333;
-    margin: 1px 0;
-  }
-
-  .print-doc.receipt .print-title {
-    font-size: 13px;
-    text-align: center;
-    font-weight: 800;
-    margin: 8px 0;
-    text-transform: uppercase;
-  }
-
-  .print-doc.receipt .print-meta {
-    display: block;
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 11px;
-    margin-bottom: 8px;
-  }
-
-  .print-doc.receipt .print-meta span {
-    display: block;
-    padding: 1px 0;
-  }
-
-  .print-doc.receipt table {
-    width: 100%;
-    font-size: 11px;
-    border-collapse: collapse;
-  }
-
-  .print-doc.receipt th {
-    background: #fff !important;
+    width: 72mm !important; /* 80mm - هوامش الطابعة */
+    margin: 0 auto !important;
+    padding: 2mm 0 !important;
+    font-family: Arial, sans-serif !important;
     color: #000 !important;
-    border-bottom: 1px dashed #000;
-    padding: 4px 2px;
-    text-align: left;
+    font-size: 13px !important; /* كبرنا الخط من 11 لـ 13 */
+    line-height: 1.5 !important;
+    font-weight: 600 !important;
   }
 
-  .print-doc.receipt td {
-    padding: 4px 2px;
-    border-bottom: 1px dotted #ccc;
-  }
+  .print-doc.receipt .print-header { text-align: center !important; display: block !important; }
+  .print-doc.receipt .print-header img { width: 55px !important; height: 55px !important; }
+  .print-doc.receipt .print-header h1 { font-size: 18px !important; color: #000 !important; }
+  .print-doc.receipt .print-header p { font-size: 11px !important; color: #000 !important; }
 
-  .print-doc.receipt .print-total {
-    border-top: 2px solid #000;
-    margin-top: 8px;
-    padding-top: 6px;
-    font-size: 12px;
-  }
+  .print-doc.receipt .print-title { font-size: 15px !important; text-align: center !important; }
 
-  .print-doc.receipt .print-total div {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 0;
-  }
+  .print-doc.receipt .print-meta { display: block !important; font-size: 12px !important; }
+  .print-doc.receipt .print-meta span { display: block !important; }
 
-  .print-doc.receipt .print-footer {
-    display: none; /* Receipt does not need signature */
-  }
+  .print-doc.receipt table { width: 100% !important; font-size: 13px !important; }
+  .print-doc.receipt th, .print-doc.receipt td { padding: 5px 0 !important; color: #000 !important; }
 
-  /* Receipt page size */
-  @page receipt {
-    size: 80mm auto;
-    margin: 0;
-  }
+  .print-doc.receipt .print-total { font-size: 14px !important; font-weight: 800 !important; }
+  .print-doc.receipt .print-total div { display: flex !important; justify-content: space-between !important; }
 
-  /* ===== 2. REPORTS - A4 Paper ===== */
-  .print-doc.report {
-    width: 100%;
-    padding: 12mm 10mm;
-    font-family: Arial, sans-serif;
-    color: #000;
-    font-size: 12px;
-    line-height: 1.5;
-  }
-
-  .print-doc.report .print-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #0B6B5A;
-    padding-bottom: 10px;
-    margin-bottom: 12px;
-  }
-
-  .print-doc.report .print-header img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-  }
-
-  .print-doc.report .print-header h1 {
-    font-size: 22px;
-    color: #0B6B5A;
-    margin: 0;
-  }
-
-  .print-doc.report .print-header p {
-    font-size: 11px;
-    color: #555;
-    margin: 2px 0;
-  }
-
-  .print-doc.report .print-title {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin: 10px 0;
-    text-transform: uppercase;
-  }
-
-  .print-doc.report .print-meta {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 12px;
-    background: #F2F7F5;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-  }
-
-  .print-doc.report .print-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    margin-top: 8px;
-  }
-
-  .print-doc.report .print-table th {
-    background: #0B6B5A !important;
-    color: #fff !important;
-    padding: 8px;
-    text-align: left;
-    font-size: 11px;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .print-doc.report .print-table td {
-    padding: 7px;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .print-doc.report .print-total {
-    margin-top: 10px;
-    border-top: 2px solid #000;
-    padding-top: 8px;
-    font-size: 13px;
-  }
-
-  .print-doc.report .print-total div {
-    display: flex;
-    justify-content: space-between;
-    padding: 3px 0;
-  }
-
-  .print-doc.report .print-footer {
-    margin-top: 18px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    border-top: 1px solid #ddd;
-    padding-top: 10px;
-  }
-
-  .print-doc.report .print-sign {
-    border-top: 1px solid #000;
-    width: 180px;
-    text-align: center;
-    padding-top: 4px;
-    margin-top: 30px;
-  }
-
-  /* Report page size */
-  @page {
-    size: A4;
-    margin: 12mm;
-  }
+  /* التقارير تفضل A4 - ما نهبشها */
+  .print-doc.report { width: 190mm !important; }
 }
