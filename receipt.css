@@ -1,0 +1,149 @@
+/* ==========================================
+   Active Care Pharmacy - Receipt System
+   Author: Senior Frontend | Thermal Printer 80mm
+   Compatible: Xprinter / Epson / POS-80
+   ========================================== */
+
+:root {
+  --receipt-width: 72mm;
+  --font-main: 'Courier New', 'DejaVu Sans Mono', monospace;
+  --font-size: 12.5px;
+  --line-color: #000;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.receipt {
+  width: var(--receipt-width);
+  margin: 0 auto;
+  padding: 4mm 2mm;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-main);
+  font-size: var(--font-size);
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* --- Header --- */
+.receipt__header {
+  text-align: center;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--line-color);
+}
+.receipt__logo {
+  width: 38mm;
+  max-height: 18mm;
+  object-fit: contain;
+  margin: 0 auto 4px;
+  display: block;
+  filter: grayscale(1) contrast(1.2);
+}
+.receipt__title {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+.receipt__subtitle {
+  font-size: 10.5px;
+  font-weight: 400;
+  margin: 2px 0 0;
+  text-transform: none;
+}
+
+/* --- Meta Info --- */
+.receipt__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--line-color);
+}
+.receipt__meta span { display: block; }
+
+/* --- Items --- */
+.receipt__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0;
+}
+.receipt__table th {
+  text-align: left;
+  font-size: 11px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 3px;
+}
+.receipt__table th:last-child,
+.receipt__table td:last-child { text-align: right; }
+.receipt__table td {
+  padding: 3px 0;
+  vertical-align: top;
+  font-weight: 600;
+}
+.receipt__item-name { font-weight: 700; }
+.receipt__item-detail {
+  font-size: 10px;
+  font-weight: 400;
+  color: #333;
+  display: block;
+}
+
+/* --- Totals --- */
+.receipt__totals {
+  border-top: 1px dashed var(--line-color);
+  padding-top: 6px;
+}
+.receipt__row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5px 0;
+}
+.receipt__row--grand {
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 4px;
+  padding-top: 5px;
+  border-top: 1px solid #000;
+}
+
+/* --- Footer --- */
+.receipt__footer {
+  text-align: center;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line-color);
+  font-size: 11px;
+  text-transform: none;
+}
+.receipt__barcode {
+  font-family: 'Libre Barcode 39', monospace;
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin: 4px 0 0;
+}
+
+/* --- Print Rules - This is the secret --- */
+@media print {
+  @page { size: 80mm auto; margin: 0; }
+  html, body {
+    width: 80mm;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body * { visibility: hidden; }
+  .receipt, .receipt * { visibility: visible; }
+  .receipt {
+    position: absolute;
+    left: 0; top: 0;
+    width: 72mm;
+    margin: 0;
+    padding: 2mm;
+    box-shadow: none;
+  }
+  .no-print { display: none !important; }
+}
