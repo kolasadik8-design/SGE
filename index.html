@@ -329,8 +329,15 @@ setInterval(()=>{if(!currentUser)return;let idle=Math.floor((Date.now()-lastActi
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const firebaseConfig = { apiKey: "AIzaSyD0j6mn0PEaUvBgsVkE5Xr0Xzr5hXZ-4lQ", authDomain: "active-care-pharmacy-71ce2.firebaseapp.com", projectId: "active-care-pharmacy-71ce2", storageBucket: "active-care-pharmacy-71ce2.firebasestorage.app", messagingSenderId: "860436415161", appId: "1:860436415161:web:6aaa1ae3bdaec6c1559168" };
-try{ const app = initializeApp(firebaseConfig); window._db = getFirestore(app); window._fs = { collection, setDoc, doc, getDoc }; let el=document.getElementById('syncStatus'); if(el) el.innerText='Firebase Connected'; }catch(e){ console.log('Offline Mode', e); }
+const firebaseConfig = {
+  apiKey: "AIzaSyD0j6mn0PEaUvBgsVkE5Xr0Xzr5hXZ-4lQ",
+  authDomain: "active-care-pharmacy-71ce2.firebaseapp.com",
+  projectId: "active-care-pharmacy-71ce2",
+  storageBucket: "active-care-pharmacy-71ce2.firebasestorage.app",
+  messagingSenderId: "860436415161",
+  appId: "1:860436415161:web:6aaa1ae3bdaec6c1559168"
+};
+  try{ const app = initializeApp(firebaseConfig); window._db = getFirestore(app); window._fs = { collection, setDoc, doc, getDoc }; let el=document.getElementById('syncStatus'); if(el) el.innerText='Firebase Connected'; }catch(e){ console.log('Offline Mode', e); }
 </script>
 <script>
 async function syncToCloud(){ if(!window._db) return; try{ const {collection,setDoc,doc} = window._fs; await setDoc(doc(collection(window._db,'activecare-single'),'data'),{meds,sales,returns,expenses,debts,users,customers,suppliers,shiftsLog,audit,books,announces,exchangeRate,rateUpdatedAt,updatedAt:new Date().toISOString()}); let el=document.getElementById('syncStatus'); if(el) el.innerText='Synced'; }catch(e){ console.log('Sync failed',e); } }
