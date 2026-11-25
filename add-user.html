@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Active Care - Add User V2</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui;padding:20px;background:#F1F5F4}
+.box{max-width:420px;margin:40px auto;background:#fff;padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+h1{font-size:20px;text-align:center}input,select{width:100%;padding:11px;border:1px solid #E2E8E6;border-radius:10px;margin-top:10px;font-size:14px}
+button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px}
+.btn-pri{background:#0B6B5A;color:#fff}.btn-ghost{background:#E8EFED;color:#111}
+.msg{font-size:13px;margin-top:10px;min-height:18px;text-align:center}
+.list{margin-top:16px;font-size:13px;background:#F8FAF9;padding:12px;border-radius:10px}
+.sync-status{font-size:12px;text-align:center;padding:8px;border-radius:8px;background:#F8FAF9;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>Active Care - Add User</h1>
+<p style="font-size:12px;color:#6B7C7A;text-align:center">V2 - Saves to Local + Firebase Cloud</p>
+<div id="syncStatus" class="sync-status">Checking Firebase...</div>
+<input id="uName" placeholder="Username * e.g. ahmed - no spaces" maxlength="30">
+<input id="uFull" placeholder="Full Name e.g. Ahmed Ali" maxlength="50">
+<input id="uPass" type="password" placeholder="Password * min 4 chars" maxlength="50">
+<select id="uRole">
+<option value="cashier">Cashier (POS + Sales only)</option>
+<option value="pharmacist">Pharmacist (POS + Inventory)</option>
+<option value="manager">Manager (All except Settings)</option>
+<option value="admin">Admin (Everything)</option>
+</select>
+<button class="btn-pri" onclick="addUser()">Add User - Local + Cloud</button>
+<button class="btn-ghost" onclick="location.href='./index.html'">Go to System</button>
+<p id="msg" class="msg"></p>
+<div class="list"><b>Current Users (Local):</b><div id="userList">Loading...</div></div>
+</div>
+
+<script>
+async function hashPass(pass, salt){
+  const enc = new TextEncoder();
+  const data = enc.encode(pass + salt);
+  const hashBuf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function loadList(){
+  let users = JSON.parse(localStorage.getItem('ac13_users')||'[]');
+  document.getElementById('userList').innerHTML = users.length ? users.map(u=> '• ' + u.username + ' - ' + (u.role||'cashier') + ' - ' + (u.fullName||'')).join('<br>') : 'No users found';
+}
+loadList();
+
+async function addUser(){
+  let msg=document.getElementById('msg');
+  let username=document.getElementById('uName').value.trim().toLowerCase();
+  let fullName=document.getElementById('uFull').value.trim();
+  let pass=document.getElementById('uPass').value;
+  let role=document.getElementById('uRole').value;
+  if(!username){msg.style.color='red';msg.innerText='Enter username';return;}
+  if(username.includes(' ')){msg.style.color='red';msg.innerText='Username cannot have spaces. Use ahmed_ali';return;}
+  if(!pass || pass.length < 4){msg.style.color='red';msg.innerText='Password must be 4 chars or more';return;}
+
+  let users = JSON.parse(localStorage.getItem('ac13_users')||'[]');
+  if(users.find(u=>u.username===username)){
+    msg.style.color='red';
+    msg.innerText='Username "'+username+'" already exists! Choose another one.';
+    return;
+  }
+
+  // Same hash as index.html - SHA-256 + Salt
+  let salt = Math.random().toString(36).slice(2,10);
+  let hash = await hashPass(pass, salt);
+
+  let newUser = { id: Date.now(), username: username, fullName: fullName || username, passwordHash: hash, salt: salt, role: role, active: true, createdAt: new Date().toISOString() };
+
+  // 1. SAVE LOCAL
+  users.push(newUser);
+  localStorage.setItem('ac13_users', JSON.stringify(users));
+  loadList();
+  msg.style.color='black';
+  msg.innerText='Local saved OK... Now saving to Cloud...';
+
+  // 2. SAVE CLOUD - Merge, don't overwrite
+  try{
+    if(window._db && window._fs){
+      const {collection, setDoc, doc, getDoc} = window._fs;
+      const ref = doc(collection(window._db,'activecare-single'),'data');
+      const snap = await getDoc(ref);
+      let cloud = snap.exists() ? snap.data() : {};
+      let cloudUsers = cloud.users || [];
+      // If cloud has users, use cloud as base
+      let baseUsers = cloudUsers.length ? cloudUsers : users.slice(0,-1);
+      if(!baseUsers.find(u=>u.username===username)) baseUsers.push(newUser);
+      await setDoc(ref, { ...cloud, users: baseUsers, version: 'V13.1', updatedAt: new Date().toISOString() });
+      msg.style.color='green';
+      msg.innerText='SUCCESS! User "'+username+'" - '+role+' saved to Local + Cloud. He can login now from any device.';
+    } else {
+      msg.style.color='orange';
+      msg.innerText='Local saved OK, but Firebase not ready. Open index.html and click Sync Now to push to Cloud.';
+    }
+  }catch(e){
+    msg.style.color='red';
+    msg.innerText='Local saved OK, Cloud failed: '+e.message+' - Open index.html and click Sync Now.';
+  }
+  document.getElementById('uName').value='';
+  document.getElementById('uPass').value='';
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// PASTE SAME CONFIG AS index.html HERE - MUST BE SAME PROJECT
+const firebaseConfig = {
+  apiKey: "AIzaSyD0j6mn0PEaUvBgsVkE5Xr0Xzr5hXZ-4lQ",
+  authDomain: "active-care-pharmacy-71ce2.firebaseapp.com",
+  projectId: "active-care-pharmacy-71ce2",
+  storageBucket: "active-care-pharmacy-71ce2.firebasestorage.app",
+  messagingSenderId: "860436415161",
+  appId: "1:860436415161:web:6aaa1ae3bdaec6c1559168"
+};
+try{
+  const app = initializeApp(firebaseConfig);
+  window._db = getFirestore(app);
+  window._fs = { collection, setDoc, doc, getDoc };
+  document.getElementById('syncStatus').innerText = 'Firebase Connected - Will save to Local + Cloud';
+  document.getElementById('syncStatus').style.background = '#D1FAE5';
+}catch(e){
+  document.getElementById('syncStatus').innerText = 'Firebase Offline - Will save to Local only. Check config.';
+  document.getElementById('syncStatus').style.background = '#FEE2E2';
+}
+</script>
+</body>
+</html>
