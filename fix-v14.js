@@ -1,15 +1,28 @@
-// Active Care - FIX V14.2 for V13.1 - All English - Add User + Odoo Inventory + Pro Thermal Print
-// Compatible with index.html V13.1 - No changes to index.html needed except 1 script line
+// Active Care - FIX V14.4 for V13.1 - All English - Merge Old + New Users + Odoo Inventory + Odoo Users + Thermal Print
+// Compatible with index.html V13.1
 (function(){
-  if(window.ACFIX142_LOADED) return;
-  window.ACFIX142_LOADED = true;
+  if(window.ACFIX144_LOADED) return;
+  window.ACFIX144_LOADED = true;
 
   function getArr(k){ try{ return JSON.parse(localStorage.getItem(k)||'[]'); }catch(e){ return []; } }
   function setArr(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
   function getMeds(){ let a=getArr('ac13_meds'); if(a.length) return a; return getArr('ac_meds'); }
-  function getUsers(){ let a=getArr('ac13_users'); if(a.length) return a; return getArr('ac_users'); }
+  // MERGE USERS - Old + New - Never replace, never delete
+  function getUsers(){
+    let a = getArr('ac13_users');
+    let b = getArr('ac_users');
+    let c = [];
+    if(window.users && window.users.length) c = window.users;
+    let merged = [];
+    let seen = {};
+    [...a, ...b, ...c].forEach(u=>{
+      let k = String(u.username||'').toLowerCase();
+      if(!k) return;
+      if(!seen[k]){ seen[k]=true; merged.push(u); }
+    });
+    return merged;
+  }
   function getSales(){ let a=getArr('ac13_sales'); if(a.length) return a; return getArr('ac_sales'); }
-  function fmt(n){ return Number(n||0).toLocaleString() + ' SSP'; }
   function todayStr(){ let d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   async function hashPass(p){
     try{
@@ -23,6 +36,7 @@
       return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
     }catch(e){ return await hashPass(p); }
   }
+  // MERGE CLOUD - Cloud + Local - Never overwrite
   async function pushCloud(){
     try{
       if(!window._db || !window._fs) return false;
@@ -31,16 +45,22 @@
       const snap = await getDoc(ref);
       let cloud = snap.exists() ? snap.data() : {};
       let meds = getMeds(); let users = getUsers();
-      let mMeds = cloud.meds && cloud.meds.length ? cloud.meds : meds;
-      let mUsers = cloud.users && cloud.users.length ? cloud.users : users;
+      let mMeds = cloud.meds || [];
       meds.forEach(m=>{ if(!mMeds.find(x=>String(x.id)===String(m.id))) mMeds.push(m); });
-      users.forEach(u=>{ if(!mUsers.find(x=>String(x.username).toLowerCase()===String(u.username).toLowerCase())) mUsers.push(u); });
+      (cloud.meds||[]).forEach(m=>{ if(!mMeds.find(x=>String(x.id)===String(m.id))) mMeds.push(m); });
+      let mUsers = cloud.users || [];
+      users.forEach(u=>{
+        if(!mUsers.find(x=>String(x.username).toLowerCase()===String(u.username).toLowerCase())) mUsers.push(u);
+      });
+      (cloud.users||[]).forEach(u=>{
+        if(!mUsers.find(x=>String(x.username).toLowerCase()===String(u.username).toLowerCase())) mUsers.push(u);
+      });
       await setDoc(ref, {...cloud, meds: mMeds, users: mUsers, version:'V13.1', updatedAt: new Date().toISOString()});
       return true;
     }catch(e){ console.log('ACFIX Cloud fail', e); return false; }
   }
 
-  // ========== 1. ADD USER - V13.1 - Replaces old completely ==========
+  // ========== 1. ADD USER - V13.1 ==========
   window.addUser = async function(){
     let fullEl = document.getElementById('uName');
     let userEl = document.getElementById('uUser') || document.getElementById('uUsername');
@@ -48,18 +68,15 @@
     let roleEl = document.getElementById('uRole');
     let shiftEl = document.getElementById('uShift');
     let phoneEl = document.getElementById('uPhone');
-
     let full = fullEl ? fullEl.value.trim() : '';
     let username = userEl ? userEl.value.trim().toLowerCase() : '';
     let pass = passEl ? passEl.value : '';
     let roleRaw = roleEl ? roleEl.value : 'Cashier';
-
     let role = 'Cashier';
     if(/admin/i.test(roleRaw)) role='Admin';
     else if(/pharm/i.test(roleRaw)) role='Pharmacist';
     else if(/manager/i.test(roleRaw)) role='Pharmacist';
     else role='Cashier';
-
     let shift = 'Cashier Shift';
     if(role==='Admin') shift='All';
     else if(role==='Pharmacist') shift='Shift 1';
@@ -67,22 +84,18 @@
     if(shiftEl && shiftEl.value) shift = shiftEl.value;
     if(role==='Admin') shift='All';
     if(role==='Cashier') shift='Cashier Shift';
-
     if(!full){ alert('Enter Full Name'); return; }
     if(!username){ alert('Enter Username'); return; }
     if(username.includes(' ')){ alert('Username cannot have spaces. Use ahmed_ali'); return; }
     if(!pass || pass.length < 4){ alert('Password must be 4 chars or more. You entered: ' + (pass ? pass.length : 0)); return; }
-
     let users = getUsers();
     if(users.find(u=> String(u.username||'').toLowerCase()===username)){
       alert('Username "'+username+'" already exists! Choose another one.\nExisting: ' + users.map(u=>u.username).join(', '));
       return;
     }
-
     let salt = Math.random().toString(36).slice(2,10);
     let hV13 = await hashPassV13(pass, salt);
     let hOld = await hashPass(pass);
-
     let newUser = {
       id: Date.now(),
       username: username,
@@ -97,34 +110,22 @@
       active: true,
       createdAt: new Date().toISOString()
     };
-
     users.push(newUser);
     setArr('ac_users', users);
     setArr('ac13_users', users);
     if(window.users) window.users = users;
-
     if(fullEl) fullEl.value='';
     if(userEl) userEl.value='';
     if(passEl) passEl.value='';
     if(phoneEl) phoneEl.value='';
-
     try{ if(typeof renderUsers==='function') renderUsers(); }catch(e){}
-    setTimeout(()=>{
-      try{
-        let list = document.getElementById('userList');
-        if(list && !list.innerHTML.includes(username)){
-          list.innerHTML = '<div style="padding:12px;background:#D1FAE5;border-radius:10px;margin-top:10px"><b>New User Added: '+username+' - '+role+' - '+shift+'</b><br>Users: '+users.map(u=>u.username+' ('+u.role+')').join(', ')+'</div>' + list.innerHTML;
-        }
-      }catch(e){}
-    }, 300);
-
+    setTimeout(()=>{ try{ window.ACFIX_renderOdooUsers(); }catch(e){} }, 300);
     let cloudOk = await pushCloud();
     let msg = 'SUCCESS! User "'+username+'" - '+role+' - '+shift+' added. Total: '+users.length;
     if(cloudOk) msg += ' - Saved to Local + Cloud';
     else msg += ' - Saved Local Only (Cloud offline)';
     alert(msg);
   };
-
   setTimeout(()=>{
     try{
       document.querySelectorAll('button').forEach(btn=>{
@@ -316,8 +317,7 @@
     if(s) s.addEventListener('input', ()=>{ setTimeout(()=>window.ACFIX_renderOdooInv(), 150); });
   }, 1500);
 
-  // ========== 4. PROFESSIONAL THERMAL PRINT - 80mm - NO PAPER WASTE ==========
-  // Inject print CSS - thermal only, hides everything else, no blank pages
+  // ========== 4. THERMAL PRINT - 80mm - NO PAPER WASTE ==========
   if(!document.getElementById('acfix-print-css')){
     let st = document.createElement('style');
     st.id='acfix-print-css';
@@ -340,9 +340,7 @@
     div.style.cssText='display:none';
     div.innerHTML = html;
     document.body.appendChild(div);
-    // Show only print area for print, then restore
     div.style.display='block';
-    // Use printArea if system uses it, else use our div
     try{
       let pa = document.getElementById('printArea');
       if(pa){ pa.innerHTML = html; pa.style.display='block'; }
@@ -374,12 +372,9 @@
       <div class="sub">By: ${escHtml(user)}</div>
       <div class="line"></div>`;
   }
-
-  // 4A. Receipt - Compact, no waste
   window.ACFIX_printReceipt = function(sale){
     try{
       if(!sale){
-        // Try last sale from global
         if(window.lastSale) sale = window.lastSale;
         else { alert('No receipt to print'); return; }
       }
@@ -401,8 +396,6 @@
       doThermalPrint(html);
     }catch(e){ console.log('Print receipt fail', e); }
   };
-
-  // 4B. Stock Report - Thermal, compact, only low + total, not full A4
   window.ACFIX_printStockThermal = function(){
     try{
       let meds = getMeds();
@@ -423,8 +416,6 @@
       doThermalPrint(html);
     }catch(e){ console.log('Print stock fail', e); }
   };
-
-  // 4C. Daily Report - Thermal, 1 slip
   window.ACFIX_printDailyThermal = function(){
     try{
       let sales = getSales();
@@ -455,8 +446,6 @@
       doThermalPrint(html);
     }catch(e){ console.log('Print daily fail', e); }
   };
-
-  // 4D. Z-Report / Close Shift - Thermal, 1 slip
   window.ACFIX_printZReport = function(){
     try{
       let sales = getSales();
@@ -483,8 +472,6 @@
       doThermalPrint(html);
     }catch(e){ console.log('Print Z fail', e); }
   };
-
-  // 4E. Single Product Label - Small, saves paper
   window.ACFIX_printOneMed = function(id){
     try{
       let m = getMeds().find(x=> String(x.id)===String(id));
@@ -500,14 +487,9 @@
       doThermalPrint(html);
     }catch(e){}
   };
-
-  // 4F. Override old print functions to use thermal - saves paper
-  // Keep old functions as backup, but route buttons to thermal
   setTimeout(()=>{
     try{
-      // Add thermal buttons to Daily / Shifts pages if not exist
-      let dailyBtns = document.querySelectorAll('button');
-      dailyBtns.forEach(b=>{
+      document.querySelectorAll('button').forEach(b=>{
         if(b.textContent && b.textContent.includes('Print Daily Report')){
           b.onclick = function(e){ e.preventDefault(); window.ACFIX_printDailyThermal(); };
         }
@@ -524,17 +506,134 @@
     }catch(e){}
   }, 2000);
 
-  // Override buildReceiptHTML if exists - make it thermal
-  let oldBuild = window.buildReceiptHTML;
-  if(oldBuild && !window.ACFIX_buildPatched){
-    window.ACFIX_buildPatched = true;
-    window.buildReceiptHTML = function(sale){ window.ACFIX_printReceipt(sale); };
+  // ========== 5. ODOO USERS ==========
+  if(!document.getElementById('acfix-odoo-users-css')){
+    let s = document.createElement('style');
+    s.id='acfix-odoo-users-css';
+    s.innerHTML = `
+    .ouser-top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;padding:10px 12px;border-radius:12px;border:1px solid #E2E8E6;margin:12px 0}
+    .ouser-filter{padding:8px 14px;border-radius:20px;background:#F1F5F4;font-weight:700;font-size:13px;border:none;cursor:pointer}
+    .ouser-filter.active{background:#0F2A2E;color:#fff}
+    .ouser-view{padding:8px 12px;border-radius:8px;background:#EAF2F0;font-weight:700;font-size:13px;border:none;cursor:pointer}
+    .ouser-view.active{background:#0B6B5A;color:#fff}
+    .ouser-kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .ouser-card{background:#fff;border:1px solid #E2E8E6;border-radius:14px;padding:14px}
+    .ouser-card:hover{box-shadow:0 8px 20px rgba(11,107,90,.15);transform:translateY(-2px)}
+    .ouser-avatar{width:56px;height:56px;border-radius:50%;background:#0B6B5A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0}
+    .ouser-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden}
+    .ouser-table th{text-align:left;padding:12px;background:#F2F7F5;border-bottom:1px solid #E2E8E6;font-size:12px;text-transform:uppercase}
+    .ouser-table td{padding:11px;border-bottom:1px solid #E2E8E6;vertical-align:middle}
+    .ouser-badge{padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap}
+    .ub-green{background:#D1FAE5;color:#065F46}.ub-blue{background:#DBEAFE;color:#1E40AF}.ub-orange{background:#FEF3C7;color:#92400E}.ub-red{background:#FEE2E2;color:#991B1B}
+    @media(max-width:900px){.ouser-kanban{grid-template-columns:1fr}}
+    `;
+    document.head.appendChild(s);
   }
+  function ouserRoleBadge(role){
+    let r = String(role||'').toLowerCase();
+    if(r.includes('admin')) return '<span class="ouser-badge ub-blue">Admin</span>';
+    if(r.includes('pharm')) return '<span class="ouser-badge ub-green">Pharmacist</span>';
+    return '<span class="ouser-badge ub-orange">Cashier</span>';
+  }
+  function ouserInitials(name){
+    let parts = String(name||'U').trim().split(' ');
+    if(parts.length>=2) return (parts[0][0]+parts[1][0]).toUpperCase();
+    return String(name||'U').substring(0,2).toUpperCase();
+  }
+  function ouserColor(name){
+    let colors = ['#0B6B5A','#1E40AF','#7C3AED','#B45309','#BE123C','#0E7490'];
+    let sum = 0; for(let i=0;i<String(name).length;i++) sum += name.charCodeAt(i);
+    return colors[sum % colors.length];
+  }
+  window.ACFIX_userFilter = 'all';
+  window.ACFIX_userView = 'kanban';
+  window.ACFIX_setUserFilter = function(f){ window.ACFIX_userFilter=f; window.ACFIX_renderOdooUsers(); };
+  window.ACFIX_setUserView = function(v){ window.ACFIX_userView=v; window.ACFIX_renderOdooUsers(); };
+  window.ACFIX_renderOdooUsers = function(){
+    try{
+      let listEl = document.getElementById('userList');
+      if(!listEl) return;
+      let users = getUsers();
+      let filtered = users;
+      if(window.ACFIX_userFilter==='admin') filtered = users.filter(u=> String(u.role||'').toLowerCase().includes('admin'));
+      if(window.ACFIX_userFilter==='pharmacist') filtered = users.filter(u=> String(u.role||'').toLowerCase().includes('pharm'));
+      if(window.ACFIX_userFilter==='cashier') filtered = users.filter(u=> String(u.role||'').toLowerCase().includes('cashier'));
+      let adminCount = users.filter(u=> String(u.role||'').toLowerCase().includes('admin')).length;
+      let pharmCount = users.filter(u=> String(u.role||'').toLowerCase().includes('pharm')).length;
+      let cashCount = users.filter(u=> String(u.role||'').toLowerCase().includes('cashier')).length;
+      let toolbar = `<div class="ouser-top">
+        <button class="ouser-filter ${window.ACFIX_userFilter==='all'?'active':''}" onclick="ACFIX_setUserFilter('all')">All (${users.length})</button>
+        <button class="ouser-filter ${window.ACFIX_userFilter==='admin'?'active':''}" onclick="ACFIX_setUserFilter('admin')">Admin (${adminCount})</button>
+        <button class="ouser-filter ${window.ACFIX_userFilter==='pharmacist'?'active':''}" onclick="ACFIX_setUserFilter('pharmacist')">Pharmacist (${pharmCount})</button>
+        <button class="ouser-filter ${window.ACFIX_userFilter==='cashier'?'active':''}" onclick="ACFIX_setUserFilter('cashier')">Cashier (${cashCount})</button>
+        <div style="flex:1"></div>
+        <button class="ouser-view ${window.ACFIX_userView==='kanban'?'active':''}" onclick="ACFIX_setUserView('kanban')">Kanban</button>
+        <button class="ouser-view ${window.ACFIX_userView==='list'?'active':''}" onclick="ACFIX_setUserView('list')">List</button>
+      </div>`;
+      if(window.ACFIX_userView==='kanban'){
+        listEl.innerHTML = toolbar + `<div class="ouser-kanban">` + filtered.map((u)=>{
+          let realIdx = users.indexOf(u);
+          return `<div class="ouser-card">
+            <div style="display:flex;gap:12px">
+              <div class="ouser-avatar" style="background:${ouserColor(u.fullName||u.username)}">${ouserInitials(u.fullName||u.username)}</div>
+              <div style="flex:1;min-width:0">
+                <b style="font-size:15px">${u.fullName||u.username}</b><br>
+                <small style="color:#6B7C7A">@${u.username}</small><br>
+                ${ouserRoleBadge(u.role)} <span class="ouser-badge ub-green">${u.shift||''}</span>
+              </div>
+            </div>
+            <div style="margin-top:12px;font-size:13px;line-height:1.7;color:#334155">
+              Phone: ${u.phone||'-'}<br>
+              Status: <span class="ouser-badge ub-green">Active</span> | Created: ${u.createdAt ? u.createdAt.slice(0,10) : '-'}
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="ouser-view" onclick="if(typeof promptResetPass==='function') promptResetPass(${realIdx})">Reset Pass</button>
+              <button class="ouser-view" onclick="if(typeof delUser==='function') delUser(${realIdx})" style="background:#FEE2E2;color:#991B1B">Delete</button>
+            </div>
+          </div>`;
+        }).join('') + `</div>`;
+      } else {
+        listEl.innerHTML = toolbar + `<table class="ouser-table"><tr><th>User</th><th>Username</th><th>Role</th><th>Shift</th><th>Phone</th><th>Status</th><th>Action</th></tr>` + filtered.map((u)=>{
+          let realIdx = users.indexOf(u);
+          return `<tr><td><div style="display:flex;align-items:center;gap:10px"><div class="ouser-avatar" style="width:38px;height:38px;font-size:14px;background:${ouserColor(u.fullName||u.username)}">${ouserInitials(u.fullName||u.username)}</div><b>${u.fullName||u.username}</b></div></td><td>@${u.username}</td><td>${ouserRoleBadge(u.role)}</td><td>${u.shift||''}</td><td>${u.phone||'-'}</td><td><span class="ouser-badge ub-green">Active</span></td><td><button class="ouser-view" onclick="if(typeof promptResetPass==='function') promptResetPass(${realIdx})">Reset</button> <button class="ouser-view" onclick="if(typeof delUser==='function') delUser(${realIdx})" style="background:#FEE2E2;color:#991B1B">Delete</button></td></tr>`;
+        }).join('') + `</table>`;
+      }
+    }catch(e){ console.log('ACFIX Odoo Users fail', e); }
+  };
+  let oldRenderUsers = window.renderUsers;
+  if(oldRenderUsers && !window.ACFIX_renderUsersPatched){
+    window.ACFIX_renderUsersPatched = true;
+    window.renderUsers = function(){
+      try{ oldRenderUsers(); }catch(e){}
+      setTimeout(()=>{ try{ window.ACFIX_renderOdooUsers(); }catch(e){} }, 100);
+    };
+  }
+  setTimeout(()=>{
+    document.querySelectorAll('button').forEach(b=>{
+      if(b.textContent && b.textContent.includes('Users')){
+        b.addEventListener('click', ()=>{ setTimeout(()=>window.ACFIX_renderOdooUsers(), 400); });
+      }
+    });
+  }, 1500);
+
+  // ========== 6. GUARD - Prevent old sync from deleting new users ==========
+  setInterval(()=>{
+    try{
+      let merged = getUsers();
+      if(merged.length){
+        let a = getArr('ac13_users');
+        let b = getArr('ac_users');
+        if(a.length < merged.length) setArr('ac13_users', merged);
+        if(b.length < merged.length) setArr('ac_users', merged);
+        if(window.users && window.users.length < merged.length) window.users = merged;
+      }
+    }catch(e){}
+  }, 2000);
 
   function init(){ patchSaveMed(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
   setTimeout(init, 1000);
   setTimeout(init, 3000);
-  console.log('ACFIX 14.2 for V13.1 Loaded - All English - Thermal Print Ready');
+  console.log('ACFIX 14.4 for V13.1 Loaded - Merge Users + Odoo Users + Inventory + Thermal Print');
 })();
