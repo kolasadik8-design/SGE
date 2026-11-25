@@ -3,145 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Active Care Pharmacy - V15 + Firebase</title>
+<title>Active Care Pharmacy - V13.1 Design</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Arial}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Arial}
 body{background:#F2F7F5;color:#0F2A2E}
 button{cursor:pointer;border:none}
-input,select{padding:11px;border:1px solid #E2E8E6;border-radius:10px;width:100%;background:#fff;font-size:14px}
-.topbar{background:#0F2A2E;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.topbar b{font-size:18px}
-.nav{display:flex;gap:8px;background:#fff;padding:10px 14px;flex-wrap:wrap;border-bottom:1px solid #E2E8E6;position:sticky;top:52px;z-index:9}
-.nav button{padding:9px 16px;border-radius:20px;background:#F1F5F4;font-weight:700}
-.nav button.active{background:#0B6B5A;color:#fff}
-.page{padding:16px;max-width:1200px;margin:0 auto;display:none}
+input,select{padding:11px;border:1px solid #E2E8E6;border-radius:10px;width:100%;background:#fff;font-size:14px;color:#0F2A2E}
+input:focus,select:focus{outline:2px solid #0B6B5A}
+/* V13.1 HEADER */
+.header{background:#0F2A2E;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}
+.header-left{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:10px;background:#0B6B5A;display:flex;align-items:center;justify-content:center;font-size:22px}
+.header h1{font-size:18px;letter-spacing:.3px}
+.header small{color:#A7C4BF;font-size:12px}
+.header-right{display:flex;align-items:center;gap:10px}
+.sync-pill{background:#1A3A3E;border:1px solid #2A4F53;padding:6px 12px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:6px}
+.sync-dot{width:9px;height:9px;border-radius:50%;background:#F59E0B}
+.sync-dot.ok{background:#10B981}
+.logout-btn{background:#FEE2E2;color:#991B1B;padding:8px 14px;border-radius:10px;font-weight:700}
+/* V13.1 LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 70px)}
+.sidebar{width:230px;background:#fff;border-right:1px solid #E2E8E6;padding:16px 12px;position:sticky;top:70px;height:calc(100vh - 70px);flex-shrink:0}
+.sidebar button{width:100%;text-align:left;padding:11px 12px;border-radius:10px;background:transparent;font-weight:600;font-size:14px;color:#334155;margin-bottom:4px;display:flex;gap:10px;align-items:center}
+.sidebar button.active{background:#0B6B5A;color:#fff}
+.sidebar .section{font-size:11px;text-transform:uppercase;color:#94A3B8;padding:10px 12px 6px;letter-spacing:.5px}
+.main{flex:1;padding:20px;max-width:1150px;margin:0 auto;width:100%}
+.page{display:none}
 .page.active{display:block}
+.page-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.page-sub{font-size:13px;color:#6B7C7A;margin-bottom:16px}
+/* V13.1 CARDS */
 .card{background:#fff;border:1px solid #E2E8E6;border-radius:14px;padding:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.kpi{font-size:28px;font-weight:800}
+.kpi-label{font-size:12px;color:#6B7C7A}
+.kpi-value{font-size:26px;font-weight:800;margin:4px 0}
+.kpi-sub{font-size:12px;color:#6B7C7A}
 .small{font-size:12px;color:#6B7C7A}
 .badge{padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap}
-.g{background:#D1FAE5;color:#065F46}.r{background:#FEE2E2;color:#991B1B}.o{background:#FEF3C7;color:#92400E}.bl{background:#DBEAFE;color:#1E40AF}
+.g{background:#D1FAE5;color:#065F46}.r{background:#FEE2E2;color:#991B1B}.o{background:#FEF3C7;color:#92400E}.bl{background:#DBEAFE;color:#1E40AF}.gy{background:#F1F5F4;color:#334155}
 table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden}
-th{text-align:left;padding:12px;background:#F2F7F5;font-size:11px;text-transform:uppercase}
+th{text-align:left;padding:12px;background:#F2F7F5;font-size:11px;text-transform:uppercase;color:#0F2A2E;border-bottom:1px solid #E2E8E6}
 td{padding:11px;border-bottom:1px solid #E2E8E6;vertical-align:middle}
-.btn{padding:10px 16px;border-radius:10px;background:#0B6B5A;color:#fff;font-weight:700}
+.btn{padding:11px 18px;border-radius:10px;background:#0B6B5A;color:#fff;font-weight:700;font-size:14px}
 .btn-dark{background:#0F2A2E}.btn-red{background:#FEE2E2;color:#991B1B}.btn-yellow{background:#FEF3C7;color:#92400E}.btn-light{background:#EAF2F0;color:#0F2A2E}
-.filter{padding:8px 14px;border-radius:20px;background:#F1F5F4;font-weight:700;font-size:13px}
+/* ODOO STYLE - Top bar with filters + views */
+.odoo-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;padding:10px 12px;border-radius:12px;border:1px solid #E2E8E6;margin-bottom:12px}
+.filter{padding:8px 14px;border-radius:20px;background:#F1F5F4;font-weight:700;font-size:13px;color:#0F2A2E}
 .filter.active{background:#0F2A2E;color:#fff}
+.view-btn{padding:8px 12px;border-radius:8px;background:#EAF2F0;font-weight:700;font-size:13px;color:#0F2A2E}
+.view-btn.active{background:#0B6B5A;color:#fff}
 .kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .avatar{width:52px;height:52px;border-radius:50%;background:#0B6B5A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0}
-.login{max-width:420px;margin:60px auto;background:#fff;padding:24px;border-radius:18px;border:1px solid #E2E8E6}
-.pos-item{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #E2E8E6;cursor:pointer}
-.pos-item:hover{background:#F0FDF9}
-.sync-dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#F59E0B}
-.sync-dot.ok{background:#10B981}
-@media(max-width:800px){.grid3,.grid2,.kanban{grid-template-columns:1fr}}
-@media print{body *{visibility:hidden!important}#printArea,#printArea *{visibility:visible!important}#printArea{display:block!important;position:absolute!important;left:0!important;top:0!important;width:80mm!important}@page{size:80mm auto;margin:0}}
+.med-avatar{width:52px;height:52px;border-radius:12px;background:#EAF2F0;color:#0B6B5A;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.pos-item{display:flex;justify-content:space-between;align-items:center;padding:11px;border:1px solid #E2E8E6;border-radius:12px;margin-bottom:8px;cursor:pointer;background:#fff}
+.pos-item:hover{border-color:#0B6B5A;background:#F0FDF9}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:#0F2A2E}
+.login-card{width:100%;max-width:420px;background:#fff;border-radius:18px;padding:28px}
+.login-logo{width:64px;height:64px;border-radius:16px;background:#0B6B5A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto}
+@media(max-width:900px){.sidebar{display:none}.grid4,.grid3,.grid2,.kanban{grid-template-columns:1fr}.layout{display:block}}
+@media print{
+  body *{visibility:hidden!important}
+  #printArea,#printArea *{visibility:visible!important}
+  #printArea{display:block!important;position:absolute!important;left:0!important;top:0!important;width:80mm!important;margin:0!important;padding:0!important}
+  @page{size:80mm auto;margin:0mm}
+}
 </style>
 </head>
 <body>
 
-<div id="loginPage">
-  <div class="login">
-    <h1 style="text-align:center">💊 ACTIVE CARE</h1>
-    <p style="text-align:center" class="small">Pharmacy Management - V15 + Firebase - Everything Saves to Cloud</p>
-    <p style="text-align:center" class="small"><span id="syncDot" class="sync-dot"></span> <span id="syncText">Connecting to Firebase...</span></p><br>
-    <label>Username</label><input id="loginUser" placeholder="admin" value="admin">
-    <br><br><label>Password</label><input id="loginPass" type="password" placeholder="admin123" value="admin123">
+<!-- LOGIN - V13.1 -->
+<div id="loginPage" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">💊</div>
+    <h1 style="text-align:center;margin-top:12px">ACTIVE CARE</h1>
+    <p style="text-align:center" class="small">Pharmacy Management System</p>
+    <p style="text-align:center;margin-top:8px"><span id="syncDot" class="sync-dot" style="display:inline-block"></span> <span id="syncText" class="small">Connecting to Firebase...</span></p>
+    <br><label>Username</label><input id="loginUser" placeholder="Username" value="admin">
+    <br><br><label>Password</label><input id="loginPass" type="password" placeholder="Password" value="admin123">
     <br><br><button class="btn" style="width:100%" onclick="doLogin()">Login</button>
-    <br><br><button class="btn btn-yellow" style="width:100%" onclick="resetAdmin()">Forgot Password? Reset Admin to admin / admin123</button>
-    <p class="small" style="text-align:center;margin-top:12px">First time: admin / admin123<br>After login, go to Users and create Alier / Cashier</p>
+    <br><br><button class="btn btn-yellow" style="width:100%" onclick="resetAdmin()">Forgot Password? Reset Admin</button>
+    <p class="small" style="text-align:center;margin-top:12px">Default: admin / admin123<br>All data saves to Firebase automatically</p>
     <div id="loginMsg" style="color:#991B1B;font-size:13px;text-align:center;margin-top:10px"></div>
   </div>
 </div>
 
+<!-- APP - V13.1 -->
 <div id="app" style="display:none">
-  <div class="topbar"><b>💊 ACTIVE CARE PHARMACY</b><div><span id="syncDot2" class="sync-dot"></span> <span id="syncText2">Sync...</span> &nbsp; <span id="who"></span> &nbsp; <button class="btn btn-red" onclick="logout()">Logout</button></div></div>
-  <div class="nav">
-    <button id="nav-dashboard" class="active" onclick="showPage('dashboard')">Dashboard</button>
-    <button id="nav-pos" onclick="showPage('pos')">POS</button>
-    <button id="nav-inventory" onclick="showPage('inventory')">Inventory - Odoo</button>
-    <button id="nav-users" onclick="showPage('users')">Users - Odoo</button>
-    <button id="nav-reports" onclick="showPage('reports')">Reports</button>
-    <button id="nav-settings" onclick="showPage('settings')">Settings / Backup</button>
+  <div class="header">
+    <div class="header-left"><div class="logo">💊</div><div><h1>ACTIVE CARE PHARMACY</h1><small>Juba, South Sudan - V13.1 Design</small></div></div>
+    <div class="header-right"><div class="sync-pill"><span id="syncDot2" class="sync-dot"></span><span id="syncText2">Sync...</span></div><span id="who" style="font-size:13px"></span><button class="logout-btn" onclick="logout()">Logout</button></div>
   </div>
-
-  <div id="page-dashboard" class="page active">
-    <div class="grid3">
-      <div class="card"><div class="small">Today Sales</div><div class="kpi" id="kToday">0</div><div class="small" id="kTodayCount"></div></div>
-      <div class="card"><div class="small">Stock Value</div><div class="kpi" id="kStock">0</div><div class="small" id="kStockCount"></div></div>
-      <div class="card"><div class="small">Low / Out / Expiring</div><div class="kpi" id="kLow">0</div><div class="small" id="kLowDetail"></div></div>
-    </div><br>
-    <div class="grid2">
-      <div class="card"><b>Quick Actions</b><br><br><button class="btn" onclick="showPage('pos')">+ New Sale</button> <button class="btn btn-dark" onclick="showPage('inventory')">+ Add Medicine</button> <button class="btn btn-light" onclick="printDaily()">Print Daily Report</button></div>
-      <div class="card"><b>Top Selling Today</b><div id="topToday"></div></div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="section">Main</div>
+      <button id="nav-dashboard" class="active" onclick="showPage('dashboard')">📊 Dashboard</button>
+      <button id="nav-pos" onclick="showPage('pos')">🛒 Point of Sale</button>
+      <button id="nav-inventory" onclick="showPage('inventory')">📦 Inventory</button>
+      <div class="section">Management</div>
+      <button id="nav-users" onclick="showPage('users')">👥 Users & Roles</button>
+      <button id="nav-reports" onclick="showPage('reports')">📈 Reports</button>
+      <button id="nav-settings" onclick="showPage('settings')">⚙️ Settings / Backup</button>
+      <div style="margin-top:20px;padding:12px;background:#F2F7F5;border-radius:12px"><b style="font-size:13px">Quick Tip</b><p class="small" style="margin-top:4px">All changes save to Firebase instantly. Use Backup weekly.</p></div>
     </div>
-  </div>
+    <div class="main">
 
-  <div id="page-pos" class="page">
-    <div class="grid2">
-      <div class="card">
-        <input id="posSearch" placeholder="Search medicine... (name / barcode)" oninput="renderPos()">
-        <div id="posList" style="max-height:420px;overflow:auto;margin-top:10px"></div>
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page active">
+        <div class="page-title">Dashboard</div><div class="page-sub">Overview of your pharmacy today</div>
+        <div class="grid4">
+          <div class="card"><div class="kpi-label">Today Sales</div><div class="kpi-value" id="kToday">0</div><div class="kpi-sub" id="kTodayCount"></div></div>
+          <div class="card"><div class="kpi-label">Stock Value</div><div class="kpi-value" id="kStock">0</div><div class="kpi-sub" id="kStockCount"></div></div>
+          <div class="card"><div class="kpi-label">Total Products</div><div class="kpi-value" id="kProd">0</div><div class="kpi-sub">In inventory</div></div>
+          <div class="card"><div class="kpi-label">Alerts</div><div class="kpi-value" id="kLow" style="color:#DC2626">0</div><div class="kpi-sub" id="kLowDetail"></div></div>
+        </div><br>
+        <div class="grid2">
+          <div class="card"><b>Quick Actions</b><br><br><button class="btn" onclick="showPage('pos')">+ New Sale</button> <button class="btn btn-dark" onclick="showPage('inventory')">+ Add Medicine</button> <button class="btn btn-light" onclick="printDaily()">Print Daily Report</button></div>
+          <div class="card"><b>Top Selling Today</b><div id="topToday" style="margin-top:10px"></div></div>
+        </div><br>
+        <div class="card"><b>Low Stock - Needs Restock</b><div id="lowList" style="margin-top:10px"></div></div>
       </div>
-      <div class="card">
-        <b>Cart</b> <span style="float:right"><select id="posPay" style="width:140px"><option>Cash</option><option>Bank</option><option>Mobile Money</option><option>Debt</option></select></span>
-        <input id="posCustomer" placeholder="Customer name (optional) - Walk-in" style="margin-top:10px">
-        <div id="cartList"></div>
-        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800;border-top:2px solid #000;padding:10px 0"><span>Total</span><span id="cartTotal">0 SSP</span></div>
-        <button class="btn" style="width:100%" onclick="checkout()">Checkout + Print Receipt</button>
-        <button class="btn btn-light" style="width:100%;margin-top:8px" onclick="clearCart()">Clear Cart</button>
+
+      <!-- POS -->
+      <div id="page-pos" class="page">
+        <div class="page-title">Point of Sale</div><div class="page-sub">Search, add to cart, checkout and print receipt</div>
+        <div class="grid2">
+          <div class="card"><input id="posSearch" placeholder="Search medicine... (name / barcode)" oninput="renderPos()"><div id="posList" style="max-height:480px;overflow:auto;margin-top:12px"></div></div>
+          <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><b>Cart</b><select id="posPay" style="width:140px"><option>Cash</option><option>Bank</option><option>Mobile Money</option><option>Debt</option></select></div><input id="posCustomer" placeholder="Customer name (optional) - Walk-in" style="margin-top:10px"><div id="cartList" style="margin-top:10px"></div><div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800;border-top:2px solid #0F2A2E;padding:10px 0;margin-top:10px"><span>Total</span><span id="cartTotal">0 SSP</span></div><button class="btn" style="width:100%" onclick="checkout()">Checkout + Print Receipt</button><button class="btn btn-light" style="width:100%;margin-top:8px" onclick="clearCart()">Clear Cart</button></div>
+        </div>
       </div>
+
+      <!-- INVENTORY - ODOO DESIGN -->
+      <div id="page-inventory" class="page">
+        <div class="page-title">Inventory</div><div class="page-sub">Odoo Style - Kanban / List - Stock, Margin, Expiry, Valuation</div>
+        <div class="card"><b>Add / Edit Medicine</b><br><br>
+          <div class="grid3">
+            <input id="mName" placeholder="Medicine Name *"><input id="mBarcode" placeholder="Barcode">
+            <select id="mCategory"><option>Antibiotics</option><option>Analgesics</option><option>Vitamins</option><option>Skin Care</option><option>Baby Care</option><option>Syrup</option><option>Other</option></select>
+            <select id="mForm"><option>Tablets</option><option>Capsules</option><option>Syrup</option><option>Suspension</option><option>Injection</option><option>Cream</option><option>Ointment</option><option>Drops</option><option>Eye Drops</option><option>Ear Drops</option><option>Spray</option><option>Suppository</option><option>Sachet</option><option>Lotion</option><option>Gel</option></select>
+            <select id="mUnit"><option>Strip</option><option>Bottle</option><option>Box</option><option>Piece</option><option>Tube</option><option>Vial</option><option>Ampoule</option><option>Pack</option><option>Sachet</option></select>
+            <input id="mSupplier" placeholder="Supplier">
+            <input id="mQty" type="number" placeholder="Qty *"><input id="mMin" type="number" placeholder="Min Qty - 5"><input id="mCost" type="number" placeholder="Cost *"><input id="mPrice" type="number" placeholder="Price *">
+            <input id="mExpiry" type="date"><input id="mBatch" placeholder="Batch">
+          </div><br><button class="btn" onclick="saveMed()">Save Medicine</button> <button class="btn btn-light" onclick="clearMedForm()">Clear</button><input type="hidden" id="mEditId">
+        </div><br>
+        <!-- ODOO BAR -->
+        <div class="odoo-bar">
+          <button class="filter" id="f-all" onclick="setInvFilter('all')">All</button>
+          <button class="filter" id="f-low" onclick="setInvFilter('low')">Low Stock</button>
+          <button class="filter" id="f-out" onclick="setInvFilter('out')">Out of Stock</button>
+          <button class="filter" id="f-expiring" onclick="setInvFilter('expiring')">Expiring 90d</button>
+          <button class="filter" id="f-expired" onclick="setInvFilter('expired')">Expired</button>
+          <div style="flex:1"></div>
+          <button class="view-btn" id="v-inv-list" onclick="setInvView('list')">☰ List</button>
+          <button class="view-btn" id="v-inv-kanban" onclick="setInvView('kanban')">▦ Kanban</button>
+          <button class="view-btn" style="background:#0F2A2E;color:#fff" onclick="printStock()">🖨 Print Stock</button>
+        </div>
+        <input id="invSearch" placeholder="Search inventory..." oninput="renderInv()"><br><br>
+        <div id="invArea"></div>
+      </div>
+
+      <!-- USERS - ODOO DESIGN -->
+      <div id="page-users" class="page">
+        <div class="page-title">Users & Roles</div><div class="page-sub">Odoo Style - Kanban / List - All users save to Firebase</div>
+        <div class="card"><b>Add User</b><br><br>
+          <div class="grid3">
+            <input id="uFull" placeholder="Full Name *"><input id="uUser" placeholder="Username * - no spaces - ex: alier"><input id="uPass" placeholder="Password * - min 4 chars">
+            <select id="uRole"><option>Cashier</option><option>Pharmacist</option><option>Admin</option></select>
+            <select id="uShift"><option>Cashier Shift</option><option>Shift 1</option><option>Shift 2</option><option>All</option></select>
+            <input id="uPhone" placeholder="Phone">
+          </div><br><button class="btn" onclick="addUser()">Add User</button>
+          <div class="small" style="margin-top:8px">Admin = All access | Pharmacist = Shift 1 | Cashier = Cashier Shift only</div>
+        </div><br>
+        <!-- ODOO BAR -->
+        <div class="odoo-bar">
+          <button class="filter" id="uf-all" onclick="setUserFilter('all')">All</button>
+          <button class="filter" id="uf-admin" onclick="setUserFilter('admin')">Admin</button>
+          <button class="filter" id="uf-pharm" onclick="setUserFilter('pharmacist')">Pharmacist</button>
+          <button class="filter" id="uf-cash" onclick="setUserFilter('cashier')">Cashier</button>
+          <div style="flex:1"></div>
+          <button class="view-btn" id="v-user-kanban" onclick="setUserView('kanban')">▦ Kanban</button>
+          <button class="view-btn" id="v-user-list" onclick="setUserView('list')">☰ List</button>
+        </div>
+        <div id="userArea"></div>
+      </div>
+
+      <!-- REPORTS -->
+      <div id="page-reports" class="page">
+        <div class="page-title">Reports</div><div class="page-sub">Daily, Z-Report, Stock - All print on 80mm thermal - No paper waste</div>
+        <div class="card"><b>Print Reports</b><br><br><button class="btn" onclick="printDaily()">Print Daily Report</button> <button class="btn btn-dark" onclick="printZ()">Print Z-Report</button> <button class="btn btn-light" onclick="printStock()">Print Stock Report</button><br><br><div id="reportArea"></div></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="page-settings" class="page">
+        <div class="page-title">Settings / Backup</div><div class="page-sub">Firebase sync + Local backup</div>
+        <div class="card"><b>Backup - Extra Safety</b><br><br><p class="small">Everything already saves to Firebase on every save. This is extra backup.</p><br><button class="btn" onclick="exportBackup()">Download Backup (JSON)</button> <button class="btn btn-dark" onclick="document.getElementById('restoreFile').click()">Restore Backup</button> <button class="btn btn-light" onclick="forceSync()">Force Sync to Firebase Now</button><input type="file" id="restoreFile" style="display:none" accept=".json" onchange="restoreBackup(this)"><br><br><p class="small" id="syncStatus">Sync status: Waiting...</p><br><button class="btn btn-red" onclick="resetAll()">Reset All Data (Danger - Deletes Local + Firebase)</button></div>
+      </div>
+
     </div>
-  </div>
-
-  <div id="page-inventory" class="page">
-    <div class="card">
-      <b>Add / Edit Medicine</b><br><br>
-      <div class="grid3">
-        <input id="mName" placeholder="Medicine Name *"><input id="mBarcode" placeholder="Barcode">
-        <select id="mCategory"><option>Antibiotics</option><option>Analgesics</option><option>Vitamins</option><option>Skin Care</option><option>Baby Care</option><option>Syrup</option><option>Other</option></select>
-        <select id="mForm"><option>Tablets</option><option>Capsules</option><option>Syrup</option><option>Suspension</option><option>Injection</option><option>Cream</option><option>Ointment</option><option>Drops</option><option>Spray</option><option>Suppository</option><option>Sachet</option><option>Lotion</option><option>Gel</option></select>
-        <select id="mUnit"><option>Strip</option><option>Bottle</option><option>Box</option><option>Piece</option><option>Tube</option><option>Vial</option><option>Pack</option></select>
-        <input id="mSupplier" placeholder="Supplier">
-        <input id="mQty" type="number" placeholder="Qty *"><input id="mMin" type="number" placeholder="Min Qty - 5"><input id="mCost" type="number" placeholder="Cost *"><input id="mPrice" type="number" placeholder="Price *">
-        <input id="mExpiry" type="date"><input id="mBatch" placeholder="Batch">
-      </div><br>
-      <button class="btn" onclick="saveMed()">Save Medicine</button> <button class="btn btn-light" onclick="clearMedForm()">Clear</button>
-      <input type="hidden" id="mEditId">
-    </div><br>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="filter" id="f-all" onclick="setInvFilter('all')">All</button><button class="filter" id="f-low" onclick="setInvFilter('low')">Low Stock</button><button class="filter" id="f-out" onclick="setInvFilter('out')">Out of Stock</button><button class="filter" id="f-expiring" onclick="setInvFilter('expiring')">Expiring 90d</button><button class="filter" id="f-expired" onclick="setInvFilter('expired')">Expired</button><div style="flex:1"></div><button class="filter" onclick="setInvView('list')">List</button><button class="filter" onclick="setInvView('kanban')">Kanban</button><button class="filter" style="background:#0F2A2E;color:#fff" onclick="printStock()">Print Stock - Thermal</button></div><br>
-    <input id="invSearch" placeholder="Search inventory..." oninput="renderInv()"><br><br>
-    <div id="invArea"></div>
-  </div>
-
-  <div id="page-users" class="page">
-    <div class="card">
-      <b>Add User - Saves to Firebase Instantly</b><br><br>
-      <div class="grid3">
-        <input id="uFull" placeholder="Full Name *"><input id="uUser" placeholder="Username * - no spaces - ex: alier"><input id="uPass" placeholder="Password * - min 4 chars">
-        <select id="uRole"><option>Cashier</option><option>Pharmacist</option><option>Admin</option></select>
-        <select id="uShift"><option>Cashier Shift</option><option>Shift 1</option><option>Shift 2</option><option>All</option></select>
-        <input id="uPhone" placeholder="Phone">
-      </div><br><button class="btn" onclick="addUser()">Add User</button>
-      <div class="small" style="margin-top:8px">Admin = All access | Pharmacist = Shift 1 | Cashier = Cashier Shift only</div>
-    </div><br>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="filter" id="uf-all" onclick="setUserFilter('all')">All</button><button class="filter" id="uf-admin" onclick="setUserFilter('admin')">Admin</button><button class="filter" id="uf-pharm" onclick="setUserFilter('pharmacist')">Pharmacist</button><button class="filter" id="uf-cash" onclick="setUserFilter('cashier')">Cashier</button><div style="flex:1"></div><button class="filter" onclick="setUserView('kanban')">Kanban</button><button class="filter" onclick="setUserView('list')">List</button></div><br>
-    <div id="userArea"></div>
-  </div>
-
-  <div id="page-reports" class="page">
-    <div class="card"><b>Reports</b><br><br><button class="btn" onclick="printDaily()">Print Daily Report - Thermal</button> <button class="btn btn-dark" onclick="printZ()">Print Z-Report - Thermal</button> <button class="btn btn-light" onclick="printStock()">Print Stock - Thermal</button><br><br><div id="reportArea"></div></div>
-  </div>
-
-  <div id="page-settings" class="page">
-    <div class="card"><b>Backup / Sync</b><br><br>
-    <p class="small">Everything is saved to Firebase automatically on every save. This backup is extra safety.</p><br>
-    <button class="btn" onclick="exportBackup()">Download Backup (JSON)</button> <button class="btn btn-dark" onclick="document.getElementById('restoreFile').click()">Restore Backup</button> <button class="btn btn-light" onclick="forceSync()">Force Sync to Firebase Now</button><input type="file" id="restoreFile" style="display:none" accept=".json" onchange="restoreBackup(this)"><br><br>
-    <p class="small" id="syncStatus">Sync status: Waiting...</p><br>
-    <button class="btn btn-red" onclick="resetAll()">Reset All Data (Danger - Deletes Local + Firebase)</button></div>
   </div>
 </div>
 
@@ -149,32 +209,26 @@ td{padding:11px;border-bottom:1px solid #E2E8E6;vertical-align:middle}
 
 <script>
 let DB_KEY='ac15_db_v1';
-let db = loadDB();
+let db=loadDB();
 let cart=[];
 let invFilter='all', invView='list', userFilter='all', userView='kanban';
 let editingMedId=null;
 let isMerging=false;
-
 function loadDB(){ try{ let d=JSON.parse(localStorage.getItem(DB_KEY)); if(d && d.users) return d; }catch(e){} return {users:[], meds:[], sales:[], updatedAt:0}; }
-function saveDB(){
-  db.updatedAt = Date.now();
-  localStorage.setItem(DB_KEY, JSON.stringify(db));
-  saveToCloud();
-}
+function saveDB(){ db.updatedAt=Date.now(); localStorage.setItem(DB_KEY, JSON.stringify(db)); saveToCloud(); }
 async function sha(str){ let b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)); return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''); }
 
-// ========== FIREBASE - Everything saves to Cloud ==========
+// ========== FIREBASE - All Data Saves To Firebase ==========
 // REPLACE THE 6 LINES BELOW WITH YOUR CONFIG FROM Firebase Console > Project Settings
-let FB_CONFIG = {
-  apiKey: "AIzaSyD0j6mn0PEaUvBgsVkE5Xr0Xzr5hXZ-4lQ",
-  authDomain: "active-care-pharmacy-71ce2.firebaseapp.com",
-  projectId: "active-care-pharmacy-71ce2",
-  storageBucket: "active-care-pharmacy-71ce2.firebasestorage.app",
-  messagingSenderId: "860436415161",
-  appId: "1:860436415161:web:6aaa1ae3bdaec6c1559168"
+let FB_CONFIG={
+  apiKey: "AIzaSyA_KwZlB0LDdbDYPLXbjTSulUFmBPFI_to",
+  authDomain: "active-care-pharmacy.firebaseapp.com",
+  projectId: "active-care-pharmacy",
+  storageBucket: "active-care-pharmacy.firebasestorage.app",
+  messagingSenderId: "797181536451",
+  appId: "1:797181536451:web:2ec20e4aab85e88c8f1a76"
 };
-let FB_DB = null;
-let FB_READY = false;
+let FB_DB=null, FB_READY=false;
 function setSyncUI(ok, text){
   let d1=document.getElementById('syncDot'); if(d1) d1.className='sync-dot'+(ok?' ok':'');
   let t1=document.getElementById('syncText'); if(t1) t1.textContent=text;
@@ -190,54 +244,33 @@ function setSyncUI(ok, text){
     s2.src='https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js';
     s2.onload=function(){
       try{
-        if(FB_CONFIG.apiKey.includes('PUT_YOUR')){
-          setSyncUI(false, 'Firebase NOT configured - Using Local Only. Paste your config!');
-          console.log('Firebase NOT configured - paste your config in FB_CONFIG');
-          return;
-        }
+        if(FB_CONFIG.apiKey.includes('PUT_YOUR')){ setSyncUI(false,'Firebase NOT configured - Using Local Only'); return; }
         if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
-        FB_DB=firebase.firestore();
-        FB_READY=true;
-        setSyncUI(true, 'Connected to Firebase');
-        console.log('Firebase Ready - V15');
+        FB_DB=firebase.firestore(); FB_READY=true;
+        setSyncUI(true,'Connected to Firebase');
         syncFromCloud();
         FB_DB.collection('activecare').doc('main').onSnapshot((doc)=>{
           if(doc.exists()){
             let cloud=doc.data();
-            if(cloud && cloud.updatedAt && cloud.updatedAt > (db.updatedAt||0) + 1000){
-              mergeCloud(cloud);
-            }
+            if(cloud && cloud.updatedAt && cloud.updatedAt > (db.updatedAt||0)+1000) mergeCloud(cloud);
           }
         });
-      }catch(e){ console.log('Firebase init fail', e); setSyncUI(false, 'Firebase Error: '+e.message); }
+      }catch(e){ setSyncUI(false,'Firebase Error: '+e.message); }
     };
     document.head.appendChild(s2);
   };
   document.head.appendChild(s1);
 })();
 function mergeCloud(cloud){
-  if(isMerging) return;
-  isMerging=true;
+  if(isMerging) return; isMerging=true;
   try{
     let changed=false;
-    (cloud.users||[]).forEach(cu=>{
-      if(!db.users.find(u=>u.username===cu.username)){ db.users.push(cu); changed=true; }
-    });
-    (cloud.meds||[]).forEach(cm=>{
-      let local=db.meds.find(m=>String(m.id)===String(cm.id));
-      if(!local){ db.meds.push(cm); changed=true; }
-      else if((cm.updatedAt||0) > (local.updatedAt||0)){ Object.assign(local, cm); changed=true; }
-    });
-    (cloud.sales||[]).forEach(cs=>{
-      if(!db.sales.find(s=>String(s.id)===String(cs.id))){ db.sales.push(cs); changed=true; }
-    });
+    (cloud.users||[]).forEach(cu=>{ if(!db.users.find(u=>u.username===cu.username)){ db.users.push(cu); changed=true; } });
+    (cloud.meds||[]).forEach(cm=>{ let local=db.meds.find(m=>String(m.id)===String(cm.id)); if(!local){ db.meds.push(cm); changed=true; } else if((cm.updatedAt||0)>(local.updatedAt||0)){ Object.assign(local,cm); changed=true; } });
+    (cloud.sales||[]).forEach(cs=>{ if(!db.sales.find(s=>String(s.id)===String(cs.id))){ db.sales.push(cs); changed=true; } });
     if(cloud.updatedAt) db.updatedAt=Math.max(db.updatedAt||0, cloud.updatedAt);
-    if(changed){
-      localStorage.setItem(DB_KEY, JSON.stringify(db));
-      console.log('Merged from Cloud. Users:', db.users.length, 'Meds:', db.meds.length, 'Sales:', db.sales.length);
-      renderAll();
-    }
-  }catch(e){ console.log('Merge fail', e); }
+    if(changed){ localStorage.setItem(DB_KEY, JSON.stringify(db)); renderAll(); }
+  }catch(e){}
   isMerging=false;
 }
 async function syncFromCloud(){
@@ -247,24 +280,20 @@ async function syncFromCloud(){
     if(doc.exists()){
       let cloud=doc.data();
       if(cloud && cloud.users && cloud.users.length) mergeCloud(cloud);
-      else if(!db.users.length) { /* cloud empty, will push local */ saveToCloud(); }
       else saveToCloud();
-    } else {
-      saveToCloud();
-    }
-  }catch(e){ console.log('Sync from cloud fail', e); }
+    } else saveToCloud();
+  }catch(e){}
 }
 async function saveToCloud(){
   if(!FB_READY) return;
   try{
-    setSyncUI(true, 'Saving to Firebase...');
+    setSyncUI(true,'Saving to Firebase...');
     let copy=JSON.parse(JSON.stringify(db));
     await FB_DB.collection('activecare').doc('main').set(copy);
-    setSyncUI(true, 'Saved to Firebase ✓');
-    console.log('Saved to Firebase - Users:', db.users.length, 'Meds:', db.meds.length, 'Sales:', db.sales.length);
-  }catch(e){ console.log('Save to cloud fail', e); setSyncUI(false, 'Save to Firebase Failed: '+e.message); }
+    setSyncUI(true,'Saved to Firebase');
+  }catch(e){ setSyncUI(false,'Save Failed: '+e.message); }
 }
-function forceSync(){ if(!FB_READY){ alert('Firebase not configured yet. Paste your config in FB_CONFIG'); return; } saveToCloud(); alert('Sync started. Check Console / Firestore.'); }
+function forceSync(){ if(!FB_READY){ alert('Firebase not configured yet. Paste your config in FB_CONFIG'); return; } saveToCloud(); alert('Sync started. Check Firestore.'); }
 
 async function init(){
   if(!db.users.length){
@@ -315,7 +344,7 @@ function logout(){ localStorage.removeItem('ac15_session'); location.reload(); }
 function showPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.sidebar button').forEach(x=>x.classList.remove('active'));
   let n=document.getElementById('nav-'+p); if(n) n.classList.add('active');
   renderAll();
 }
@@ -328,7 +357,8 @@ function renderDashboard(){
   document.getElementById('kTodayCount').textContent=day.length+' transactions today';
   let val=db.meds.reduce((a,m)=>a+m.qty*m.cost,0);
   document.getElementById('kStock').textContent=val.toLocaleString()+' SSP';
-  document.getElementById('kStockCount').textContent=db.meds.length+' products';
+  document.getElementById('kStockCount').textContent=db.meds.length+' products in stock';
+  document.getElementById('kProd').textContent=db.meds.length;
   let low=db.meds.filter(m=>m.qty>0 && m.qty<=m.min).length;
   let out=db.meds.filter(m=>m.qty<=0).length;
   let exp=db.meds.filter(m=>{ let d=(new Date(m.expiry)-new Date())/86400000; return d<=90&&d>=0; }).length;
@@ -338,6 +368,8 @@ function renderDashboard(){
   day.forEach(s=>s.items.forEach(i=>{ counts[i.name]=(counts[i.name]||0)+i.qty; }));
   let top=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
   document.getElementById('topToday').innerHTML=top.length?top.map(x=>'<div style="display:flex;justify-content:space-between;padding:6px 0"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join(''):'<p class="small">No sales today yet</p>';
+  let lowMeds=db.meds.filter(m=>m.qty<=m.min).slice(0,5);
+  document.getElementById('lowList').innerHTML=lowMeds.length?lowMeds.map(m=>'<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #E2E8E6"><span>'+m.name+'</span><span class="badge '+(m.qty<=0?'r':'o')+'">'+m.qty+' left</span></div>').join(''):'<p class="small">All stock is good</p>';
 }
 function renderPos(){
   let q=(document.getElementById('posSearch').value||'').toLowerCase();
@@ -354,8 +386,7 @@ function addToCart(id){
   renderCart();
 }
 function renderCart(){
-  let el=document.getElementById('cartList');
-  if(!el) return;
+  let el=document.getElementById('cartList'); if(!el) return;
   el.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${c.name} x ${c.qty}</span><span><b>${(c.price*c.qty).toLocaleString()}</b> <button onclick="removeCart(${i})" style="background:#FEE2E2;padding:4px 8px;border-radius:6px">x</button></span></div>`).join('')||'<p class="small">Cart empty</p>';
   let total=cart.reduce((a,c)=>a+c.price*c.qty,0);
   document.getElementById('cartTotal').textContent=total.toLocaleString()+' SSP';
@@ -371,8 +402,9 @@ function checkout(){
   db.sales.push(sale); saveDB();
   printReceipt(sale);
   cart=[]; document.getElementById('posCustomer').value=''; renderAll();
-  alert('Sale done! Saved to Firebase. Total: '+total.toLocaleString()+' SSP - Receipt printed');
+  alert('Sale done! Saved to Firebase. Total: '+total.toLocaleString()+' SSP');
 }
+// ========== INVENTORY - ODOO DESIGN ==========
 function setInvFilter(f){ invFilter=f; renderInv(); }
 function setInvView(v){ invView=v; renderInv(); }
 function saveMed(){
@@ -383,13 +415,8 @@ function saveMed(){
   let price=Number(document.getElementById('mPrice').value||0);
   if(!qty||!cost||!price){ alert('Enter Qty, Cost, Price'); return; }
   let data={name:name, barcode:document.getElementById('mBarcode').value, category:document.getElementById('mCategory').value, form:document.getElementById('mForm').value, unit:document.getElementById('mUnit').value, supplier:document.getElementById('mSupplier').value, qty:qty, min:Number(document.getElementById('mMin').value||5), cost:cost, price:price, expiry:document.getElementById('mExpiry').value, batch:document.getElementById('mBatch').value, updatedAt:Date.now()};
-  if(editingMedId){
-    let m=db.meds.find(x=>x.id===editingMedId);
-    if(m) Object.assign(m, data);
-    editingMedId=null; document.getElementById('mEditId').value='';
-  } else {
-    db.meds.push({id:Date.now(), ...data});
-  }
+  if(editingMedId){ let m=db.meds.find(x=>x.id===editingMedId); if(m) Object.assign(m, data); editingMedId=null; }
+  else db.meds.push({id:Date.now(), ...data});
   saveDB(); clearMedForm(); renderInv(); renderDashboard();
   alert('Medicine saved to Firebase!');
 }
@@ -400,6 +427,14 @@ function editMed(id){
   editingMedId=id; showPage('inventory'); window.scrollTo(0,0);
 }
 function delMed(id){ if(!confirm('Delete this medicine? This will sync to Firebase too.')) return; db.meds=db.meds.filter(m=>m.id!==id); saveDB(); renderInv(); }
+function medIcon(cat){
+  if((cat||'').includes('Antibiotics')) return '💊';
+  if((cat||'').includes('Vitamins')) return '🟠';
+  if((cat||'').includes('Skin')) return '🧴';
+  if((cat||'').includes('Baby')) return '👶';
+  if((cat||'').includes('Syrup')) return '🧃';
+  return '💊';
+}
 function renderInv(){
   let q=(document.getElementById('invSearch').value||'').toLowerCase();
   let list=db.meds.filter(m=>!q||m.name.toLowerCase().includes(q)||(m.category||'').toLowerCase().includes(q));
@@ -408,21 +443,26 @@ function renderInv(){
   if(invFilter==='expiring') list=list.filter(m=>{ let d=(new Date(m.expiry)-new Date())/86400000; return d<=90&&d>=0; });
   if(invFilter==='expired') list=list.filter(m=>new Date(m.expiry)<new Date());
   ['all','low','out','expiring','expired'].forEach(f=>{ let el=document.getElementById('f-'+f); if(el) el.classList.toggle('active', invFilter===f); });
+  let vl=document.getElementById('v-inv-list'); if(vl) vl.classList.toggle('active', invView==='list');
+  let vk=document.getElementById('v-inv-kanban'); if(vk) vk.classList.toggle('active', invView==='kanban');
   let area=document.getElementById('invArea');
   if(invView==='kanban'){
+    // ODOO KANBAN
     area.innerHTML='<div class="kanban">'+list.map(m=>{
       let margin=m.price?Math.round(((m.price-m.cost)/m.price)*100):0;
       let status=m.qty<=0?'<span class="badge r">Out of Stock</span>':(m.qty<=m.min?'<span class="badge o">Low Stock</span>':'<span class="badge g">In Stock</span>');
-      return `<div class="card"><b>${m.name}</b><br><span class="small">${m.category} | ${m.form} - ${m.unit} | ${m.supplier||''}</span><br><br>On Hand: <b>${m.qty}</b> | Min: ${m.min}<br>Cost: ${m.cost.toLocaleString()} | Price: <b>${m.price.toLocaleString()} SSP</b><br>Margin: ${margin}% | Valuation: ${(m.qty*m.cost).toLocaleString()}<br>Expiry: ${m.expiry||'-'}<br>${status}<br><br><button class="btn btn-light" onclick="editMed(${m.id})">Edit</button> <button class="btn btn-red" onclick="delMed(${m.id})">Delete</button></div>`;
+      return `<div class="card"><div style="display:flex;gap:12px"><div class="med-avatar">${medIcon(m.category)}</div><div><b>${m.name}</b><br><span class="small">${m.category} | ${m.form} - ${m.unit}</span><br><span class="small">${m.supplier||''} | Batch: ${m.batch||'-'}</span></div></div><div style="margin-top:12px;font-size:13px;line-height:1.8">On Hand: <b>${m.qty}</b> | Min: ${m.min}<br>Cost: ${m.cost.toLocaleString()} | Price: <b>${m.price.toLocaleString()} SSP</b><br>Margin: ${margin}% | Valuation: ${(m.qty*m.cost).toLocaleString()}<br>Expiry: ${m.expiry||'-'}</div><div style="margin-top:8px">${status}</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-light" onclick="editMed(${m.id})">Edit</button> <button class="btn btn-red" onclick="delMed(${m.id})">Delete</button></div></div>`;
     }).join('')+'</div>';
   } else {
+    // ODOO LIST
     area.innerHTML='<table><tr><th>Product</th><th>On Hand</th><th>Cost</th><th>Price</th><th>Margin</th><th>Valuation</th><th>Expiry</th><th>Status</th><th>Action</th></tr>'+list.map(m=>{
       let margin=m.price?Math.round(((m.price-m.cost)/m.price)*100):0;
       let status=m.qty<=0?'<span class="badge r">Out</span>':(m.qty<=m.min?'<span class="badge o">Low</span>':'<span class="badge g">In Stock</span>');
-      return `<tr><td><b>${m.name}</b><br><span class="small">${m.category} - ${m.form} - ${m.unit}</span></td><td><b>${m.qty}</b><br><span class="small">Min ${m.min}</span></td><td>${m.cost.toLocaleString()}</td><td><b>${m.price.toLocaleString()}</b></td><td>${margin}%</td><td>${(m.qty*m.cost).toLocaleString()}</td><td>${m.expiry||'-'}</td><td>${status}</td><td><button class="btn btn-light" onclick="editMed(${m.id})">Edit</button> <button class="btn btn-red" onclick="delMed(${m.id})">Del</button></td></tr>`;
+      return `<tr><td><div style="display:flex;gap:10px;align-items:center"><div class="med-avatar" style="width:36px;height:36px;font-size:16px">${medIcon(m.category)}</div><div><b>${m.name}</b><br><span class="small">${m.category} - ${m.form} - ${m.unit}</span></div></div></td><td><b>${m.qty}</b><br><span class="small">Min ${m.min}</span></td><td>${m.cost.toLocaleString()}</td><td><b>${m.price.toLocaleString()}</b></td><td>${margin}%</td><td>${(m.qty*m.cost).toLocaleString()}</td><td>${m.expiry||'-'}</td><td>${status}</td><td><button class="btn btn-light" onclick="editMed(${m.id})">Edit</button> <button class="btn btn-red" onclick="delMed(${m.id})">Del</button></td></tr>`;
     }).join('')+'</table>';
   }
 }
+// ========== USERS - ODOO DESIGN ==========
 function setUserFilter(f){ userFilter=f; renderUsers(); }
 function setUserView(v){ userView=v; renderUsers(); }
 async function addUser(){
@@ -465,17 +505,22 @@ function renderUsers(){
   if(userFilter==='pharmacist') list=list.filter(u=>u.role==='pharmacist');
   if(userFilter==='cashier') list=list.filter(u=>u.role==='cashier');
   ['all','admin','pharm','cash'].forEach(f=>{ let el=document.getElementById('uf-'+f); if(el) el.classList.toggle('active', userFilter===f || (f==='pharm'&&userFilter==='pharmacist') || (f==='cash'&&userFilter==='cashier')); });
+  let vk=document.getElementById('v-user-kanban'); if(vk) vk.classList.toggle('active', userView==='kanban');
+  let vl=document.getElementById('v-user-list'); if(vl) vl.classList.toggle('active', userView==='list');
   let area=document.getElementById('userArea');
   if(userView==='kanban'){
+    // ODOO KANBAN - User Cards
     area.innerHTML='<div class="kanban">'+list.map(u=>{
       let ini=u.fullName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
       let badge=u.role==='admin'?'<span class="badge bl">Admin</span>':(u.role==='pharmacist'?'<span class="badge g">Pharmacist</span>':'<span class="badge o">Cashier</span>');
-      return `<div class="card"><div style="display:flex;gap:12px"><div class="avatar">${ini}</div><div><b>${u.fullName}</b><br><span class="small">@${u.username}</span><br>${badge} <span class="badge g">${u.shift}</span></div></div><div style="margin-top:10px;font-size:13px">Phone: ${u.phone||'-'}<br>Status: Active | Created: ${(u.createdAt||'').slice(0,10)}</div><br><button class="btn btn-light" onclick="resetUserPass('${u.username}')">Reset Pass</button> <button class="btn btn-red" onclick="delUser('${u.username}')">Delete</button></div>`;
+      return `<div class="card"><div style="display:flex;gap:12px"><div class="avatar">${ini}</div><div><b>${u.fullName}</b><br><span class="small">@${u.username}</span><br>${badge} <span class="badge g">${u.shift}</span></div></div><div style="margin-top:10px;font-size:13px;line-height:1.8">Phone: ${u.phone||'-'}<br>Status: Active | Created: ${(u.createdAt||'').slice(0,10)}</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-light" onclick="resetUserPass('${u.username}')">Reset Pass</button> <button class="btn btn-red" onclick="delUser('${u.username}')">Delete</button></div></div>`;
     }).join('')+'</div>';
   } else {
-    area.innerHTML='<table><tr><th>User</th><th>Role</th><th>Shift</th><th>Phone</th><th>Action</th></tr>'+list.map(u=>{
+    // ODOO LIST - User Table
+    area.innerHTML='<table><tr><th>User</th><th>Role</th><th>Shift</th><th>Phone</th><th>Created</th><th>Action</th></tr>'+list.map(u=>{
+      let ini=u.fullName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
       let badge=u.role==='admin'?'<span class="badge bl">Admin</span>':(u.role==='pharmacist'?'<span class="badge g">Pharmacist</span>':'<span class="badge o">Cashier</span>');
-      return `<tr><td><b>${u.fullName}</b><br><span class="small">@${u.username}</span></td><td>${badge}</td><td>${u.shift}</td><td>${u.phone||'-'}</td><td><button class="btn btn-light" onclick="resetUserPass('${u.username}')">Reset</button> <button class="btn btn-red" onclick="delUser('${u.username}')">Delete</button></td></tr>`;
+      return `<tr><td><div style="display:flex;gap:10px;align-items:center"><div class="avatar" style="width:36px;height:36px;font-size:14px">${ini}</div><div><b>${u.fullName}</b><br><span class="small">@${u.username}</span></div></div></td><td>${badge}</td><td><span class="badge gy">${u.shift}</span></td><td>${u.phone||'-'}</td><td>${(u.createdAt||'').slice(0,10)}</td><td><button class="btn btn-light" onclick="resetUserPass('${u.username}')">Reset</button> <button class="btn btn-red" onclick="delUser('${u.username}')">Delete</button></td></tr>`;
     }).join('')+'</table>';
   }
 }
@@ -487,20 +532,47 @@ function renderReports(){
   let debt=day.filter(s=>s.pay==='Debt').reduce((a,s)=>a+s.total,0);
   document.getElementById('reportArea').innerHTML='<div style="line-height:2">Transactions: <b>'+day.length+'</b><br>Total Sales: <b>'+total.toLocaleString()+' SSP</b><br>Cash: '+cash.toLocaleString()+'<br>Bank / Mobile: '+bank.toLocaleString()+'<br>Debt: '+debt.toLocaleString()+'<br><br>Last 10 Sales:<br>'+day.slice(-10).map(s=>s.id+' - '+s.customer+' - '+s.total.toLocaleString()+' SSP - '+s.pay).join('<br>')+'</div>';
 }
+
+// ========== PROFESSIONAL THERMAL PRINT - 80mm - SAVE PAPER ==========
+// No big margins, no blank pages, no header image, no footer waste
+// Compact 11px font, tight lines, auto cut, 1 receipt = about 70mm only
+// Works with your existing thermal printer - Set paper to 80mm x Receipt
+function thermalCSS(){
+  return `<style>
+    .th{width:80mm;margin:0;padding:0;font-family:'Courier New',monospace;color:#000;font-size:11px;line-height:1.25;text-align:center}
+    .th h1{font-size:14px;margin:0;padding:0;letter-spacing:.5px}
+    .th .s{font-size:10px;margin:0;padding:0}
+    .th .line{border-top:1px dashed #000;margin:4px 0;padding:0}
+    .th .row{display:flex;justify-content:space-between;font-size:11px;padding:0;margin:0;text-align:left}
+    .th .total{display:flex;justify-content:space-between;font-size:14px;font-weight:900;border-top:2px solid #000;border-bottom:2px solid #000;padding:3px 0;margin:3px 0}
+    .th .left{text-align:left}
+    .th .cut{height:8px}
+  </style>`;
+}
 function thermalHeader(title){
   let user=JSON.parse(localStorage.getItem('ac15_session')||'{}');
-  return `<div style="width:80mm;margin:0 auto;font-family:'Courier New',monospace;font-size:12px;text-align:center;color:#000"><h1 style="font-size:16px;margin:0">ACTIVE CARE PHARMACY</h1><div>Juba, South Sudan</div><div>${title} | ${todayStr()} ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div><div>By: ${user.fullName||''}</div><div style="border-top:1px dashed #000;margin:5px 0"></div>`;
+  return `<div class="th">${thermalCSS()}
+  <h1>ACTIVE CARE PHARMACY</h1>
+  <div class="s">Juba, South Sudan</div>
+  <div class="s">${title} | ${todayStr()} ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>
+  <div class="s">By: ${user.fullName||''}</div>
+  <div class="line"></div>`;
 }
-function doPrint(html){ let pa=document.getElementById('printArea'); pa.innerHTML=html; pa.style.display='block'; window.print(); setTimeout(()=>{ pa.innerHTML=''; pa.style.display='none'; }, 500); }
+function doPrint(html){
+  let pa=document.getElementById('printArea');
+  pa.innerHTML=html; pa.style.display='block';
+  window.print();
+  setTimeout(()=>{ pa.innerHTML=''; pa.style.display='none'; }, 400);
+}
 function printReceipt(sale){
-  let rows=sale.items.map(i=>`<div style="display:flex;justify-content:space-between"><span>${i.name}<br><small>${i.qty} x ${i.price.toLocaleString()}</small></span><b>${(i.price*i.qty).toLocaleString()}</b></div>`).join('');
-  let html=thermalHeader('RECEIPT #'+sale.id)+`<div style="text-align:left">Customer: ${sale.customer}<br>Pay: ${sale.pay} | Shift: ${sale.shift}</div><div style="border-top:1px dashed #000;margin:5px 0"></div>${rows}<div style="border-top:1px dashed #000;margin:5px 0"></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:900;border-top:2px solid #000;border-bottom:2px solid #000;padding:4px 0"><span>TOTAL</span><span>${sale.total.toLocaleString()} SSP</span></div><div><b>THANK YOU - GET WELL SOON</b></div><div style="height:12px"></div></div>`;
+  let rows=sale.items.map(i=>`<div class="row"><span>${i.name}<br><span style="font-size:10px">${i.qty} x ${i.price.toLocaleString()}</span></span><b>${(i.price*i.qty).toLocaleString()}</b></div>`).join('');
+  let html=thermalHeader('RECEIPT #'+sale.id)+`<div class="left">Customer: ${sale.customer}<br>Pay: ${sale.pay} | Shift: ${sale.shift}</div><div class="line"></div>${rows}<div class="line"></div><div class="total"><span>TOTAL</span><span>${sale.total.toLocaleString()} SSP</span></div><div>THANK YOU - GET WELL SOON</div><div class="s">Please come again</div><div class="cut"></div></div>`;
   doPrint(html);
 }
 function printStock(){
   let val=db.meds.reduce((a,m)=>a+m.qty*m.cost,0);
-  let rows=db.meds.map(m=>`<div style="display:flex;justify-content:space-between"><span>${m.name.substring(0,22)} (${m.qty})</span><span>${(m.qty*m.cost).toLocaleString()}</span></div>`).join('');
-  let html=thermalHeader('STOCK REPORT')+`<div style="text-align:left">Items: ${db.meds.length}<br>Stock Value: <b>${val.toLocaleString()} SSP</b></div><div style="border-top:1px dashed #000;margin:5px 0"></div><div style="text-align:left">${rows}</div><div style="border-top:1px dashed #000;margin:5px 0"></div><div style="display:flex;justify-content:space-between"><b>Total Value</b><b>${val.toLocaleString()}</b></div><div style="height:12px"></div></div>`;
+  let rows=db.meds.map(m=>`<div class="row"><span>${m.name.substring(0,24)} (${m.qty})</span><span>${(m.qty*m.cost).toLocaleString()}</span></div>`).join('');
+  let html=thermalHeader('STOCK REPORT')+`<div class="left">Items: ${db.meds.length} | Value: <b>${val.toLocaleString()} SSP</b></div><div class="line"></div><div class="left">${rows}</div><div class="line"></div><div class="row"><b>Total Value</b><b>${val.toLocaleString()}</b></div><div class="cut"></div></div>`;
   doPrint(html);
 }
 function printDaily(){
@@ -510,7 +582,7 @@ function printDaily(){
   let bank=day.filter(s=>s.pay!=='Cash'&&s.pay!=='Debt').reduce((a,s)=>a+s.total,0);
   let debt=day.filter(s=>s.pay==='Debt').reduce((a,s)=>a+s.total,0);
   let cogs=0; day.forEach(s=>s.items.forEach(i=>cogs+=(i.cost||0)*i.qty));
-  let html=thermalHeader('DAILY REPORT - '+t)+`<div style="text-align:left"><div style="display:flex;justify-content:space-between"><span>Transactions</span><span>${day.length}</span></div><div style="display:flex;justify-content:space-between"><span>Total Sales</span><b>${total.toLocaleString()}</b></div><div style="display:flex;justify-content:space-between"><span>Cash</span><span>${cash.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between"><span>Bank / Mobile</span><span>${bank.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between"><span>Debt</span><span>${debt.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between"><span>COGS</span><span>${cogs.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between"><span>Gross Profit</span><b>${(total-cogs).toLocaleString()}</b></div></div><div style="border-top:1px dashed #000;margin:5px 0"></div><div><b>END OF DAY</b></div><div style="height:12px"></div></div>`;
+  let html=thermalHeader('DAILY REPORT - '+t)+`<div class="left"><div class="row"><span>Transactions</span><span>${day.length}</span></div><div class="row"><span>Total Sales</span><b>${total.toLocaleString()}</b></div><div class="row"><span>Cash</span><span>${cash.toLocaleString()}</span></div><div class="row"><span>Bank / Mobile</span><span>${bank.toLocaleString()}</span></div><div class="row"><span>Debt</span><span>${debt.toLocaleString()}</span></div><div class="row"><span>COGS</span><span>${cogs.toLocaleString()}</span></div><div class="row"><span>Gross Profit</span><b>${(total-cogs).toLocaleString()}</b></div></div><div class="line"></div><div><b>END OF DAY</b></div><div class="cut"></div></div>`;
   doPrint(html);
 }
 function printZ(){
@@ -519,7 +591,7 @@ function printZ(){
   let total=day.reduce((a,s)=>a+s.total,0);
   let cash=day.filter(s=>s.pay==='Cash').reduce((a,s)=>a+s.total,0);
   let bank=day.filter(s=>s.pay!=='Cash'&&s.pay!=='Debt').reduce((a,s)=>a+s.total,0);
-  let html=thermalHeader('Z-REPORT - '+(user.shift||''))+`<div style="text-align:left"><div style="display:flex;justify-content:space-between"><span>Total Sales</span><b>${total.toLocaleString()}</b></div><div style="display:flex;justify-content:space-between"><span>Cash Expected</span><span>${cash.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between"><span>Bank / Mobile</span><span>${bank.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between"><span>Transactions</span><span>${day.length}</span></div></div><div style="border-top:1px dashed #000;margin:5px 0"></div><div style="text-align:left">Counted: __________<br>Diff: __________<br>Handed To: __________</div><div style="border-top:1px dashed #000;margin:5px 0"></div><div>Sign: __________</div><div style="height:12px"></div></div>`;
+  let html=thermalHeader('Z-REPORT - '+(user.shift||''))+`<div class="left"><div class="row"><span>Total Sales</span><b>${total.toLocaleString()}</b></div><div class="row"><span>Cash Expected</span><span>${cash.toLocaleString()}</span></div><div class="row"><span>Bank / Mobile</span><span>${bank.toLocaleString()}</span></div><div class="row"><span>Transactions</span><span>${day.length}</span></div></div><div class="line"></div><div class="left">Counted: __________<br>Diff: __________<br>Handed To: __________</div><div class="line"></div><div>Sign: __________</div><div class="cut"></div></div>`;
   doPrint(html);
 }
 function exportBackup(){
@@ -542,4 +614,4 @@ init().then(()=>{
 });
 </script>
 </body>
-        </html>
+                                                                                            </html>
