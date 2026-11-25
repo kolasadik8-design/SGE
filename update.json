@@ -1,0 +1,74 @@
+// ===== Active Care V13 - update.js - SAFE ADDON =====
+// Checks version.json, migrates old data, clears old cache on update.
+(function(){
+  if(window.__AC_UPDATE_LOADED) return; window.__AC_UPDATE_LOADED = true;
+  const CURRENT = 'V13'; // Change to V14, V15 when you release a new version
+
+  function migrate(){
+    try{
+      const map = {
+        'ac_users':'ac13_users','ac_meds':'ac13_meds','ac_sales':'ac13_sales','ac_returns':'ac13_returns',
+        'ac_expenses':'ac13_expenses','ac_debts':'ac13_debts','ac_customers':'ac13_customers',
+        'ac_suppliers':'ac13_suppliers','ac_shifts':'ac13_shifts','ac_audit':'ac13_audit',
+        'ac_books':'ac13_books','ac_announce':'ac13_announce','ac_rate':'ac13_rate'
+      };
+      let did = false;
+      Object.keys(map).forEach(oldK=>{
+        let newK = map[oldK];
+        let oldV = localStorage.getItem(oldK);
+        let newV = localStorage.getItem(newK);
+        if(oldV && !newV){ localStorage.setItem(newK, oldV); did=true; }
+        if(oldV) localStorage.removeItem(oldK);
+      });
+      if(did) console.log('AC update.js - migrated old data to ac13_');
+    }catch(e){ console.log('Migrate failed',e); }
+  }
+  migrate();
+
+  async function checkUpdate(silent){
+    try{
+      let res = await fetch('./version.json?t='+Date.now(), {cache:'no-store'});
+      if(!res.ok) return;
+      let v = await res.json();
+      if(!v.version || v.version===CURRENT) { if(!silent) console.log('AC - You are on latest',CURRENT); return; }
+      let msg = 'New version '+v.version+' available.\n'+(v.notes||'')+'\n\nUpdate now? Page will reload.';
+      if(v.force || confirm(msg)){
+        await doUpdate(v);
+      }
+    }catch(e){ console.log('Update check offline - keep working local',e.message); }
+  }
+
+  async function doUpdate(v){
+    try{
+      if('caches' in window){
+        let keys = await caches.keys();
+        await Promise.all(keys.map(k=>caches.delete(k)));
+      }
+      if('serviceWorker' in navigator){
+        let regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r=>r.unregister()));
+      }
+      migrate();
+      localStorage.setItem('ac13_last_update', JSON.stringify({from:CURRENT, to:v.version, at:new Date().toISOString()}));
+      alert('Updated to '+v.version+'. Reloading...');
+      location.reload(true);
+    }catch(e){ location.reload(); }
+  }
+
+  function addUpdateBtn(){
+    let bar = document.querySelector('.topbar .flex');
+    if(!bar || document.getElementById('acUpdateBtn')) return;
+    let b = document.createElement('button');
+    b.id='acUpdateBtn'; b.className='btn-ghost btn-sm'; b.innerText='Check Update';
+    b.onclick = ()=>checkUpdate(false);
+    bar.appendChild(b);
+  }
+  setInterval(addUpdateBtn, 2000);
+
+  setTimeout(()=>checkUpdate(true), 10000);
+  setInterval(()=>checkUpdate(true), 6*60*60*1000);
+
+  window.acCheckUpdate = ()=>checkUpdate(false);
+  window.acForceUpdate = ()=>doUpdate({version:'LATEST'});
+  console.log('AC update.js loaded - Current',CURRENT);
+})();
