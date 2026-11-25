@@ -1,0 +1,74 @@
+// ===== Active Care V13 - speed.js - SAFE ADDON - Performance Only =====
+// It does NOT change any sales, stock, or accounting logic. Only rendering and storage.
+(function(){
+  if(window.__AC_SPEED_LOADED) return; window.__AC_SPEED_LOADED = true;
+
+  function debounce(fn, wait){
+    let t=null; return function(...args){ clearTimeout(t); t=setTimeout(()=>fn.apply(this,args), wait||150); };
+  }
+
+  function patchRenders(){
+    ['renderPOS','renderInv','renderSales','renderDash'].forEach(name=>{
+      if(typeof window[name]==='function' && !window[name].__acDebounced){
+        let orig = window[name];
+        let d = debounce(orig, 150);
+        d.__acDebounced = true; d.__orig = orig;
+        window[name] = d;
+        window[name+'_Immediate'] = orig;
+      }
+    });
+  }
+  let tries=0; let iv=setInterval(()=>{ tries++; patchRenders(); if(tries>10) clearInterval(iv); }, 1000);
+
+  window.AC_POS_PAGE_SIZE = 50;
+  window.acPosPage = 1;
+
+  function cleanupStorage(){
+    try{
+      let a = JSON.parse(localStorage.getItem('ac13_audit')||'[]');
+      if(a.length>300){ localStorage.setItem('ac13_audit', JSON.stringify(a.slice(0,300))); }
+      let sales = JSON.parse(localStorage.getItem('ac13_sales')||'[]');
+      if(sales.length>2000){
+        let cutoff = new Date(); cutoff.setDate(cutoff.getDate()-180);
+        let old = sales.filter(s=>new Date(s.date)<cutoff);
+        let recent = sales.filter(s=>new Date(s.date)>=cutoff);
+        if(old.length){
+          let arch = JSON.parse(localStorage.getItem('ac13_archive')||'[]');
+          arch.push({archivedAt:new Date().toISOString(), count:old.length, total:old.reduce((x,s)=>x+s.total,0), sales:old.slice(0,500)});
+          localStorage.setItem('ac13_archive', JSON.stringify(arch));
+          localStorage.setItem('ac13_sales', JSON.stringify(recent));
+          console.log('AC speed - archived',old.length,'old sales');
+        }
+      }
+      ['ac_meds','ac_sales','ac_users','ac_audit'].forEach(k=>{ try{ localStorage.removeItem(k); }catch(e){} });
+    }catch(e){ console.log('Cleanup failed',e); }
+  }
+  setTimeout(cleanupStorage, 5000);
+  setInterval(cleanupStorage, 24*60*60*1000);
+
+  function idleSync(){
+    if('requestIdleCallback' in window){
+      requestIdleCallback(()=>{ if(typeof scheduleSync==='function') scheduleSync(); }, {timeout:10000});
+    }
+  }
+  let idleTimer=null;
+  document.addEventListener('input', ()=>{ clearTimeout(idleTimer); idleTimer=setTimeout(idleSync, 3000); });
+
+  function lazyLogo(){
+    document.querySelectorAll('img[src="logo.png"]').forEach(img=>{ img.loading='lazy'; img.decoding='async'; });
+  }
+  setTimeout(lazyLogo, 1000);
+
+  window.acSpeedReport = function(){
+    let used = 0; for(let k in localStorage){ used += (localStorage[k]||'').length; }
+    console.log('AC Speed Report:', {
+      localStorage_KB: Math.round(used/1024),
+      salesCount: JSON.parse(localStorage.getItem('ac13_sales')||'[]').length,
+      medsCount: JSON.parse(localStorage.getItem('ac13_meds')||'[]').length,
+      auditCount: JSON.parse(localStorage.getItem('ac13_audit')||'[]').length
+    });
+    return 'Check console - Ctrl+Shift+J';
+  };
+
+  console.log('AC speed.js loaded - V13 Performance Addon');
+})();
