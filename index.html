@@ -1,166 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Active Care Pharmacy</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Active Care Pharmacy v10</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
-*{box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
-body{margin:0;background:#F6F8F7;color:#111}
+*{box-sizing:border-box;font-family:Inter,system-ui,sans-serif} body{margin:0;background:#F2F4F3;color:#111}
 :root{--green:#0B6B5A;--green2:#10B981;--light:#E6F2EF}
-header{background:var(--green);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-header b{font-size:18px} header span{font-size:12px;opacity:.9}
-nav{display:flex;gap:8px;padding:12px 18px;flex-wrap:wrap;background:#fff;border-bottom:1px solid #E5E7EB;position:sticky;top:54px;z-index:9}
-nav button{border:1px solid #D1D5DB;background:#fff;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:600}
-nav button.active{background:var(--green);color:#fff;border-color:var(--green)}
-main{padding:16px;max-width:1200px;margin:auto}
-.card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;margin-bottom:16px}
-h2{margin:0 0 12px} h3{margin:14px 0 8px}
-input,select,textarea{width:100%;padding:11px;border:1px solid #D1D5DB;border-radius:10px;margin:6px 0;font-size:14px}
-label{font-size:13px;font-weight:600;display:block;margin-top:8px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:700px){.row{grid-template-columns:1fr}}
-.btn{background:var(--green);color:#fff;border:0;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer}
-.btn2{background:#fff;color:var(--green);border:1px solid var(--green);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
-.btn-red{background:#EF4444;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
-.btn-small{padding:7px 10px;font-size:12px}
-.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:var(--light);color:var(--green)}
-.badge-red{background:#FEE2E2;color:#B91C1C} .badge-yellow{background:#FEF3C7;color:#92400E}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.tabs button{padding:9px 14px;border-radius:999px;border:1px solid #D1D5DB;background:#fff;cursor:pointer;font-weight:600}
-.tabs button.active{background:var(--green);color:#fff}
-.pos-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start} @media(max-width:900px){.pos-layout{grid-template-columns:1fr}}
-.pos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.pos-card{border:1px solid #E5E7EB;border-radius:14px;padding:12px;background:#fff;cursor:pointer}
-.pos-card:hover{border-color:var(--green)} .pos-card b{font-size:14px} .pos-card p{margin:4px 0;font-size:12px;color:#6B7280}
-.pos-card .price{color:var(--green);font-weight:800;font-size:16px;margin:6px 0}
+.v10-layout{display:flex;min-height:100vh} .v10-sidebar{width:230px;background:var(--green);color:#fff;padding:18px 14px;position:fixed;height:100vh;overflow:auto}
+.v10-sidebar .logo{font-size:20px;font-weight:800;margin-bottom:6px} .v10-sidebar small{opacity:.8}
+.v10-sidebar button{display:block;width:100%;text-align:left;background:transparent;color:#fff;border:0;padding:11px 12px;border-radius:10px;cursor:pointer;font-weight:600;margin:2px 0}
+.v10-sidebar button:hover,.v10-sidebar button.active{background:rgba(255,255,255,.15)} .v10-sidebar .sec{font-size:11px;opacity:.7;margin:14px 0 6px;letter-spacing:.5px}
+.v10-main{margin-left:230px;flex:1;padding:18px;max-width:1200px} @media(max-width:800px){.v10-sidebar{width:100%;position:relative;height:auto}.v10-main{margin-left:0}.v10-layout{display:block}}
+.v10-card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 10px} h3{margin:12px 0 8px} input,select,textarea{width:100%;padding:11px;border:1px solid #D1D5DB;border-radius:10px;margin:6px 0;font-size:14px}
+label{font-size:13px;font-weight:600;display:block;margin-top:8px} .row{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:700px){.row{grid-template-columns:1fr}}
+.btn{background:var(--green);color:#fff;border:0;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer} .btn2{background:#fff;color:var(--green);border:1px solid var(--green);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn-red{background:#EF4444;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer} .btn-small{padding:7px 10px;font-size:12px}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:var(--light);color:var(--green)} .badge-red{background:#FEE2E2;color:#B91C1C} .badge-yellow{background:#FEF3C7;color:#92400E}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px} .tabs button{padding:9px 14px;border-radius:999px;border:1px solid #D1D5DB;background:#fff;cursor:pointer;font-weight:600} .tabs button.active{background:var(--green);color:#fff}
+.pos-layout{display:grid;grid-template-columns:1fr 340px;gap:14px;align-items:start} @media(max-width:900px){.pos-layout{grid-template-columns:1fr}}
+.pos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px} .pos-card{border:1px solid #E5E7EB;border-radius:14px;padding:12px;background:#fff;cursor:pointer} .pos-card:hover{border-color:var(--green)} .pos-card .price{color:var(--green);font-weight:800;font-size:16px}
 .cart-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #E5E7EB;font-size:13px}
-.user-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
-.user-card{border:1px solid #E5E7EB;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center}
+.user-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px} .user-card{border:1px solid #E5E7EB;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center}
 .avatar{width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
-.alert{padding:10px 12px;border-radius:10px;margin:6px 0;font-size:13px;background:#FEF3C7}
-.alert.Expired{background:#FEE2E2} .alert.Low{background:#FEF3C7}
+.alert{padding:10px 12px;border-radius:10px;margin:6px 0;font-size:13px;background:#FEF3C7} .alert.Expired{background:#FEE2E2}
 table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:10px;border-bottom:1px solid #E5E7EB;text-align:left}
-.hidden{display:none!important} .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 16px;border-radius:10px;z-index:999;font-size:13px}
-.flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hidden{display:none!important} .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 16px;border-radius:10px;z-index:999;font-size:13px} .flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px} @media(max-width:700px){.kpi{grid-template-columns:1fr 1fr}} .kpi .v10-card{text-align:center} .kpi h2{color:var(--green)}
 </style>
 </head>
 <body>
-<header><div><b>Active Care Pharmacy</b><br><span id="hdrUser">Not logged in</span></div><div class="flex"><span id="syncStatus" class="badge">Offline</span><button class="btn2" onclick="saveToCloud()">Sync Now</button><button class="btn2" onclick="logout()">Logout</button></div></header>
-<nav id="mainNav">
-<button onclick="showPage('pos',this)" class="active">POS</button>
+<div class="v10-layout">
+<aside class="v10-sidebar" id="sidebar">
+<div class="logo">Active Care v10</div><small id="hdrUser">Not logged in</small><br><small id="syncStatus" style="background:#fff;color:#0B6B5A;padding:3px 8px;border-radius:99px;font-weight:700">Offline</small>
+<div class="sec">MAIN</div>
+<button onclick="showPage('pos',this)" class="active">Point of Sale</button>
 <button onclick="showPage('inventory',this)" data-perm="inventory">Inventory</button>
+<button onclick="showPage('dictionary',this)">Pharmacy Dictionary</button>
+<button onclick="showPage('interactions',this)">Drug Interactions</button>
+<button onclick="showPage('prescriptions',this)">Prescriptions</button>
+<div class="sec">FINANCE</div>
 <button onclick="showPage('customers',this)">Customers & Debts</button>
-<button onclick="showPage('users',this)" data-perm="users">Users & Roles</button>
 <button onclick="showPage('reports',this)" data-perm="reports">Reports</button>
-<button onclick="showPage('shift',this)">Shift / Z-Report</button>
-</nav>
-<main>
+<button onclick="showPage('shift',this)">Shift / Z-Report / Handover</button>
+<div class="sec">ADMIN</div>
+<button onclick="showPage('users',this)" data-perm="users">Users & Roles</button>
+<button onclick="saveToCloud()" style="background:#fff;color:#0B6B5A">Sync Now - Firebase</button>
+<button onclick="logout()">Logout</button>
+<div style="margin-top:16px;font-size:11px;opacity:.8">Version 10.0.2<br>Active Care Pharmacy<br>Juba - South Sudan</div>
+</aside>
+<main class="v10-main">
 
 <!-- LOGIN -->
-<div id="page-login" class="card" style="max-width:420px;margin:40px auto">
-<h2>Login</h2>
-<label>Username</label><input id="loginUser" placeholder="e.g. admin">
-<label>Password</label><input id="loginPass" type="password" placeholder="Password">
-<button class="btn" style="width:100%;margin-top:12px" onclick="doLogin()">Login</button>
-<p style="font-size:12px;color:#6B7280">Default: admin / Admin123 - Change after first login</p>
+<div id="page-login" class="v10-card" style="max-width:440px;margin:60px auto">
+<h2>Welcome back</h2><p style="color:#666;font-size:13px">Login to Active Care v10</p>
+<label>Username</label><input id="loginUser" placeholder="Username">
+<label>Password</label><input id="loginPass" type="password" placeholder="••••••••">
+<button class="btn" style="width:100%;margin-top:12px" onclick="doLogin()">Sign In</button>
 <p id="loginMsg" style="color:#DC2626;font-size:13px"></p>
+<p style="font-size:12px;color:#888">5 accounts: Admin + 3 Pharmacists + 1 Cashier - 3 Shifts</p>
 </div>
 
 <!-- POS -->
 <div id="page-pos" class="hidden">
-<div class="card"><h2>Point of Sale</h2>
+<div class="v10-card"><h2>Point of Sale</h2>
 <input id="posSearch" placeholder="Search products or scan barcode..." oninput="renderPOSCards(posSearch(this.value))">
-<div class="flex" style="margin-top:8px"><select id="posCat" onchange="renderPOSCards()" style="max-width:200px"><option value="">Category: All</option><option>Antibiotic</option><option>Analgesic</option><option>Antimalarial</option><option>Vitamins</option></select><span id="posCount" class="badge"></span></div>
-</div>
-<div class="pos-layout">
-<div><div id="posGrid" class="pos-grid"></div></div>
-<div class="card"><h3>Current Order</h3>
-<label>Customer</label><select id="posCustomer"><option value="">Walk-in Customer</option></select>
-<div id="cartItems"></div>
-<div class="flex" style="justify-content:space-between;margin-top:12px"><b>Total</b><b id="cartTotal">0 SSP</b></div>
+<div class="flex"><select id="posCat" onchange="renderPOSCards()" style="max-width:200px"><option value="">Category: All</option><option>Analgesic</option><option>Antibiotic</option><option>Antimalarial</option><option>Vitamins</option></select><span id="posCount" class="badge"></span><span id="shiftBadge" class="badge"></span></div></div>
+<div class="pos-layout"><div><div id="posGrid" class="pos-grid"></div></div>
+<div class="v10-card"><h3>Current Order</h3><label>Customer</label><select id="posCustomer"><option value="">Walk-in Customer</option></select><div id="cartItems"></div>
+<div class="flex" style="justify-content:space-between;margin-top:10px"><b>Total</b><b id="cartTotal">0 SSP</b></div>
 <label>Payment Method</label><select id="payMethod"><option>Cash</option><option>Card</option><option>Debt</option><option>Mobile Money</option></select>
-<label>Discount (SSP)</label><input id="posDiscount" type="number" value="0">
+<label>Discount (SSP)</label><input id="posDiscount" type="number" value="0" oninput="renderCart()">
 <button class="btn" style="width:100%;margin-top:10px" onclick="completeSale()">Complete Sale</button>
 <button class="btn2" style="width:100%;margin-top:8px" onclick="clearCart()">Clear Cart</button>
-<p style="font-size:12px;color:#6B7280">Tip: Scan barcode + Enter to add instantly. FEFO: sells nearest expiry first.</p>
-</div></div></div>
+<p style="font-size:12px;color:#666">FEFO: sells nearest expiry first. Cashier cannot give Debt - Pharmacist approval required.</p></div></div></div>
 
 <!-- INVENTORY -->
 <div id="page-inventory" class="hidden">
-<div class="card"><h2>Inventory - Odoo Style</h2><div id="alertsBox"></div>
-<button class="btn" onclick="openMedModal()">+ Add Product</button>
-<div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Product</th><th>Barcode</th><th>Price</th><th>Stock</th><th>Lot / Expiry</th><th>Status</th><th></th></tr></thead><tbody id="medTable"></tbody></table></div>
-</div>
-<div class="card"><h3>Purchase - Add Lot</h3><div class="row"><div><label>Product</label><select id="lotMed"></select></div><div><label>Lot Number</label><input id="lotNumber" placeholder="e.g. parage susp"></div></div><div class="row"><div><label>Expiration Date</label><input id="lotExpiry" type="date"></div><div><label>Quantity</label><input id="lotQty" type="number"></div></div><div class="row"><div><label>Cost per Unit</label><input id="lotCost" type="number"></div><div><label>Supplier</label><input id="lotSupplier" placeholder="Supplier name"></div></div><button class="btn" onclick="addLotFromForm()">Add Lot to Stock</button></div>
+<div class="kpi"><div class="v10-card"><b>Total Products</b><h2 id="kpiTotal">0</h2></div><div class="v10-card"><b>Low Stock</b><h2 id="kpiLow">0</h2></div><div class="v10-card"><b>Expiring Soon</b><h2 id="kpiExp">0</h2></div><div class="v10-card"><b>Total Stock Value</b><h2 id="kpiValue">0</h2></div></div>
+<div class="v10-card"><h2>Inventory - Odoo Style</h2><div id="alertsBox"></div><button class="btn" onclick="openMedModal()">+ Add Product</button>
+<div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Product</th><th>Barcode</th><th>Price</th><th>Stock</th><th>Lot / Expiry</th><th>Status</th><th></th></tr></thead><tbody id="medTable"></tbody></table></div></div>
+<div class="v10-card"><h3>Purchase - Add Lot</h3><div class="row"><div><label>Product</label><select id="lotMed"></select></div><div><label>Lot Number</label><input id="lotNumber" placeholder="e.g. LOT-PC-2402"></div></div><div class="row"><div><label>Expiration Date</label><input id="lotExpiry" type="date"></div><div><label>Quantity</label><input id="lotQty" type="number"></div></div><div class="row"><div><label>Cost per Unit</label><input id="lotCost" type="number"></div><div><label>Supplier</label><input id="lotSupplier" placeholder="Supplier name"></div></div><button class="btn" onclick="addLotFromForm()">Add Lot to Stock</button></div>
 </div>
 
-<!-- CUSTOMERS -->
+<!-- DICTIONARY -->
+<div id="page-dictionary" class="hidden">
+<div class="v10-card"><h2>Pharmacy Dictionary</h2>
+<input id="dictSearch" placeholder="Search drug, generic name, symptom..." oninput="renderDictionary(this.value)">
+<div class="flex"><select id="dictFilter" onchange="renderDictionary()" style="max-width:220px"><option value="">All Categories</option><option>Analgesic</option><option>Antibiotic</option><option>Antimalarial</option><option>Antihistamine</option><option>Vitamins</option></select><label><input type="checkbox" id="dictRxOnly" onchange="renderDictionary()" style="width:auto"> Prescription Only</label><button class="btn2" onclick="openDictModal()">+ Add Drug to Dictionary</button></div>
+<div id="dictGrid" class="pos-grid" style="margin-top:12px"></div></div>
+<div id="dictDetail" class="v10-card"><p style="color:#666">Click a drug to see full details - Dose, Contraindication, Side Effects, Alternative, Pregnancy.</p></div>
+<div class="v10-card"><h3>Dosage Calculator</h3><div class="row"><div><label>Weight (kg)</label><input id="calcWeight" type="number" placeholder="e.g. 12"></div><div><label>mg per kg</label><input id="calcMg" type="number" placeholder="e.g. 15"></div></div><button class="btn" onclick="calcDoseUI()">Calculate Dose</button><p id="calcResult"></p></div>
+</div>
+
+<!-- INTERACTIONS -->
+<div id="page-interactions" class="hidden">
+<div class="v10-card"><h2>Drug Interactions Checker</h2>
+<div class="row"><div><label>Drug 1</label><input id="int1" placeholder="e.g. Warfarin"></div><div><label>Drug 2</label><input id="int2" placeholder="e.g. Aspirin"></div></div>
+<button class="btn" onclick="checkInteractionUI()">Check Interaction</button><div id="intResult" style="margin-top:12px"></div>
+<h3>Known Interactions</h3><div id="intList"></div></div></div>
+
+<!-- PRESCRIPTIONS -->
+<div id="page-prescriptions" class="hidden">
+<div class="v10-card"><h2>Prescriptions</h2>
+<div class="row"><div><label>Patient Name</label><input id="rxPatient" placeholder="Patient name"></div><div><label>Doctor</label><input id="rxDoctor" placeholder="Doctor name"></div></div>
+<label>Medicines (one per line)</label><textarea id="rxMeds" placeholder="Amoxicillin 500mg - 3x daily - 7 days&#10;Paracetamol 500mg - when needed"></textarea>
+<button class="btn" onclick="addPrescription()">Save Prescription</button><div id="rxList" style="margin-top:12px"></div></div></div>
+
+<!-- CUSTOMERS & DEBTS -->
 <div id="page-customers" class="hidden">
-<div class="card"><h2>Customers, Debts & Loyalty</h2>
+<div class="v10-card"><h2>Customers, Debts & Loyalty</h2>
 <div class="row"><div><label>Customer Name</label><input id="custName" placeholder="Full name"></div><div><label>Phone</label><input id="custPhone" placeholder="09xx"></div></div>
 <button class="btn" onclick="addCustomer()">Add Customer</button>
 <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Name</th><th>Phone</th><th>Points</th><th>Total Debt</th><th></th></tr></thead><tbody id="custTable"></tbody></table></div></div>
-<div class="card"><h3>Debts</h3><div id="debtList"></div></div>
+<div class="v10-card"><h3>Debts - All Shifts</h3>
+<div class="flex"><button class="btn2 btn-small" onclick="filterDebts('All')">All</button><button class="btn2 btn-small" onclick="filterDebts('Shift 1')">Shift 1 - Pharm 1</button><button class="btn2 btn-small" onclick="filterDebts('Shift 2')">Shift 2 - Pharm 2</button><button class="btn2 btn-small" onclick="filterDebts('Shift 3')">Shift 3 - Pharm 3</button><button class="btn2 btn-small" onclick="filterDebts('Unpaid')">Unpaid Only</button><button class="btn2 btn-small" onclick="filterDebts('Overdue')">Overdue > 7 Days</button></div>
+<div id="debtList" style="margin-top:10px"></div></div>
 </div>
 
 <!-- USERS -->
 <div id="page-users" class="hidden">
-<div class="card"><h2>Users & Roles - Create User</h2>
-<div class="row"><div><label>Full Name</label><input id="uFull" placeholder="e.g. Askf"></div><div><label>Username</label><input id="uName" placeholder="e.g. don - lowercase"></div></div>
-<div class="row"><div><label>Password (min 6 chars)</label><input id="uPass" type="password" placeholder="e.g. Don123"></div><div><label>Phone</label><input id="uPhone" placeholder="09xx"></div></div>
-<div class="row"><div><label>Role</label><select id="uRole"><option>Cashier</option><option>Pharmacist</option><option>Admin</option></select></div><div><label>Shift</label><select id="uShift"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option><option>All Shifts</option></select></div></div>
-<p id="userMsg" style="font-size:13px;color:#DC2626"></p>
-<button class="btn" onclick="addUser()">Create User</button>
-<div id="userGrid" class="user-grid"></div></div>
-</div>
+<div class="v10-card"><h2>Users & Roles - 3 Shifts / 3 Pharmacists + 1 Cashier</h2>
+<div class="row"><div><label>Full Name</label><input id="uFull" placeholder="e.g. Pharm One"></div><div><label>Username</label><input id="uName" placeholder="e.g. pharm1 - lowercase"></div></div>
+<div class="row"><div><label>Password (min 6 chars)</label><input id="uPass" type="password" placeholder="••••••••"></div><div><label>Phone</label><input id="uPhone" placeholder="09xx"></div></div>
+<div class="row"><div><label>Role</label><select id="uRole"><option>Cashier</option><option>Pharmacist</option><option>Admin</option></select></div><div><label>Shift</label><select id="uShift"><option>Shift 1 - Morning to Evening</option><option>Shift 2 - Evening</option><option>Shift 3 - Night</option><option>All Shifts</option></select></div></div>
+<p id="userMsg" style="font-size:13px;color:#DC2626"></p><button class="btn" onclick="addUser()">Create User</button>
+<div id="userGrid" class="user-grid"></div>
+<div class="v10-card" style="margin-top:12px"><h3>Shift Roster - Recommended</h3><p style="font-size:13px;line-height:1.7"><b>Shift 1 - 7AM-6PM:</b> Pharm 1 (Long) + Cashier 1 - Opens, Gives Debts, Orders<br><b>Shift 2 - 6PM-11PM:</b> Pharm 2 + Cashier 1 / Pharm 2 - Collects Debts<br><b>Shift 3 - 11PM-7AM:</b> Pharm 3 alone - Closes, Z-Report, Handover to Pharm 1</p></div>
+</div></div>
 
 <!-- REPORTS -->
 <div id="page-reports" class="hidden">
-<div class="card"><h2>Reports</h2>
-<div class="row"><div class="card"><b>Today Sales</b><h2 id="repToday">0 SSP</h2></div><div class="card"><b>Total Profit (Today)</b><h2 id="repProfit">0 SSP</h2></div></div>
-<div class="row"><div class="card"><b>Total Sales Count</b><h2 id="repCount">0</h2></div><div class="card"><b>Total Debts Unpaid</b><h2 id="repDebt">0 SSP</h2></div></div>
-<div id="salesList"></div></div></div>
+<div class="v10-card"><h2>Reports</h2><div class="kpi"><div class="v10-card"><b>Today Sales</b><h2 id="repToday">0 SSP</h2></div><div class="v10-card"><b>Today Profit</b><h2 id="repProfit">0 SSP</h2></div><div class="v10-card"><b>Sales Count</b><h2 id="repCount">0</h2></div><div class="v10-card"><b>Total Debts Unpaid</b><h2 id="repDebt">0 SSP</h2></div></div><div id="salesList"></div></div></div>
 
 <!-- SHIFT -->
 <div id="page-shift" class="hidden">
-<div class="card"><h2>Shift Close - Z-Report</h2>
-<p id="shiftInfo"></p>
+<div class="v10-card"><h2>Shift Close - Z-Report + Handover</h2><p id="shiftInfo"></p>
 <label>Cash Counted (SSP)</label><input id="cashCounted" type="number" placeholder="Count cash in drawer">
-<label>Handed To (Next Cashier)</label><input id="handedTo" placeholder="e.g. Abel Guk">
-<button class="btn" onclick="closeShiftUI()">Close Shift & Print Z-Report</button>
-<div id="zResult" style="margin-top:14px"></div>
+<label>Handed To (Next Pharmacist)</label><input id="handedTo" placeholder="e.g. Pharm 2">
+<button class="btn" onclick="closeShiftUI()">Close Shift & Print Z-Report</button><div id="zResult" style="margin-top:14px"></div>
 <h3>Previous Z-Reports</h3><div id="zList"></div></div></div>
 
-</main>
+</main></div>
 
-<!-- PRODUCT MODAL -->
+<!-- MED MODAL -->
 <div id="medModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:12px">
-<div class="card" style="width:100%;max-width:720px;max-height:92vh;overflow:auto;margin:0">
-<div class="flex" style="justify-content:space-between"><h2 id="medModalTitle">New Product</h2><button class="btn2" onclick="closeMedModal()">Close</button></div>
-<div class="flex"><label><input type="checkbox" id="mCanSell" checked> Can be Sold</label><label><input type="checkbox" id="mCanBuy" checked> Can be Purchased</label><label><input type="checkbox" id="mPos" checked> Available in POS</label></div>
+<div class="v10-card" style="width:100%;max-width:720px;max-height:92vh;overflow:auto;margin:0">
+<div class="flex" style="justify-content:space-between"><h2>New Product - Odoo</h2><button class="btn2" onclick="closeMedModal()">Close</button></div>
+<div class="flex"><label><input type="checkbox" id="mCanSell" checked style="width:auto"> Can be Sold</label><label><input type="checkbox" id="mCanBuy" checked style="width:auto"> Can be Purchased</label><label><input type="checkbox" id="mPos" checked style="width:auto"> Available in POS</label></div>
 <div class="tabs"><button class="active" onclick="showTab('general',this)">General Information</button><button onclick="showTab('sales',this)">Sales</button><button onclick="showTab('inventory',this)">Inventory</button><button onclick="showTab('accounting',this)">Accounting</button></div>
-<div id="tab-general">
-<label>Product Name</label><input id="mName" placeholder="[Paracetamol 125mg] PARAGEN SUSPENSION">
-<div class="row"><div><label>Product Type</label><select id="mType"><option>Storable Product</option><option>Consumable</option></select></div><div><label>Category</label><select id="mCat"><option>Analgesic</option><option>Antibiotic</option><option>Antimalarial</option><option>Vitamins</option></select></div></div>
-<div class="row"><div><label>Unit of Measure</label><select id="mUnit"><option>Bottle</option><option>Strip</option><option>Box</option><option>Tablet</option></select></div><div><label>Barcode</label><input id="mBarcode" placeholder="Scan barcode"></div></div>
-<label>Internal Reference</label><input id="mRef" placeholder="e.g. PAR-001">
-</div>
-<div id="tab-sales" class="hidden"><label>Sales Price (SSP)</label><input id="mPrice" type="number" placeholder="0"><label>Sales Description</label><textarea id="mDesc" placeholder="Description for POS"></textarea></div>
-<div id="tab-inventory" class="hidden">
-<label>Tracking</label><select id="mTrack"><option>By Lots</option><option>No Tracking</option></select>
-<label><input type="checkbox" id="mExp" checked> Expiration Date</label>
-<div class="row"><div><label>Alert Date</label><input value="90 days before expiration" disabled></div><div><label>Removal Date</label><input value="5 days before expiration" disabled></div></div>
-<div class="row"><div><label>Min Stock Alert</label><input id="mMin" type="number" value="5"></div><div><label>Shelf / Location</label><input id="mShelf" placeholder="Shelf A"></div></div>
-</div>
-<div id="tab-accounting" class="hidden"><div class="row"><div><label>Cost (SSP)</label><input id="mCost" type="number" placeholder="0"></div><div><label>Margin Preview</label><input id="mMargin" disabled placeholder="Auto"></div></div><p style="font-size:12px;color:#6B7280">Cost is hidden from Cashier role. Only Admin / Pharmacist can see it.</p></div>
-<button class="btn" style="width:100%;margin-top:12px" onclick="saveMed()">Save Product</button>
-</div></div>
+<div id="tab-general"><label>Product Name</label><input id="mName" placeholder="[Paracetamol 125mg] PARAGEN SUSPENSION"><div class="row"><div><label>Product Type</label><select id="mType"><option>Storable Product</option><option>Consumable</option></select></div><div><label>Category</label><select id="mCat"><option>Analgesic</option><option>Antibiotic</option><option>Antimalarial</option><option>Vitamins</option></select></div></div><div class="row"><div><label>Unit</label><select id="mUnit"><option>Bottle</option><option>Strip</option><option>Box</option><option>Tablet</option></select></div><div><label>Barcode</label><input id="mBarcode" placeholder="Scan barcode"></div></div><label>Internal Reference</label><input id="mRef" placeholder="e.g. PAR-001"></div>
+<div id="tab-sales" class="hidden"><label>Sales Price (SSP)</label><input id="mPrice" type="number"><label>Sales Description</label><textarea id="mDesc"></textarea></div>
+<div id="tab-inventory" class="hidden"><label>Tracking</label><select id="mTrack"><option>By Lots</option><option>No Tracking</option></select><label><input type="checkbox" id="mExp" checked style="width:auto"> Expiration Date</label><div class="row"><div><label>Alert Date</label><input value="90 days before expiration" disabled></div><div><label>Removal Date</label><input value="5 days before expiration" disabled></div></div><div class="row"><div><label>Min Stock Alert</label><input id="mMin" type="number" value="5"></div><div><label>Shelf</label><input id="mShelf" placeholder="Shelf A"></div></div></div>
+<div id="tab-accounting" class="hidden"><div class="row"><div><label>Cost (SSP) - Hidden from Cashier</label><input id="mCost" type="number"></div><div><label>Margin Preview</label><input id="mMargin" disabled></div></div></div>
+<button class="btn" style="width:100%;margin-top:12px" onclick="saveMed()">Save Product</button></div></div>
 
 <script>
-// ===== FIREBASE =====
-const firebaseConfig = {
+// ===== FIREBASE - ACTIVE CARE v10 =====
+  const firebaseConfig = {
   apiKey: "AIzaSyD0j6mn0PEaUvBgsVkE5Xr0Xzr5hXZ-4lQ",
   authDomain: "active-care-pharmacy-71ce2.firebaseapp.com",
   projectId: "active-care-pharmacy-71ce2",
@@ -170,99 +169,108 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig); const db=firebase.firestore(); const DOC_REF=db.collection('activecare-single').doc('data');
 // ===== STATE =====
-let meds=JSON.parse(localStorage.getItem('ac_meds')||'[]');
-let sales=JSON.parse(localStorage.getItem('ac_sales')||'[]');
-let users=JSON.parse(localStorage.getItem('ac_users')||'[]');
-let customers=JSON.parse(localStorage.getItem('ac_cust')||'[]');
-let lots=JSON.parse(localStorage.getItem('ac_lots')||'[]');
-let debts=JSON.parse(localStorage.getItem('ac_debts')||'[]');
-let shifts=JSON.parse(localStorage.getItem('ac_shifts')||'[]');
-let cart=[]; let currentUser=null; let editingMedId=null;
-if(users.length===0){ users=[{id:1,fullName:'Admin',username:'admin',passHash:'',role:'Admin',shift:'All Shifts',phone:'',passwordVersion:1}]; }
-// Default meds demo if empty
-if(meds.length===0){ meds=[{id:1,name:'PARAGEN SUSPENSION - Paracetamol 125mg',category:'Analgesic',unit:'Bottle',price:6000,cost:3500,stock:10,barcode:'12345',canBeSold:true,canBePurchased:true,minStock:5},{id:2,name:'CIPRODIAZOL',category:'Antibiotic',unit:'Strip',price:80000,cost:60000,stock:20,barcode:'12346',canBeSold:true,canBePurchased:true,minStock:5},{id:3,name:'AUGMENTIN-BID 1000MG',category:'Antibiotic',unit:'Box',price:112000,cost:90000,stock:8,barcode:'12347',canBeSold:true,canBePurchased:true,minStock:5},{id:4,name:'FLAGYL 500MG TABS',category:'Antibiotic',unit:'Strip',price:16000,cost:11000,stock:30,barcode:'12348',canBeSold:true,canBePurchased:true,minStock:5}]; }
+let meds=JSON.parse(localStorage.getItem('ac_meds')||'[]'); let sales=JSON.parse(localStorage.getItem('ac_sales')||'[]');
+let users=JSON.parse(localStorage.getItem('ac_users')||'[]'); let customers=JSON.parse(localStorage.getItem('ac_cust')||'[]');
+let lots=JSON.parse(localStorage.getItem('ac_lots')||'[]'); let debts=JSON.parse(localStorage.getItem('ac_debts')||'[]');
+let shifts=JSON.parse(localStorage.getItem('ac_shifts')||'[]'); let prescriptions=JSON.parse(localStorage.getItem('ac_rx')||'[]');
+let dictionary=JSON.parse(localStorage.getItem('ac_dict')||'[]'); let interactions=JSON.parse(localStorage.getItem('ac_int')||'[]');
+let cart=[]; let currentUser=null; let editingMedId=null; let debtFilter='All';
+if(users.length===0){ users=[{id:1,fullName:'Admin',username:'admin',passHash:'',role:'Admin',shift:'All Shifts',phone:''}]; }
+if(meds.length===0){ meds=[{id:1,name:'PARAGEN SUSPENSION - Paracetamol 125mg',category:'Analgesic',unit:'Bottle',price:6000,cost:3500,stock:10,barcode:'12345',canBeSold:true,minStock:5},{id:2,name:'CIPRODIAZOL',category:'Antibiotic',unit:'Strip',price:80000,cost:60000,stock:20,barcode:'12346',canBeSold:true,minStock:5},{id:3,name:'AUGMENTIN-BID 1000MG',category:'Antibiotic',unit:'Box',price:112000,cost:90000,stock:8,barcode:'12347',canBeSold:true,minStock:5},{id:4,name:'FLAGYL 500MG TABS',category:'Antibiotic',unit:'Strip',price:16000,cost:11000,stock:30,barcode:'12348',canBeSold:true,minStock:5}]; }
+if(dictionary.length===0){ dictionary=[
+{id:1,trade:'PARAGEN SUSPENSION',generic:'Paracetamol 125mg/5ml',category:'Analgesic',use:'Fever, Pain, Headache',doseAdult:'500mg every 6h - Max 4g/day',doseChild:'10-15 mg/kg every 6h',contra:'Liver disease',side:'Nausea, Liver damage in overdose',alt:'Panadol, Adol',rx:false,preg:'Safe'},
+{id:2,trade:'AUGMENTIN-BID 1000MG',generic:'Amoxicillin + Clavulanic Acid',category:'Antibiotic',use:'Bacterial infections',doseAdult:'1000mg every 12h - 7 days',doseChild:'25mg/kg every 12h',contra:'Penicillin allergy',side:'Diarrhoea, Nausea',alt:'Amoxiclav',rx:true,preg:'Use with caution'},
+{id:3,trade:'CIPRODIAZOL',generic:'Ciprofloxacin + Tinidazole',category:'Antibiotic',use:'Diarrhoea, Dysentery',doseAdult:'1 tab twice daily',doseChild:'Not for children',contra:'Pregnancy, Children <18y',side:'Dizziness',alt:'Flagyl + Ciproflox',rx:true,preg:'Not Safe'},
+{id:4,trade:'FLAGYL 500MG',generic:'Metronidazole 500mg',category:'Antibiotic',use:'Amoeba, Giardia',doseAdult:'500mg 3x daily - 7 days',doseChild:'15mg/kg 3x daily',contra:'Alcohol - No alcohol',side:'Metallic taste',alt:'Tinidazole',rx:false,preg:'Avoid 1st trimester'},
+{id:5,trade:'ARTEMETHER 80MG',generic:'Artemether + Lumefantrine',category:'Antimalarial',use:'Malaria',doseAdult:'4 tabs at 0,8,24,36,48,60h',doseChild:'By weight',contra:'Heart disease',side:'Headache',alt:'Coartem',rx:false,preg:'Safe 2nd/3rd trimester'}]; }
+if(interactions.length===0){ interactions=[{drugA:'Warfarin',drugB:'Aspirin',level:'Dangerous',msg:'High risk of bleeding - Do NOT combine'},{drugA:'Paracetamol',drugB:'Amoxicillin',level:'Safe',msg:'Safe to combine'},{drugA:'Metronidazole',drugB:'Alcohol',level:'Dangerous',msg:'Severe nausea - No alcohol'},{drugA:'Ciprofloxacin',drugB:'Antacid',level:'Caution',msg:'Take 2 hours apart'}]; }
 
-function persist(){ localStorage.setItem('ac_meds',JSON.stringify(meds)); localStorage.setItem('ac_sales',JSON.stringify(sales)); localStorage.setItem('ac_users',JSON.stringify(users)); localStorage.setItem('ac_cust',JSON.stringify(customers)); localStorage.setItem('ac_lots',JSON.stringify(lots)); localStorage.setItem('ac_debts',JSON.stringify(debts)); localStorage.setItem('ac_shifts',JSON.stringify(shifts)); }
+function persist(){ localStorage.setItem('ac_meds',JSON.stringify(meds)); localStorage.setItem('ac_sales',JSON.stringify(sales)); localStorage.setItem('ac_users',JSON.stringify(users)); localStorage.setItem('ac_cust',JSON.stringify(customers)); localStorage.setItem('ac_lots',JSON.stringify(lots)); localStorage.setItem('ac_debts',JSON.stringify(debts)); localStorage.setItem('ac_shifts',JSON.stringify(shifts)); localStorage.setItem('ac_rx',JSON.stringify(prescriptions)); localStorage.setItem('ac_dict',JSON.stringify(dictionary)); localStorage.setItem('ac_int',JSON.stringify(interactions)); }
 function fmt(n){ return Number(n||0).toLocaleString()+' SSP'; }
 function toast(m){ let t=document.createElement('div'); t.className='toast'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
-
-// ===== HASH (same as add-users2) =====
 async function hashPassword(p){ let s='ac13-'+Math.random().toString(36).slice(2); let buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('activecare-v13-'+s+'-'+p)); let h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''); return s+':'+h; }
 async function verifyPassword(p,stored){ if(!stored) return p==='Admin123'; let parts=stored.split(':'); if(parts.length!==2) return p===stored; let buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('activecare-v13-'+parts[0]+'-'+p)); let h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''); return h===parts[1]; }
 
 // ===== FIREBASE SYNC =====
-async function saveToCloud(){ persist(); try{ await DOC_REF.set({users,meds,sales,customers,lots,debts,shifts,updatedAt:new Date().toISOString()},{merge:true}); document.getElementById('syncStatus').textContent='Synced'; toast('Synced to Cloud'); }catch(e){ document.getElementById('syncStatus').textContent='Sync Failed'; toast('Sync Failed: '+e.message); } }
-async function loadFromCloud(){ try{ const snap=await DOC_REF.get(); if(snap.exists){ const d=snap.data(); if(d.users) users=d.users; if(d.meds) meds=d.meds; if(d.sales) sales=d.sales; if(d.customers) customers=d.customers; if(d.lots) lots=d.lots; if(d.debts) debts=d.debts; if(d.shifts) shifts=d.shifts; persist(); document.getElementById('syncStatus').textContent='Synced'; } }catch(e){ console.log('Offline'); } renderAll(); }
+async function saveToCloud(){ persist(); try{ await DOC_REF.set({users,meds,sales,customers,lots,debts,shifts,prescriptions,dictionary,interactions,updatedAt:new Date().toISOString()},{merge:true}); document.getElementById('syncStatus').textContent='Synced'; toast('Synced to Cloud'); }catch(e){ document.getElementById('syncStatus').textContent='Sync Failed'; toast('Sync Failed: '+e.message); } }
+async function loadFromCloud(){ try{ const snap=await DOC_REF.get(); if(snap.exists){ const d=snap.data(); if(d.users)users=d.users; if(d.meds)meds=d.meds; if(d.sales)sales=d.sales; if(d.customers)customers=d.customers; if(d.lots)lots=d.lots; if(d.debts)debts=d.debts; if(d.shifts)shifts=d.shifts; if(d.prescriptions)prescriptions=d.prescriptions; if(d.dictionary)dictionary=d.dictionary; if(d.interactions)interactions=d.interactions; persist(); document.getElementById('syncStatus').textContent='Synced'; } }catch(e){ console.log('Offline'); } renderAll(); }
 setInterval(()=>{ if(currentUser) saveToCloud(); },60000);
 
-// ===== PERMISSIONS =====
-const PERMS={Cashier:{cost:false,profit:false,reports:false,users:false,inventory:false,expenses:false},Pharmacist:{cost:true,profit:false,reports:false,users:false,inventory:true,expenses:false},Admin:{cost:true,profit:true,reports:true,users:true,inventory:true,expenses:true}};
+// ===== PERMISSIONS - 3 SHIFTS =====
+const PERMS={Cashier:{cost:false,profit:false,reports:false,users:false,inventory:false,debt:false},Pharmacist:{cost:true,profit:false,reports:false,users:false,inventory:true,debt:true},Admin:{cost:true,profit:true,reports:true,users:true,inventory:true,debt:true}};
 function applyPerms(){ if(!currentUser) return; const p=PERMS[currentUser.role]||PERMS.Cashier; document.querySelectorAll('[data-perm="reports"]').forEach(e=>e.style.display=p.reports?'':'none'); document.querySelectorAll('[data-perm="users"]').forEach(e=>e.style.display=p.users?'':'none'); document.querySelectorAll('[data-perm="inventory"]').forEach(e=>e.style.display=p.inventory?'':'none'); }
 
 // ===== LOGIN / USERS =====
-async function doLogin(){ const u=document.getElementById('loginUser').value.trim().toLowerCase(); const p=document.getElementById('loginPass').value; const found=users.find(x=>x.username.toLowerCase()===u); if(!found){ document.getElementById('loginMsg').textContent='User not found'; return; } const ok=await verifyPassword(p,found.passHash); if(!ok){ document.getElementById('loginMsg').textContent='Wrong password'; return; } currentUser=found; document.getElementById('page-login').classList.add('hidden'); document.getElementById('mainNav').style.display='flex'; document.getElementById('hdrUser').textContent=found.fullName+' - '+found.role+' - '+found.shift; applyPerms(); showPage('pos',document.querySelector('nav button')); renderAll(); }
+async function doLogin(){ const u=document.getElementById('loginUser').value.trim().toLowerCase(); const p=document.getElementById('loginPass').value; const found=users.find(x=>x.username.toLowerCase()===u); if(!found){ document.getElementById('loginMsg').textContent='User not found'; return; } const ok=await verifyPassword(p,found.passHash); if(!ok){ document.getElementById('loginMsg').textContent='Wrong password'; return; } currentUser=found; document.getElementById('page-login').classList.add('hidden'); document.getElementById('hdrUser').textContent=found.fullName+' - '+found.role+' - '+found.shift; document.getElementById('shiftBadge').textContent=found.shift; applyPerms(); showPage('pos',document.querySelector('.v10-sidebar button')); renderAll(); }
 function logout(){ currentUser=null; location.reload(); }
-async function addUser(){ const full=document.getElementById('uFull').value.trim(); const uname=document.getElementById('uName').value.trim().toLowerCase(); const pass=document.getElementById('uPass').value; const role=document.getElementById('uRole').value; const shift=document.getElementById('uShift').value; const phone=document.getElementById('uPhone').value.trim(); const msg=document.getElementById('userMsg'); msg.textContent='';
-if(!full||!uname||!pass){ msg.textContent='Please fill Full Name, Username and Password'; return; }
-if(pass.length<6){ msg.textContent='Password too short - need 6+ characters. Example: Don123'; return; }
-if(users.some(u=>u.username.toLowerCase()===uname)){ msg.textContent='Username already exists'; return; }
-const ph=await hashPassword(pass); users.push({id:Date.now(),fullName:full,username:uname,passHash:ph,role,shift,phone,passwordVersion:1}); persist(); saveToCloud(); renderUsers(); toast('User created: '+uname); document.getElementById('uFull').value=''; document.getElementById('uName').value=''; document.getElementById('uPass').value=''; }
-function renderUsers(){ document.getElementById('userGrid').innerHTML=users.map(u=>`<div class="user-card"><div class="avatar">${u.fullName.slice(0,2).toUpperCase()}</div><div style="flex:1"><b>${u.fullName}</b><br><span style="font-size:12px;color:#6B7280">@${u.username}</span><br><span class="badge">${u.role}</span> <span class="badge">${u.shift}</span></div><div><button class="btn2 btn-small" onclick="resetUser(${u.id})">Reset Password</button><button class="btn-red btn-small" onclick="delUser(${u.id})">Delete</button></div></div>`).join(''); }
+async function addUser(){ const full=document.getElementById('uFull').value.trim(); const uname=document.getElementById('uName').value.trim().toLowerCase(); const pass=document.getElementById('uPass').value; const role=document.getElementById('uRole').value; const shift=document.getElementById('uShift').value; const phone=document.getElementById('uPhone').value.trim(); const msg=document.getElementById('userMsg'); msg.textContent=''; if(!full||!uname||!pass){ msg.textContent='Please fill Full Name, Username and Password'; return; } if(pass.length<6){ msg.textContent='Password too short - need 6+ characters'; return; } if(users.some(u=>u.username.toLowerCase()===uname)){ msg.textContent='Username already exists'; return; } const ph=await hashPassword(pass); users.push({id:Date.now(),fullName:full,username:uname,passHash:ph,role,shift,phone}); persist(); saveToCloud(); renderUsers(); toast('User created: '+uname); document.getElementById('uFull').value=''; document.getElementById('uName').value=''; document.getElementById('uPass').value=''; }
+function renderUsers(){ document.getElementById('userGrid').innerHTML=users.map(u=>`<div class="user-card"><div class="avatar">${u.fullName.slice(0,2).toUpperCase()}</div><div style="flex:1"><b>${u.fullName}</b><br><span style="font-size:12px;color:#666">@${u.username}</span><br><span class="badge">${u.role}</span> <span class="badge">${u.shift}</span></div><div><button class="btn2 btn-small" onclick="resetUser(${u.id})">Reset Password</button><button class="btn-red btn-small" onclick="delUser(${u.id})">Delete</button></div></div>`).join(''); }
 async function resetUser(id){ const np=prompt('New password (min 6 chars):'); if(!np||np.length<6){ alert('Too short'); return; } const u=users.find(x=>x.id===id); u.passHash=await hashPassword(np); persist(); saveToCloud(); toast('Password reset'); }
 function delUser(id){ if(!confirm('Delete user?')) return; users=users.filter(u=>u.id!==id); persist(); saveToCloud(); renderUsers(); }
 
 // ===== MEDS / LOTS / FEFO =====
 function updateMedStock(medId){ const m=meds.find(x=>x.id===medId); if(m) m.stock=lots.filter(l=>l.medId===medId).reduce((s,l)=>s+l.qty,0); }
-function addLot(medId,lotNumber,expiry,qty,cost,supplier){ lots.push({id:Date.now()+Math.random(),medId,lotNumber,expiry,qty:Number(qty),cost:Number(cost),supplier,createdAt:Date.now()}); updateMedStock(medId); }
-function addLotFromForm(){ const medId=Number(document.getElementById('lotMed').value); const ln=document.getElementById('lotNumber').value.trim(); const ex=document.getElementById('lotExpiry').value; const q=document.getElementById('lotQty').value; const c=document.getElementById('lotCost').value; if(!medId||!ln||!ex||!q){ alert('Fill Lot, Expiry and Quantity'); return; } addLot(medId,ln,ex,q,c,document.getElementById('lotSupplier').value); persist(); saveToCloud(); renderAll(); toast('Lot added'); }
-function sellFromLots(medId,qty){ const avail=lots.filter(l=>l.medId===medId&&l.qty>0&&new Date(l.expiry)>new Date()).sort((a,b)=>new Date(a.expiry)-new Date(b.expiry)); let left=qty; for(const l of avail){ if(left<=0) break; const take=Math.min(l.qty,left); l.qty-=take; left-=take; } return left===0; }
+function addLotFromForm(){ const medId=Number(document.getElementById('lotMed').value); const ln=document.getElementById('lotNumber').value.trim(); const ex=document.getElementById('lotExpiry').value; const q=document.getElementById('lotQty').value; const c=document.getElementById('lotCost').value; if(!medId||!ln||!ex||!q){ alert('Fill Lot, Expiry and Quantity'); return; } lots.push({id:Date.now()+Math.random(),medId,lotNumber:ln,expiry:ex,qty:Number(q),cost:Number(c),supplier:document.getElementById('lotSupplier').value}); updateMedStock(medId); persist(); saveToCloud(); renderAll(); toast('Lot added'); }
+function sellFromLots(medId,qty){ const avail=lots.filter(l=>l.medId===medId&&l.qty>0&&new Date(l.expiry)>new Date()).sort((a,b)=>new Date(a.expiry)-new Date(b.expiry)); let left=qty; for(const l of avail){ if(left<=0)break; const take=Math.min(l.qty,left); l.qty-=take; left-=take; } return left===0; }
 function getAlerts(){ const alerts=[]; const today=new Date(); meds.forEach(m=>{ if(m.stock<=(m.minStock||5)) alerts.push({type:'Low',med:m.name,msg:`Only ${m.stock} left`}); }); lots.forEach(l=>{ const days=Math.ceil((new Date(l.expiry)-today)/86400000); const med=meds.find(m=>m.id===l.medId); if(days<0) alerts.push({type:'Expired',med:med?.name,msg:`Lot ${l.lotNumber} expired ${l.expiry} - BLOCKED`}); else if(days<=90) alerts.push({type:'Expiring',med:med?.name,msg:`Lot ${l.lotNumber} expires in ${days} days`}); }); return alerts; }
 
-// ===== POS =====
+// ===== POS / DEBTS =====
 function posSearch(q){ q=(q||'').trim().toLowerCase(); const cat=document.getElementById('posCat').value; let list=meds.filter(m=>m.canBeSold!==false&&m.stock>0); if(cat) list=list.filter(m=>m.category===cat); if(!q) return list; const byBar=meds.find(m=>String(m.barcode||'').toLowerCase()===q); if(byBar){ addToCart(byBar.id,1); document.getElementById('posSearch').value=''; return list; } return list.filter(m=>m.name.toLowerCase().includes(q)||String(m.barcode||'').includes(q)); }
-function renderPOSCards(list){ list=list||posSearch(document.getElementById('posSearch').value||''); document.getElementById('posGrid').innerHTML=list.map(m=>`<div class="pos-card" onclick="addToCart(${m.id},1)"><b>${m.name}</b><p>${m.category} • ${m.unit}</p><div class="price">${fmt(m.price)}</div><p>Stock: ${m.stock} ${m.unit}</p><button class="btn btn-small" style="width:100%">+ Add</button></div>`).join('')||'<p>No products found</p>'; document.getElementById('posCount').textContent=list.length+' products'; }
+function renderPOSCards(list){ list=list||posSearch(document.getElementById('posSearch').value||''); document.getElementById('posGrid').innerHTML=list.map(m=>`<div class="pos-card" onclick="addToCart(${m.id},1)"><b>${m.name}</b><p style="font-size:12px;color:#666">${m.category} • ${m.unit}</p><div class="price">${fmt(m.price)}</div><p style="font-size:12px">Stock: ${m.stock}</p><button class="btn btn-small" style="width:100%">+ Add</button></div>`).join('')||'<p>No products</p>'; document.getElementById('posCount').textContent=list.length+' products'; }
 function addToCart(id,qty){ const m=meds.find(x=>x.id===id); if(!m||m.stock<=0){ alert('Out of stock'); return; } const ex=cart.find(c=>c.id===id); if(ex) ex.qty+=qty; else cart.push({id:m.id,name:m.name,price:m.price,qty}); renderCart(); }
-function renderCart(){ document.getElementById('cartItems').innerHTML=cart.map(c=>`<div class="cart-item"><span>${c.name} x ${c.qty}</span><span>${fmt(c.price*c.qty)} <button onclick="removeCart(${c.id})">x</button></span></div>`).join('')||'<p style="color:#6B7280">Cart is empty</p>'; const disc=Number(document.getElementById('posDiscount').value||0); const total=cart.reduce((s,c)=>s+c.price*c.qty,0)-disc; document.getElementById('cartTotal').textContent=fmt(Math.max(0,total)); }
+function renderCart(){ document.getElementById('cartItems').innerHTML=cart.map(c=>`<div class="cart-item"><span>${c.name} x ${c.qty}</span><span>${fmt(c.price*c.qty)} <button onclick="removeCart(${c.id})">x</button></span></div>`).join('')||'<p style="color:#666">Cart is empty</p>'; const disc=Number(document.getElementById('posDiscount').value||0); const total=cart.reduce((s,c)=>s+c.price*c.qty,0)-disc; document.getElementById('cartTotal').textContent=fmt(Math.max(0,total)); }
 function removeCart(id){ cart=cart.filter(c=>c.id!==id); renderCart(); }
 function clearCart(){ cart=[]; renderCart(); }
+function addToCartByName(name){ const m=meds.find(x=>x.name===name||x.name.includes(name)); if(m) addToCart(m.id,1); else alert('Product not in inventory - Add it first'); }
 function completeSale(){ if(cart.length===0){ alert('Cart is empty'); return; } const disc=Number(document.getElementById('posDiscount').value||0); const total=cart.reduce((s,c)=>s+c.price*c.qty,0)-disc; const pay=document.getElementById('payMethod').value; const custId=document.getElementById('posCustomer').value;
+if(pay==='Debt'){ if(!custId){ alert('Debt requires a Customer - Select customer first'); return; } if(currentUser.role==='Cashier'){ alert('Cashier cannot give Debt - Ask Pharmacist to approve'); return; } if(currentUser.role==='Pharmacist' && total>50000){ alert('Pharmacist limit 50,000 SSP - Need Admin approval'); return; } }
 for(const c of cart){ if(!sellFromLots(c.id,c.qty)){ alert('Not enough valid stock for '+c.name); return; } }
 const sale={id:Date.now(),items:[...cart],total,payment:pay,customerId:custId||'',cashier:currentUser?.fullName||'',shift:currentUser?.shift||'',date:new Date().toISOString(),shiftClosed:false}; sales.push(sale);
-if(pay==='Debt'&&custId){ const cu=customers.find(x=>x.id==custId); if(cu){ cu.totalDebt=(cu.totalDebt||0)+total; debts.push({id:Date.now(),customerId:cu.id,customerName:cu.name,amount:total,paid:0,date:new Date().toISOString(),status:'Unpaid'}); } }
-if(custId){ const cu=customers.find(x=>x.id==custId); if(cu){ cu.points=(cu.points||0)+Math.floor(total/1000); } }
+if(pay==='Debt'&&custId){ const cu=customers.find(x=>x.id==custId); if(cu){ cu.totalDebt=(cu.totalDebt||0)+total; debts.push({id:Date.now(),customerId:cu.id,customerName:cu.name,phone:cu.phone,amount:total,paid:0,remaining:total,givenBy:currentUser?.fullName,givenShift:currentUser?.shift,date:new Date().toISOString(),dueDate:new Date(Date.now()+7*86400000).toISOString(),status:'Unpaid',items:[...cart],payments:[]}); } }
+if(pay!=='Debt'&&custId){ const cu=customers.find(x=>x.id==custId); if(cu) cu.points=(cu.points||0)+Math.floor(total/1000); }
 cart=[]; persist(); saveToCloud(); renderAll(); toast('Sale completed: '+fmt(total)); }
 
-// ===== CUSTOMERS / DEBTS =====
+// ===== CUSTOMERS / DEBTS / PAY =====
 function addCustomer(){ const name=document.getElementById('custName').value.trim(); const phone=document.getElementById('custPhone').value.trim(); if(!name){ alert('Enter name'); return; } customers.push({id:Date.now(),name,phone,points:0,totalDebt:0}); persist(); saveToCloud(); renderAll(); }
-function payDebt(id,amt){ const d=debts.find(x=>x.id===id); if(!d) return; d.paid+=Number(amt); if(d.paid>=d.amount) d.status='Paid'; const c=customers.find(x=>x.id===d.customerId); if(c) c.totalDebt=Math.max(0,(c.totalDebt||0)-Number(amt)); persist(); saveToCloud(); renderAll(); }
+function filterDebts(f){ debtFilter=f; renderAll(); }
+function payDebt(id){ const amt=Number(prompt('Amount to pay (SSP):')); if(!amt||amt<=0) return; const d=debts.find(x=>x.id===id); d.paid+=amt; d.remaining=d.amount-d.paid; if(d.remaining<=0){ d.status='Paid'; d.remaining=0; } else d.status='Partial'; d.payments=d.payments||[]; d.payments.push({amount:amt,receivedBy:currentUser?.fullName,receivedShift:currentUser?.shift,date:new Date().toISOString()}); const c=customers.find(x=>x.id===d.customerId); if(c){ c.totalDebt=Math.max(0,(c.totalDebt||0)-amt); c.points=(c.points||0)+Math.floor(amt/1000); } persist(); saveToCloud(); renderAll(); toast('Debt payment: '+fmt(amt)); }
+
+// ===== DICTIONARY / INTERACTIONS / RX =====
+function renderDictionary(q=''){ q=(q||'').toLowerCase(); const cat=document.getElementById('dictFilter')?.value||''; const rxOnly=document.getElementById('dictRxOnly')?.checked; let list=dictionary.filter(d=>(!cat||d.category===cat)&&(!rxOnly||d.rx)&&(!q||d.trade.toLowerCase().includes(q)||d.generic.toLowerCase().includes(q)||d.use.toLowerCase().includes(q))); document.getElementById('dictGrid').innerHTML=list.map(d=>`<div class="v10-card" onclick="showDrug(${d.id})"><b>${d.trade}</b> <span class="badge">${d.category}</span> ${d.rx?'<span class="badge badge-red">Rx Required</span>':'<span class="badge">OTC</span>'}<p style="font-size:13px;color:#666">${d.generic} - ${d.use}</p><button class="btn2 btn-small">View Details</button></div>`).join('')||'No drugs found'; }
+function showDrug(id){ const d=dictionary.find(x=>x.id===id); if(!d) return; document.getElementById('dictDetail').innerHTML=`<h2>${d.trade}</h2><p><b>Generic:</b> ${d.generic}</p><p><b>Use:</b> ${d.use}</p><p><b>Adult Dose:</b> ${d.doseAdult}</p><p><b>Child Dose:</b> ${d.doseChild}</p><p><b>Do NOT Use If:</b> ${d.contra}</p><p><b>Side Effects:</b> ${d.side}</p><p><b>Alternative:</b> ${d.alt}</p><p><b>Pregnancy:</b> ${d.preg}</p><button class="btn" onclick="addToCartByName('${d.trade}')">Add to POS</button>`; }
+function openDictModal(){ const trade=prompt('Trade Name:'); if(!trade) return; const generic=prompt('Generic Name:'); const use=prompt('Use:'); dictionary.push({id:Date.now(),trade,generic:generic||'',category:'Analgesic',use:use||'',doseAdult:'',doseChild:'',contra:'',side:'',alt:'',rx:false,preg:''}); persist(); saveToCloud(); renderDictionary(); }
+function calcDoseUI(){ const w=Number(document.getElementById('calcWeight').value); const mg=Number(document.getElementById('calcMg').value); if(!w||!mg){ document.getElementById('calcResult').textContent='Enter weight and mg/kg'; return; } document.getElementById('calcResult').innerHTML=`<b>Dose = ${w}kg x ${mg}mg = ${w*mg}mg</b>`; }
+function checkInteractionUI(){ const a=document.getElementById('int1').value.trim(); const b=document.getElementById('int2').value.trim(); const f=interactions.find(i=>(i.drugA.toLowerCase()===a.toLowerCase()&&i.drugB.toLowerCase()===b.toLowerCase())||(i.drugA.toLowerCase()===b.toLowerCase()&&i.drugB.toLowerCase()===a.toLowerCase())); document.getElementById('intResult').innerHTML=f?`<div class="alert ${f.level==='Dangerous'?'Expired':''}"><b>${f.level}:</b> ${f.drugA} + ${f.drugB} - ${f.msg}</div>`:`<div class="alert"><b>Unknown:</b> No data - Check with pharmacist</div>`; }
+function addPrescription(){ const pat=document.getElementById('rxPatient').value.trim(); const doc=document.getElementById('rxDoctor').value.trim(); const medsTxt=document.getElementById('rxMeds').value.trim(); if(!pat||!medsTxt){ alert('Enter patient and medicines'); return; } prescriptions.push({id:Date.now(),patient:pat,doctor:doc,meds:medsTxt,date:new Date().toISOString(),by:currentUser?.fullName}); persist(); saveToCloud(); renderAll(); }
 
 // ===== MED MODAL =====
 function openMedModal(id){ editingMedId=id||null; document.getElementById('medModal').classList.remove('hidden'); document.getElementById('medModal').style.display='flex'; if(id){ const m=meds.find(x=>x.id===id); document.getElementById('mName').value=m.name; document.getElementById('mPrice').value=m.price; document.getElementById('mCost').value=m.cost; document.getElementById('mBarcode').value=m.barcode||''; document.getElementById('mCat').value=m.category; document.getElementById('mUnit').value=m.unit; } else { ['mName','mPrice','mCost','mBarcode','mRef'].forEach(i=>document.getElementById(i).value=''); } showTab('general',document.querySelector('.tabs button')); }
 function closeMedModal(){ document.getElementById('medModal').classList.add('hidden'); document.getElementById('medModal').style.display='none'; }
 function showTab(name,btn){ ['general','sales','inventory','accounting'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('hidden',t!==name)); if(btn){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); } }
-function saveMed(){ const name=document.getElementById('mName').value.trim(); const price=Number(document.getElementById('mPrice').value||0); const cost=Number(document.getElementById('mCost').value||0); if(!name){ alert('Enter product name'); return; } if(editingMedId){ const m=meds.find(x=>x.id===editingMedId); Object.assign(m,{name,price,cost,category:document.getElementById('mCat').value,unit:document.getElementById('mUnit').value,barcode:document.getElementById('mBarcode').value,canBeSold:document.getElementById('mCanSell').checked,canBePurchased:document.getElementById('mCanBuy').checked,minStock:Number(document.getElementById('mMin').value||5)}); } else { meds.push({id:Date.now(),name,price,cost,category:document.getElementById('mCat').value,unit:document.getElementById('mUnit').value,barcode:document.getElementById('mBarcode').value,stock:0,canBeSold:true,canBePurchased:true,minStock:5}); } persist(); saveToCloud(); closeMedModal(); renderAll(); }
+function saveMed(){ const name=document.getElementById('mName').value.trim(); const price=Number(document.getElementById('mPrice').value||0); const cost=Number(document.getElementById('mCost').value||0); if(!name){ alert('Enter product name'); return; } if(editingMedId){ const m=meds.find(x=>x.id===editingMedId); Object.assign(m,{name,price,cost,category:document.getElementById('mCat').value,unit:document.getElementById('mUnit').value,barcode:document.getElementById('mBarcode').value,canBeSold:document.getElementById('mCanSell').checked,minStock:Number(document.getElementById('mMin').value||5)}); } else { meds.push({id:Date.now(),name,price,cost,category:document.getElementById('mCat').value,unit:document.getElementById('mUnit').value,barcode:document.getElementById('mBarcode').value,stock:0,canBeSold:true,minStock:5}); } persist(); saveToCloud(); closeMedModal(); renderAll(); }
 
-// ===== SHIFT Z-REPORT =====
-function closeShiftUI(){ const counted=Number(document.getElementById('cashCounted').value||0); const handed=document.getElementById('handedTo').value.trim(); const ss=sales.filter(s=>s.shift===currentUser?.shift&&!s.shiftClosed); const expCash=ss.filter(s=>s.payment==='Cash').reduce((a,s)=>a+s.total,0); const expCard=ss.filter(s=>s.payment==='Card').reduce((a,s)=>a+s.total,0); const diff=counted-expCash; const rep={id:Date.now(),date:new Date().toISOString(),cashier:currentUser?.fullName,shift:currentUser?.shift,expectedCash:expCash,expectedCard:expCard,cashCounted:counted,difference:diff,handedTo:handed,totalSales:ss.length}; shifts.push(rep); ss.forEach(s=>s.shiftClosed=true); persist(); saveToCloud(); document.getElementById('zResult').innerHTML=`<div class="card"><h3>Z-Report - ${new Date().toLocaleString()}</h3><p>Cashier: ${rep.cashier} | Shift: ${rep.shift}</p><p>Cash Expected: ${fmt(expCash)} | Cash Counted: ${fmt(counted)} | <b>Difference: ${fmt(diff)}</b></p><p>Card: ${fmt(expCard)} | Sales: ${ss.length} | Handed To: ${handed}</p></div>`; renderAll(); }
+// ===== SHIFT =====
+function closeShiftUI(){ const counted=Number(document.getElementById('cashCounted').value||0); const handed=document.getElementById('handedTo').value.trim(); const ss=sales.filter(s=>s.shift===currentUser?.shift&&!s.shiftClosed); const expCash=ss.filter(s=>s.payment==='Cash').reduce((a,s)=>a+s.total,0); const expCard=ss.filter(s=>s.payment==='Card').reduce((a,s)=>a+s.total,0); const diff=counted-expCash; const given=debts.filter(d=>d.givenShift===currentUser?.shift&&d.date.slice(0,10)===new Date().toISOString().slice(0,10)); const rep={id:Date.now(),date:new Date().toISOString(),cashier:currentUser?.fullName,shift:currentUser?.shift,expectedCash:expCash,expectedCard:expCard,cashCounted:counted,difference:diff,handedTo:handed,totalSales:ss.length,debtsGiven:given.length,debtsGivenAmount:given.reduce((a,d)=>a+d.amount,0)}; shifts.push(rep); ss.forEach(s=>s.shiftClosed=true); persist(); saveToCloud(); document.getElementById('zResult').innerHTML=`<div class="v10-card"><h3>Z-Report - ${new Date().toLocaleString()}</h3><p>Cashier: ${rep.cashier} | Shift: ${rep.shift}</p><p>Cash Expected: ${fmt(expCash)} | Counted: ${fmt(counted)} | <b>Difference: ${fmt(diff)}</b></p><p>Card: ${fmt(expCard)} | Sales: ${ss.length} | Debts Given: ${given.length} - ${fmt(rep.debtsGivenAmount)} | Handed To: ${handed}</p></div>`; renderAll(); }
 
 // ===== RENDER =====
-function showPage(p,btn){ ['pos','inventory','customers','users','reports','shift'].forEach(x=>document.getElementById('page-'+x).classList.toggle('hidden',x!==p)); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); if(p==='shift'){ const ss=sales.filter(s=>s.shift===currentUser?.shift&&!s.shiftClosed); document.getElementById('shiftInfo').innerHTML=`Shift: <b>${currentUser?.shift}</b> | Open Sales: <b>${ss.length}</b> | Cash Expected: <b>${fmt(ss.filter(s=>s.payment==='Cash').reduce((a,s)=>a+s.total,0))}</b>`; document.getElementById('zList').innerHTML=shifts.map(s=>`<div class="alert">Z - ${new Date(s.date).toLocaleString()} - ${s.cashier} - Expected ${fmt(s.expectedCash)} - Counted ${fmt(s.cashCounted)} - Diff ${fmt(s.difference)} - To ${s.handedTo}</div>`).join(''); } }
-function renderAll(){ renderPOSCards(); renderCart(); renderUsers();
-document.getElementById('medTable').innerHTML=meds.map(m=>{ const mLots=lots.filter(l=>l.medId===m.id); const lotTxt=mLots.map(l=>`${l.lotNumber} / ${l.expiry} (${l.qty})`).join('<br>')||'No Lot'; const expired=mLots.some(l=>new Date(l.expiry)<new Date()); return `<tr><td><b>${m.name}</b><br><span style="font-size:11px">${m.category} • ${m.unit}</span></td><td>${m.barcode||''}</td><td>${fmt(m.price)}</td><td>${m.stock}</td><td>${lotTxt}</td><td>${expired?'<span class="badge badge-red">Expired Lot</span>':m.stock<=(m.minStock||5)?'<span class="badge badge-yellow">Low Stock</span>':'<span class="badge">OK</span>'}</td><td><button class="btn2 btn-small" onclick="openMedModal(${m.id})">Edit</button></td></tr>`; }).join('');
+function showPage(p,btn){ if(!currentUser && p!=='login'){ p='login'; } ['pos','inventory','dictionary','interactions','prescriptions','customers','users','reports','shift','login'].forEach(x=>{ const el=document.getElementById('page-'+x); if(el) el.classList.toggle('hidden',x!==p); }); document.querySelectorAll('.v10-sidebar button').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); if(p==='shift'&&currentUser){ const ss=sales.filter(s=>s.shift===currentUser.shift&&!s.shiftClosed); document.getElementById('shiftInfo').innerHTML=`Shift: <b>${currentUser.shift}</b> | Open Sales: <b>${ss.length}</b> | Cash Expected: <b>${fmt(ss.filter(s=>s.payment==='Cash').reduce((a,s)=>a+s.total,0))}</b>`; document.getElementById('zList').innerHTML=shifts.map(s=>`<div class="alert">Z - ${new Date(s.date).toLocaleString()} - ${s.cashier} - Expected ${fmt(s.expectedCash)} - Counted ${fmt(s.cashCounted)} - Diff ${fmt(s.difference)} - Debts ${fmt(s.debtsGivenAmount||0)} - To ${s.handedTo}</div>`).join(''); } }
+function renderAll(){ renderPOSCards(); renderCart(); renderUsers(); renderDictionary();
+document.getElementById('medTable').innerHTML=meds.map(m=>{ const mLots=lots.filter(l=>l.medId===m.id); const lotTxt=mLots.map(l=>`${l.lotNumber} / ${l.expiry} (${l.qty})`).join('<br>')||'No Lot'; const expired=mLots.some(l=>new Date(l.expiry)<new Date()); return `<tr><td><b>${m.name}</b><br><span style="font-size:11px">${m.category} • ${m.unit}</span></td><td>${m.barcode||''}</td><td>${fmt(m.price)}</td><td>${m.stock}</td><td>${lotTxt}</td><td>${expired?'<span class="badge badge-red">Expired</span>':m.stock<=(m.minStock||5)?'<span class="badge badge-yellow">Low Stock</span>':'<span class="badge">OK</span>'}</td><td><button class="btn2 btn-small" onclick="openMedModal(${m.id})">Edit</button></td></tr>`; }).join('');
 document.getElementById('lotMed').innerHTML=meds.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
 document.getElementById('posCustomer').innerHTML='<option value="">Walk-in Customer</option>'+customers.map(c=>`<option value="${c.id}">${c.name} - ${c.phone} (${c.points} pts)</option>`).join('');
-document.getElementById('custTable').innerHTML=customers.map(c=>`<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.points||0}</td><td>${fmt(c.totalDebt||0)}</td><td><button class="btn2 btn-small" onclick="alert('Points: '+${c.points||0})">Points</button></td></tr>`).join('');
-document.getElementById('debtList').innerHTML=debts.map(d=>`<div class="alert">${d.customerName} - ${fmt(d.amount)} - Paid ${fmt(d.paid)} - ${d.status} - <button class="btn btn-small" onclick="payDebt(${d.id}, prompt('Amount to pay:'))">Pay</button></div>`).join('')||'No debts';
-const today=new Date().toISOString().slice(0,10); const tSales=sales.filter(s=>s.date.slice(0,10)===today); document.getElementById('repToday').textContent=fmt(tSales.reduce((a,s)=>a+s.total,0)); document.getElementById('repCount').textContent=tSales.length; document.getElementById('repDebt').textContent=fmt(debts.filter(d=>d.status!=='Paid').reduce((a,d)=>a+(d.amount-d.paid),0));
-let profit=0; tSales.forEach(s=>s.items.forEach(it=>{ const m=meds.find(x=>x.id===it.id); if(m) profit+=(it.price-(m.cost||0))*it.qty; })); document.getElementById('repProfit').textContent=fmt(profit);
+document.getElementById('custTable').innerHTML=customers.map(c=>`<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.points||0}</td><td>${fmt(c.totalDebt||0)}</td><td><button class="btn2 btn-small">View</button></td></tr>`).join('');
+let dList=debts; if(debtFilter!=='All'){ if(debtFilter==='Unpaid') dList=debts.filter(d=>d.status!=='Paid'); else if(debtFilter==='Overdue') dList=debts.filter(d=>d.status!=='Paid'&&new Date(d.dueDate)<new Date()); else dList=debts.filter(d=>d.givenShift===debtFilter); }
+document.getElementById('debtList').innerHTML=dList.map(d=>`<div class="alert"><b>${d.customerName}</b> - ${d.phone||''} - Amount ${fmt(d.amount)} - Paid ${fmt(d.paid)} - <b>Remaining ${fmt(d.remaining)}</b> - Given by ${d.givenBy} / ${d.givenShift} - Due ${new Date(d.dueDate).toLocaleDateString()} - ${d.status} <button class="btn btn-small" onclick="payDebt(${d.id})">Pay</button> <button class="btn2 btn-small" onclick="window.open('https://wa.me/${(d.phone||'').replace(/[^0-9]/g,'')}?text=${encodeURIComponent('Hi '+d.customerName+', your debt at Active Care is '+fmt(d.remaining)+' - Please pay. Thank you.')}')">WhatsApp</button></div>`).join('')||'No debts';
+document.getElementById('intList').innerHTML=interactions.map(i=>`<div class="alert ${i.level==='Dangerous'?'Expired':''}"><b>${i.level}:</b> ${i.drugA} + ${i.drugB} - ${i.msg}</div>`).join('');
+document.getElementById('rxList').innerHTML=prescriptions.map(r=>`<div class="alert"><b>${r.patient}</b> - Dr ${r.doctor} - ${new Date(r.date).toLocaleDateString()} - By ${r.by}<br>${r.meds.replace(/\n/g,'<br>')}</div>`).join('')||'No prescriptions';
+const today=new Date().toISOString().slice(0,10); const tSales=sales.filter(s=>s.date.slice(0,10)===today); document.getElementById('repToday').textContent=fmt(tSales.reduce((a,s)=>a+s.total,0)); document.getElementById('repCount').textContent=tSales.length; document.getElementById('repDebt').textContent=fmt(debts.filter(d=>d.status!=='Paid').reduce((a,d)=>a+d.remaining,0)); let profit=0; tSales.forEach(s=>s.items.forEach(it=>{ const m=meds.find(x=>x.id===it.id); if(m) profit+=(it.price-(m.cost||0))*it.qty; })); document.getElementById('repProfit').textContent=fmt(profit);
 document.getElementById('salesList').innerHTML=tSales.slice().reverse().map(s=>`<div class="alert">${new Date(s.date).toLocaleTimeString()} - ${s.cashier} - ${s.payment} - ${fmt(s.total)} - ${s.items.map(i=>i.name+' x'+i.qty).join(', ')}</div>`).join('');
-const alerts=getAlerts(); document.getElementById('alertsBox').innerHTML=alerts.map(a=>`<div class="alert ${a.type}"><b>${a.type}:</b> ${a.med} - ${a.msg}</div>`).join('')||'<div class="alert">No alerts - Stock is healthy</div>';
-document.getElementById('posDiscount').addEventListener('input',renderCart);
+const alerts=getAlerts(); document.getElementById('alertsBox').innerHTML=alerts.map(a=>`<div class="alert ${a.type}"><b>${a.type}:</b> ${a.med} - ${a.msg}</div>`).join('')||'<div class="alert">No alerts - Stock healthy</div>';
+document.getElementById('kpiTotal').textContent=meds.length; document.getElementById('kpiLow').textContent=meds.filter(m=>m.stock<=(m.minStock||5)).length; document.getElementById('kpiExp').textContent=alerts.filter(a=>a.type==='Expiring').length; document.getElementById('kpiValue').textContent=fmt(meds.reduce((a,m)=>a+m.stock*(m.cost||0),0));
 }
 // Init
-document.getElementById('mainNav').style.display='none';
-document.getElementById('posSearch').addEventListener('keydown',e=>{ if(e.key==='Enter'){ const r=posSearch(e.target.value); renderPOSCards(r); } });
-loadFromCloud();
+document.getElementById('posSearch').addEventListener('keydown',e=>{ if(e.key==='Enter'){ renderPOSCards(posSearch(e.target.value)); } });
+showPage('login'); loadFromCloud();
 </script>
 </body>
-                                                                                                                                                      </html>
+  </html>
