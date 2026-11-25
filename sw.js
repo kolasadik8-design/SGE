@@ -1,28 +1,4 @@
-const CACHE_NAME = 'activecare-single-v13';
-const CORE_FILES = ['./manifest.json', './logo.png', './print.css'];
-self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_FILES)).then(() => self.skipWaiting()).catch((err) => console.log('Cache failed', err)));
-});
-self.addEventListener('activate', (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
-});
-self.addEventListener('fetch', (e) => {
-  const url = e.request.url;
-  if (url.includes('firestore.googleapis.com') || url.includes('firebase') || url.includes('gstatic.com') || url.includes('googleapis.com')) {
-    e.respondWith(fetch(e.request).catch(() => caches.match('./index.html')));
-    return;
-  }
-  if (e.request.mode === 'navigate' || url.endsWith('index.html') || url.endsWith('/')) {
-    e.respondWith(fetch(e.request).then((res) => { const clone = res.clone(); caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', clone)); return res; }).catch(() => caches.match('./index.html')));
-    return;
-  }
-  e.respondWith(caches.match(e.request).then((cached) => {
-    if (cached) return cached;
-    return fetch(e.request).then((res) => {
-      if (e.request.method === 'GET' && res.status === 200 && url.startsWith(self.location.origin)) {
-        const clone = res.clone(); caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
-      }
-      return res;
-    }).catch(() => { return new Response('Offline - Active Care V13', { status: 503 }); });
-  }));
-});
+// Active Care V15 - No cache old files
+self.addEventListener('install', e=>{ self.skipWaiting(); });
+self.addEventListener('activate', e=>{ e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))); self.clients.claim(); });
+self.addEventListener('fetch', e=>{ e.respondWith(fetch(e.request)); });
